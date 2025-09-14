@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "MUSA 5080 Portfolio",
     "section": "",
-    "text": "This portfolio documents my learning journey in Public Policy Analytics (MUSA 5080).\n\n\nAdvanced spatial analysis and data science for urban planning and public policy.\n\n\n\n\nWeekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge\n\n\n\n\nESFP\n\n\n\n\nEmail: cui12@upenn.edu\nGitHub: @ChristineCui12"
+    "text": "This portfolio documents my learning journey in Public Policy Analytics (MUSA 5080).\n\n\nAdvanced spatial analysis and data science for urban planning and public policy.\n\n\n\n\nWeekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge\n\n\n\n\nA RANDOM PERSON\n\n\n\n\nEmail: cui12@upenn.edu\nGitHub: @ChristineCui12"
   },
   {
     "objectID": "index.html#about-this-course",
@@ -25,7 +25,7 @@
     "href": "index.html#about-me",
     "title": "MUSA 5080 Portfolio",
     "section": "",
-    "text": "ESFP"
+    "text": "A RANDOM PERSON"
   },
   {
     "objectID": "index.html#contact",
@@ -39,14 +39,14 @@
     "href": "weekly-notes/week-01-notes.html",
     "title": "Week 1 Notes - Course Introduction",
     "section": "",
-    "text": "Git – version control system\nGitHub – clouding hosting\nKey GitHub Concepts\n\n\nRepository(repo)\nCommit\nPush\nPull"
+    "text": "GitHub Fundamentals\n\nGit\n\nVersion control system that tracks changes in files\n\nGitHub\n\nCloud hosting for Git repositories\n\nKey GitHub Concepts\n\nRepository(repo)\nCommit\nPush\nPull\n\n\nQuarto Introduction\n\nQuarto\n\nPublishing system that combines Code (R, Python, etc.), Text (explanations, analysis), Output (plots, tables, results)\n\n\nMarkdown Basics\n\nText Formatting\nHeaders\nLists\nLinks and Images\n\nR and dplyr Review\n\nTibbles vs. Data Frames\n\n“tibbles” - enhanced data frames(Shows first 10 rows by default, Displays column names)\n\nEssential dplyr functions\n\nselect()- choose columns\nfilter()- choose columns\nmutate()- choose columns\nsummarize- choose columns\ngroup-by- choose columns"
   },
   {
     "objectID": "weekly-notes/week-01-notes.html#key-concepts-learned",
     "href": "weekly-notes/week-01-notes.html#key-concepts-learned",
     "title": "Week 1 Notes - Course Introduction",
     "section": "",
-    "text": "Git – version control system\nGitHub – clouding hosting\nKey GitHub Concepts\n\n\nRepository(repo)\nCommit\nPush\nPull"
+    "text": "GitHub Fundamentals\n\nGit\n\nVersion control system that tracks changes in files\n\nGitHub\n\nCloud hosting for Git repositories\n\nKey GitHub Concepts\n\nRepository(repo)\nCommit\nPush\nPull\n\n\nQuarto Introduction\n\nQuarto\n\nPublishing system that combines Code (R, Python, etc.), Text (explanations, analysis), Output (plots, tables, results)\n\n\nMarkdown Basics\n\nText Formatting\nHeaders\nLists\nLinks and Images\n\nR and dplyr Review\n\nTibbles vs. Data Frames\n\n“tibbles” - enhanced data frames(Shows first 10 rows by default, Displays column names)\n\nEssential dplyr functions\n\nselect()- choose columns\nfilter()- choose columns\nmutate()- choose columns\nsummarize- choose columns\ngroup-by- choose columns"
   },
   {
     "objectID": "weekly-notes/week-01-notes.html#coding-techniques",
@@ -60,7 +60,7 @@
     "href": "weekly-notes/week-01-notes.html#questions-challenges",
     "title": "Week 1 Notes - Course Introduction",
     "section": "Questions & Challenges",
-    "text": "Questions & Challenges\n\n[What I didn’t fully understand]\n[Areas needing more practice]"
+    "text": "Questions & Challenges\n\nWhat I didn’t fully understand\n\nClone VS Fork\n\nAreas needing more practice\n\nCommmit"
   },
   {
     "objectID": "weekly-notes/week-01-notes.html#connections-to-policy",
