@@ -8,12 +8,16 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - text: Weekly Notes #[href is a header reference and requires an index. We declared only one index for the href, but we do not have one for the weekly-notes, so you just declare text. Additionally, ensure that there are no quotation marks]
+      - href: about.qmd
+        text: About
+      - text: "Weekly Notes" #[href is a header reference and requires an index. We declared only one index for the href, but we do not have one for the weekly-notes, so you just declare text. Additionally, ensure that there are no quotation marks]
         menu:
+          - href: weekly-notes/
+            text: "All Notes"
           - href: weekly-notes/week-01-notes.qmd
-            text: "week 1"
+            text: "Week 1"
           - href: weekly-notes/week-02-notes.qmd
-            text: "week 2"
+            text: "Week 2"
 format:
   html:
     theme: cosmo
