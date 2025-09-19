@@ -1,0 +1,95 @@
+---
+title: "Week 2 Notes - Algorithmic Decision Making & Census Data"
+date: "2025-09-15"
+---
+
+## Key Concepts Learned
+- Algorithmic Decision Making(算法)
+  - Definition
+    - A set of rules or instructions for solving a problem or completing a task
+    - Instructor 
+  - Algorithmic Decision Making in Government
+    - Systems used to assist or replace human decision-makers
+    - Based on predictions from models that process historical data containing Inputs X and Outputs Y(labels,outcome)
+  - Real-World Examples
+    1. Criminal Justice
+    2. Housing & Finance
+    3. Healthcare
+  - Problems: Statistical discrimination;
+  - Key Terms
+    - Data Science: Computer science/engineering focus on algorithms and methods
+    - Data Analytics: Application of data science methods to other disciplines
+    - Machine Learning: Algorithms for classification & prediction that learn from data
+    - AI: Algorithms that adjust and improve across iterations (neural networks, etc.)(迭代)
+  - Public Sector Context
+    - Government data collection
+    - New data
+  - Why Government Uses Algorithms
+  - When Algorithms Go Wrong
+    - Data Analytics Is Subjective
+      - Every step involves human choices(embed human values and biases)
+        - Data cleaning decisions
+        - Data coding or classification
+        - Data collection - use of imperfect proxies
+        - How you interpret results
+        - What variables you put in the model
+      - Example
+        - Healthcare Algorithm Bias
+        - Criminal Justice Algorithm Bias
+        - Dutch Welfare Fraud Detection
+- Active Learning Exercise
+  - scenario:School enrollment assignment
+  - Proxy: What would you use to stand in for what you want?
+    - Distribution of children
+    - Transportation accessibility & Transit, bus stop, subway station
+  - Blind spot: What data gap or historical bias could skew results?
+    - Socioeconomic Bias(ignore income or car ownership rate)
+  - Harm + Guardrail: Who could be harmed, and one simple safeguard?
+    - People in the remote area with poor transportation accessibility
+- Census Data Foundations
+  - Census vs. American Community Survey
+    - Decennial Census(Everyone counted every 10 years, 9 basic questions, Constitutional requirement)
+    - American Community Survey (**ACS**)(3% of households surveyed annually, Detailed questions)
+  - Census Geography Hierarchy
+    - Nation
+    - Regions  
+    - States
+    - **Counties**
+    - **Census Tracts** (1,500-8,000 people)
+    - **Block Groups** (600-3,000 people)  
+    - Blocks (≈85 people, Decennial only)
+  - 2020 Census Innovation: Differential Privacy
+    - Add mathematical “noise” to protect privacy while preserving overall patterns
+  - Accessing Census Data in R
+  - ACS Data Structure
+  - Margins of Error(**MOE**)
+    - Rule: Large MOE relative to estimate = less reliable, Small MOE relative to estimate = more reliable
+    - Recommendation: Always report MOE alongside estimates, Consider using 5-year estimates for greater reliability
+  - Two Types of Census Data
+  - Data Sources
+    - TIGER/Line Files
+    - Historical Data Sources
+- Hands-On Census Data with R
+  - 
+    
+- Quarto Introduction
+  - Quarto
+    - Publishing system that combines Code (R, Python, etc.), Text (explanations, analysis), Output (plots, tables, results)
+
+
+## Coding Techniques
+- [New R functions or approaches]
+- [Quarto features learned]
+
+## Questions & Challenges
+- What I didn't fully understand
+  - Clone VS Fork
+- Areas needing more practice
+  - Commmit
+
+## Connections to Policy
+- [How this week's content applies to real policy work]
+
+## Reflection
+- [What was most interesting]
+- [How I'll apply this knowledge]
