@@ -20,6 +20,10 @@ website:
         menu:
           - href: labs/lab_0/
             text: "Lab 0: dplyr Basics"
+      - text: Assignments
+        menu:
+          - href: assignments/assignment_1/assignment1_template.qmd
+            text: "Assignment 1: Census Data Exploration"
 format:
   html:
     theme: cosmo
