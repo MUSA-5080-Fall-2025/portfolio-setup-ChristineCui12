@@ -70,12 +70,7 @@ date: "2025-09-15"
     - TIGER/Line Files
     - Historical Data Sources
 - Hands-On Census Data with R
-  - 
     
-- Quarto Introduction
-  - Quarto
-    - Publishing system that combines Code (R, Python, etc.), Text (explanations, analysis), Output (plots, tables, results)
-
 
 ## Coding Techniques
 - [New R functions or approaches]
@@ -83,9 +78,9 @@ date: "2025-09-15"
 
 ## Questions & Challenges
 - What I didn't fully understand
-  - Clone VS Fork
+  - the basic workflow: pull-commit-push
 - Areas needing more practice
-  - Commmit
+  - remember the essential dplyr functions
 
 ## Connections to Policy
 - [How this week's content applies to real policy work]
