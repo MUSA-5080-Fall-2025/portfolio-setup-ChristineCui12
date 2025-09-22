@@ -1,0 +1,50 @@
+---
+title: "Week 1 Notes - Course Introduction"
+date: "2025-09-09"
+---
+
+## Key Concepts Learned
+- GitHub Fundamentals
+  - Git
+    - Version control system that tracks changes in files
+  - GitHub
+    - Cloud hosting for Git repositories
+  - Key GitHub Concepts
+    1. Repository(repo)
+    2. Commit
+    3. Push
+    4. Pull
+- Quarto Introduction
+  - Quarto
+    - Publishing system that combines Code (R, Python, etc.), Text (explanations, analysis), Output (plots, tables, results)
+- Markdown Basics
+  - Text Formatting
+  - Headers
+  - Lists
+  - Links and Images
+- R and dplyr Review
+  - Tibbles vs. Data Frames
+    - “tibbles” - enhanced data frames(Shows first 10 rows by default, Displays column names)
+  - Essential dplyr functions
+    - select()- choose columns
+    - filter()- choose columns
+    - mutate()- choose columns
+    - summarize- choose columns
+    - group-by- choose columns
+
+## Coding Techniques
+- [New R functions or approaches]
+- [Quarto features learned]
+
+## Questions & Challenges
+- What I didn't fully understand
+  - Clone VS Fork
+- Areas needing more practice
+  - Commmit
+
+## Connections to Policy
+- [How this week's content applies to real policy work]
+
+## Reflection
+- [What was most interesting]
+- [How I'll apply this knowledge]

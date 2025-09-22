@@ -1,8 +1,8 @@
 ---
 title: "Assignment 1: Census Data Quality for Policy Decisions"
 subtitle: "Evaluating Data Reliability for Algorithmic Decision-Making"
-author: "Your Name Here"
-date: today
+author: "Xinyuan(Christine) Cui"
+date: Sep.19
 format: 
   html:
     code-fold: false
@@ -18,7 +18,7 @@ execute:
 
 ## Scenario
 
-You are a data analyst for the **[Your State] Department of Human Services**. The department is considering implementing an algorithmic system to identify communities that should receive priority for social service funding and outreach programs. Your supervisor has asked you to evaluate the quality and reliability of available census data to inform this decision.
+You are a data analyst for the **Texas Department of Human Services**. The department is considering implementing an algorithmic system to identify communities that should receive priority for social service funding and outreach programs. Your supervisor has asked you to evaluate the quality and reliability of available census data to inform this decision.
 
 Drawing on our Week 2 discussion of algorithmic bias, you need to assess not just what the data shows, but how reliable it is and what communities might be affected by data quality issues.
 
@@ -52,13 +52,17 @@ If there is a special character like comma, you need use double quote mark so th
 
 ```{r setup}
 # Load required packages (hint: you need tidycensus, tidyverse, and knitr)
-
+"knitr" %in% rownames(installed.packages())
+library(tidycensus)
+library(tidyverse)
+library(knitr)
 # Set your Census API key
-
+census_api_key("20068788c6e79d5716fbceb0dcd562ab23f74ca1", overwrite=TRUE, install = TRUE)
 # Choose your state for analysis - assign it to a variable called my_state
+my_state <- "TX"
 ```
 
-**State Selection:** I have chosen **[Your State Name]** for this analysis because: [Brief explanation of why you chose this state]
+**State Selection:** I have chosen **Texas** for this analysis because: Texas is an ideal state for this analysis due to its unique combination of rapid population growth, demographic diversity, and significant geographic variation. These factors present specific data quality challenges that are critical to evaluating algorithmic fairness.
 
 # Part 2: County-Level Resource Assessment
 
@@ -77,11 +81,29 @@ If there is a special character like comma, you need use double quote mark so th
 
 ```{r county-data}
 # Write your get_acs() code here
+county_data_texas <- get_acs(
+  geography = "county",        # 检索县级数据
+  variables = c(                # 指定要获取的变量及其描述性名称
+    median_household_income = "B19013_001",
+    total_population = "B01003_001"
+  ),
+  state = my_state,            # 指定州
+  year = 2022,                 # 指定年份
+  survey = "acs5",             # 指定使用5年期调查
+  output = "wide"              # 指定输出为宽格式
+)
 
 # Clean the county names to remove state name and "County" 
 # Hint: use mutate() with str_remove()
-
+county_data_texas <- county_data_texas %>%
+  mutate(
+    # 先移除州名（例如 ", Texas"）
+    NAME = str_remove(NAME, ", Texas"),
+    # 再移除 " County"
+    NAME = str_remove(NAME, " County")
+  )
 # Display the first few rows
+head(county_data_texas)
 ```
 
 ## 2.2 Data Quality Assessment
@@ -100,9 +122,28 @@ If there is a special character like comma, you need use double quote mark so th
 
 ```{r income-reliability}
 # Calculate MOE percentage and reliability categories using mutate()
-
+county_data_texas <- county_data_texas %>%
+  mutate(
+    # 计算家庭收入的 MOE 百分比
+    income_moe_pct = (median_household_incomeM / median_household_incomeE) * 100,
+    
+    # 根据百分比创建可靠性类别
+    income_reliability = case_when(
+      income_moe_pct < 5 ~ "High Confidence",
+      income_moe_pct >= 5 & income_moe_pct <= 10 ~ "Moderate Confidence",
+      income_moe_pct > 10 ~ "Low Confidence"
+    ),
+    
+    # 创建一个不可靠的标记（如果 MOE > 10%）
+    unreliable_income = income_moe_pct > 10
+  )
 # Create a summary showing count of counties in each reliability category
 # Hint: use count() and mutate() to add percentages
+county_data_texas %>%
+  count(income_reliability) %>%
+  mutate(
+    percentage = (n / sum(n)) * 100
+  )
 ```
 
 ## 2.3 High Uncertainty Counties
@@ -119,13 +160,27 @@ If there is a special character like comma, you need use double quote mark so th
 
 ```{r high-uncertainty}
 # Create table of top 5 counties by MOE percentage
+library(knitr)
+county_data_texas %>%
+  arrange(desc(income_moe_pct)) %>%
+  slice(1:5) %>%
+  select(
+    `County Name` = NAME,
+    `Median Income` = median_household_incomeE,
+    `Margin of Error` = median_household_incomeM,
+    `MOE Percentage` = income_moe_pct,
+    `Reliability Category` = income_reliability
+  ) %>%
 
 # Format as table with kable() - include appropriate column names and caption
+kable(
+    caption = "Top 5 Counties with The Highest MOE Percentages"
+  )
 ```
 
 **Data Quality Commentary:**
 
-[Write 2-3 sentences explaining what these results mean for algorithmic decision-making. Consider: Which counties might be poorly served by algorithms that rely on this income data? What factors might contribute to higher uncertainty?]
+**[Write 2-3 sentences explaining what these results mean for algorithmic decision-making. Consider: Which counties might be poorly served by algorithms that rely on this income data? What factors might contribute to higher uncertainty?]**
 
 # Part 3: Neighborhood-Level Analysis
 
@@ -138,12 +193,31 @@ If there is a special character like comma, you need use double quote mark so th
 ```{r select-counties}
 # Use filter() to select 2-3 counties from your county_reliability data
 # Store the selected counties in a variable called selected_counties
-
+selected_counties <- county_data_texas %>%
+  filter(
+    income_moe_pct > 30 |
+    (income_moe_pct >= 5 & income_moe_pct <= 10) |
+    income_moe_pct < 2
+  ) %>%
+  # 进一步精简，确保只选择3个
+  group_by(income_reliability) %>%
+  slice(1)
 # Display the selected counties with their key characteristics
 # Show: county name, median income, MOE percentage, reliability category
+selected_counties %>%
+  select(
+    `County Name` = NAME,
+    `Median Income` = median_household_incomeE,
+    `MOE Percentage` = income_moe_pct,
+    `Reliability Category` = income_reliability
+  ) %>%
+  kable(
+    caption = "3 Counties Selected for Tract-Level Study"
+  )
 ```
 
 **Comment on the output:** [write something :)]
+在high和low中选择了范围内较为极端的数据，意在使结果更典型，更好做对比。
 
 ## 3.2 Tract-Level Demographics
 
@@ -154,18 +228,58 @@ If there is a special character like comma, you need use double quote mark so th
 - Variables: white alone (B03002_003), Black/African American (B03002_004), Hispanic/Latino (B03002_012), total population (B03002_001)
 - Use the same state and year as before
 - Output format: wide
-- **Challenge:** You'll need county codes, not names. Look at the GEOID patterns in your county data for hints.
+
+**Challenge:** You'll need county codes, not names. Look at the GEOID patterns in your county data for hints.
 
 ```{r tract-demographics}
 # Define your race/ethnicity variables with descriptive names
+ethnicity_variables <- c(
+  white_alone = "B03002_003",
+  Black_African_American = "B03002_004",
+  Hispanic_Latino = "B03002_012",
+  total_population = "B03002_001"
+)
 
 # Use get_acs() to retrieve tract-level data
 # Hint: You may need to specify county codes in the county parameter
+selected_county_geoids <- selected_counties$GEOID
+selected_county_codes <- str_sub(selected_county_geoids, start = -3) #the last 3 numbers of GEOID is county codes
+
+tract_data_texas <- get_acs(
+  geography = "tract",        # 普查区级别
+  variables = ethnicity_variables,         # 指定要获取的变量及其描述性名称
+  state = my_state,            # 指定州
+  county = selected_county_codes, # 将县的 GEOID 作为 county 参数
+  year = 2022,                 # 指定年份
+  survey = "acs5",             # 指定使用5年期调查
+  output = "wide"              # 指定输出为宽格式
+)
 
 # Calculate percentage of each group using mutate()
 # Create percentages for white, Black, and Hispanic populations
+tract_data_texas <- tract_data_texas %>%
+  mutate(
+    pct_white = (white_aloneE / total_populationE) * 100,
+    pct_black = (Black_African_AmericanE / total_populationE) * 100,
+    pct_hispanic = (Hispanic_LatinoE / total_populationE) * 100
+  )
 
 # Add readable tract and county name columns using str_extract() or similar
+tract_data_texas <- tract_data_texas %>%
+  mutate(
+    # 使用 str_remove() 移除多余的普查区信息，只保留县名和州名
+    NAME = str_remove(NAME, "Census Tract \\d+\\.?\\d*, "),
+    
+    # 移除州名，只保留县名
+    NAME = str_remove(NAME, ", Texas"),
+    
+    # 将清理后的 NAME 列重命名为 county_name 以便更好地理解
+    county_name = NAME,
+    
+    # 普查区编号通常保存在 GEOID 的后六位
+    tract_id = str_sub(GEOID, -6)
+  )
+
 ```
 
 ## 3.3 Demographic Analysis
@@ -175,11 +289,38 @@ If there is a special character like comma, you need use double quote mark so th
 ```{r demographic-analysis}
 # Find the tract with the highest percentage of Hispanic/Latino residents
 # Hint: use arrange() and slice() to get the top tract
+tract_data_texas %>%
+  arrange(desc(pct_hispanic)) %>%
+  slice(1) %>%
+  select(
+    `Tract ID` = tract_id,
+    `County Name` = county_name,
+    `Hispanic/Latino Percentage` = pct_hispanic,
+    `Total Population` = total_populationE
+  ) %>%
+  kable(
+    caption = "Tract with the Highest Percentage of Hispanic/Latino Residents"
+  )
 
 # Calculate average demographics by county using group_by() and summarize()
 # Show: number of tracts, average percentage for each racial/ethnic group
+county_demographics_summary <- tract_data_texas %>%
+  # 1. 按县名进行分组
+  group_by(county_name) %>%
+  
+  # 2. 对每个县组进行汇总计算
+  summarize(
+    number_of_tracts = n(), # 计算每个县的普查区数量
+    avg_white_pct = mean(pct_white, na.rm = TRUE), # 计算平均白人人口百分比
+    avg_black_pct = mean(pct_black, na.rm = TRUE), # 计算平均非裔人口百分比
+    avg_hispanic_pct = mean(pct_hispanic, na.rm = TRUE) # 计算平均拉丁裔人口百分比
+  )
 
 # Create a nicely formatted table of your results using kable()
+county_demographics_summary %>%
+  kable(
+    caption = "Average Demographics by County"
+  )
 ```
 
 # Part 4: Comprehensive Data Quality Evaluation

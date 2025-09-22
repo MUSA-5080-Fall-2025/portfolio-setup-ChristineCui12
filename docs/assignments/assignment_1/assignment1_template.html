@@ -1,0 +1,3927 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.23">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Xinyuan(Christine) Cui">
+<meta name="dcterms.date" content="2001-09-19">
+
+<title>Assignment 1: Census Data Quality for Policy Decisions – Christine Cui - MUSA 5080 Portfolio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Christine Cui - MUSA 5080 Portfolio</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-weekly-notes" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Weekly Notes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-weekly-notes">    
+        <li>
+    <a class="dropdown-item" href="../../weekly-notes/">
+ <span class="dropdown-text">All Notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../weekly-notes/week-01-notes.html">
+ <span class="dropdown-text">Week 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../weekly-notes/week-02-notes.html">
+ <span class="dropdown-text">Week 2</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-labs" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Labs</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-labs">    
+        <li>
+    <a class="dropdown-item" href="../../labs/lab_0/">
+ <span class="dropdown-text">Lab 0: dplyr Basics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
+        <li>
+    <a class="dropdown-item" href="../../assignments/assignment_1/assignment1_template.html">
+ <span class="dropdown-text">Assignment 1: Census Data Exploration</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#assignment-overview" id="toc-assignment-overview" class="nav-link active" data-scroll-target="#assignment-overview">Assignment Overview</a>
+  <ul class="collapse">
+  <li><a href="#scenario" id="toc-scenario" class="nav-link" data-scroll-target="#scenario">Scenario</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#submission-instructions" id="toc-submission-instructions" class="nav-link" data-scroll-target="#submission-instructions">Submission Instructions</a></li>
+  </ul></li>
+  <li><a href="#part-1-portfolio-integration" id="toc-part-1-portfolio-integration" class="nav-link" data-scroll-target="#part-1-portfolio-integration">Part 1: Portfolio Integration</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#part-2-county-level-resource-assessment" id="toc-part-2-county-level-resource-assessment" class="nav-link" data-scroll-target="#part-2-county-level-resource-assessment">Part 2: County-Level Resource Assessment</a>
+  <ul class="collapse">
+  <li><a href="#data-retrieval" id="toc-data-retrieval" class="nav-link" data-scroll-target="#data-retrieval">2.1 Data Retrieval</a></li>
+  <li><a href="#data-quality-assessment" id="toc-data-quality-assessment" class="nav-link" data-scroll-target="#data-quality-assessment">2.2 Data Quality Assessment</a></li>
+  <li><a href="#high-uncertainty-counties" id="toc-high-uncertainty-counties" class="nav-link" data-scroll-target="#high-uncertainty-counties">2.3 High Uncertainty Counties</a></li>
+  </ul></li>
+  <li><a href="#part-3-neighborhood-level-analysis" id="toc-part-3-neighborhood-level-analysis" class="nav-link" data-scroll-target="#part-3-neighborhood-level-analysis">Part 3: Neighborhood-Level Analysis</a>
+  <ul class="collapse">
+  <li><a href="#focus-area-selection" id="toc-focus-area-selection" class="nav-link" data-scroll-target="#focus-area-selection">3.1 Focus Area Selection</a></li>
+  <li><a href="#tract-level-demographics" id="toc-tract-level-demographics" class="nav-link" data-scroll-target="#tract-level-demographics">3.2 Tract-Level Demographics</a></li>
+  <li><a href="#demographic-analysis" id="toc-demographic-analysis" class="nav-link" data-scroll-target="#demographic-analysis">3.3 Demographic Analysis</a></li>
+  </ul></li>
+  <li><a href="#part-4-comprehensive-data-quality-evaluation" id="toc-part-4-comprehensive-data-quality-evaluation" class="nav-link" data-scroll-target="#part-4-comprehensive-data-quality-evaluation">Part 4: Comprehensive Data Quality Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#moe-analysis-for-demographic-variables" id="toc-moe-analysis-for-demographic-variables" class="nav-link" data-scroll-target="#moe-analysis-for-demographic-variables">4.1 MOE Analysis for Demographic Variables</a></li>
+  <li><a href="#pattern-analysis" id="toc-pattern-analysis" class="nav-link" data-scroll-target="#pattern-analysis">4.2 Pattern Analysis</a></li>
+  </ul></li>
+  <li><a href="#part-5-policy-recommendations" id="toc-part-5-policy-recommendations" class="nav-link" data-scroll-target="#part-5-policy-recommendations">Part 5: Policy Recommendations</a>
+  <ul class="collapse">
+  <li><a href="#analysis-integration-and-professional-summary" id="toc-analysis-integration-and-professional-summary" class="nav-link" data-scroll-target="#analysis-integration-and-professional-summary">5.1 Analysis Integration and Professional Summary</a></li>
+  <li><a href="#specific-recommendations" id="toc-specific-recommendations" class="nav-link" data-scroll-target="#specific-recommendations">6.3 Specific Recommendations</a></li>
+  <li><a href="#questions-for-further-investigation" id="toc-questions-for-further-investigation" class="nav-link" data-scroll-target="#questions-for-further-investigation">Questions for Further Investigation</a></li>
+  </ul></li>
+  <li><a href="#technical-notes" id="toc-technical-notes" class="nav-link" data-scroll-target="#technical-notes">Technical Notes</a>
+  <ul class="collapse">
+  <li><a href="#submission-checklist" id="toc-submission-checklist" class="nav-link" data-scroll-target="#submission-checklist">Submission Checklist</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Assignment 1: Census Data Quality for Policy Decisions</h1>
+<p class="subtitle lead">Evaluating Data Reliability for Algorithmic Decision-Making</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Xinyuan(Christine) Cui </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 19, 2001</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="assignment-overview" class="level1">
+<h1>Assignment Overview</h1>
+<section id="scenario" class="level2">
+<h2 class="anchored" data-anchor-id="scenario">Scenario</h2>
+<p>You are a data analyst for the <strong>Texas Department of Human Services</strong>. The department is considering implementing an algorithmic system to identify communities that should receive priority for social service funding and outreach programs. Your supervisor has asked you to evaluate the quality and reliability of available census data to inform this decision.</p>
+<p>Drawing on our Week 2 discussion of algorithmic bias, you need to assess not just what the data shows, but how reliable it is and what communities might be affected by data quality issues.</p>
+</section>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li>Apply dplyr functions to real census data for policy analysis</li>
+<li>Evaluate data quality using margins of error</li>
+<li>Connect technical analysis to algorithmic decision-making</li>
+<li>Identify potential equity implications of data reliability issues</li>
+<li>Create professional documentation for policy stakeholders</li>
+</ul>
+</section>
+<section id="submission-instructions" class="level2">
+<h2 class="anchored" data-anchor-id="submission-instructions">Submission Instructions</h2>
+<p><strong>Submit by posting your updated portfolio link on Canvas.</strong> Your assignment should be accessible at <code>your-portfolio-url/assignments/assignment_1/</code></p>
+<p>Make sure to update your <code>_quarto.yml</code> navigation to include this assignment under an “Assignments” menu.</p>
+</section>
+</section>
+<section id="part-1-portfolio-integration" class="level1">
+<h1>Part 1: Portfolio Integration</h1>
+<p>Create this assignment in your portfolio repository under an <code>assignments/assignment_1/</code> folder structure. Update your navigation menu to include:</p>
+<pre><code>- text: Assignments
+  menu:
+    - href: assignments/assignment_1/your_file_name.qmd
+      text: "Assignment 1: Census Data Exploration"</code></pre>
+<p>If there is a special character like comma, you need use double quote mark so that the quarto can identify this as text</p>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required packages (hint: you need tidycensus, tidyverse, and knitr)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">"knitr"</span> <span class="sc">%in%</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set your Census API key</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">census_api_key</span>(<span class="st">"20068788c6e79d5716fbceb0dcd562ab23f74ca1"</span>, <span class="at">overwrite=</span><span class="cn">TRUE</span>, <span class="at">install =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "20068788c6e79d5716fbceb0dcd562ab23f74ca1"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose your state for analysis - assign it to a variable called my_state</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>my_state <span class="ot">&lt;-</span> <span class="st">"TX"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>State Selection:</strong> I have chosen <strong>Texas</strong> for this analysis because: Texas is an ideal state for this analysis due to its unique combination of rapid population growth, demographic diversity, and significant geographic variation. These factors present specific data quality challenges that are critical to evaluating algorithmic fairness.</p>
+</section>
+<section id="part-2-county-level-resource-assessment" class="level1">
+<h1>Part 2: County-Level Resource Assessment</h1>
+<section id="data-retrieval" class="level2">
+<h2 class="anchored" data-anchor-id="data-retrieval">2.1 Data Retrieval</h2>
+<p><strong>Your Task:</strong> Use <code>get_acs()</code> to retrieve county-level data for your chosen state.</p>
+<p><strong>Requirements:</strong> - Geography: county level - Variables: median household income (B19013_001) and total population (B01003_001)<br>
+- Year: 2022 - Survey: acs5 - Output format: wide</p>
+<p><strong>Hint:</strong> Remember to give your variables descriptive names using the <code>variables = c(name = "code")</code> syntax.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your get_acs() code here</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>county_data_texas <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">"county"</span>,        <span class="co"># 检索县级数据</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(                <span class="co"># 指定要获取的变量及其描述性名称</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_household_income =</span> <span class="st">"B19013_001"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_population =</span> <span class="st">"B01003_001"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">state =</span> my_state,            <span class="co"># 指定州</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2022</span>,                 <span class="co"># 指定年份</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">survey =</span> <span class="st">"acs5"</span>,             <span class="co"># 指定使用5年期调查</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">output =</span> <span class="st">"wide"</span>              <span class="co"># 指定输出为宽格式</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean the county names to remove state name and "County" </span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: use mutate() with str_remove()</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>county_data_texas <span class="ot">&lt;-</span> county_data_texas <span class="sc">%&gt;%</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 先移除州名（例如 ", Texas"）</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">NAME =</span> <span class="fu">str_remove</span>(NAME, <span class="st">", Texas"</span>),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 再移除 " County"</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">NAME =</span> <span class="fu">str_remove</span>(NAME, <span class="st">" County"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(county_data_texas)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  GEOID NAME     median_household_inc…¹ median_household_inc…² total_populationE
+  &lt;chr&gt; &lt;chr&gt;                     &lt;dbl&gt;                  &lt;dbl&gt;             &lt;dbl&gt;
+1 48001 Anderson                  57445                   4562             58077
+2 48003 Andrews                   86458                  16116             18362
+3 48005 Angelina                  57055                   2484             86608
+4 48007 Aransas                   58168                   6458             24048
+5 48009 Archer                    69954                   8482              8649
+6 48011 Armstro…                  70417                  14574              1912
+# ℹ abbreviated names: ¹​median_household_incomeE, ²​median_household_incomeM
+# ℹ 1 more variable: total_populationM &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="data-quality-assessment" class="level2">
+<h2 class="anchored" data-anchor-id="data-quality-assessment">2.2 Data Quality Assessment</h2>
+<p><strong>Your Task:</strong> Calculate margin of error percentages and create reliability categories.</p>
+<p><strong>Requirements:</strong> - Calculate MOE percentage: (margin of error / estimate) * 100 - Create reliability categories: - High Confidence: MOE &lt; 5% - Moderate Confidence: MOE 5-10%<br>
+- Low Confidence: MOE &gt; 10% - Create a flag for unreliable estimates (MOE &gt; 10%)</p>
+<p><strong>Hint:</strong> Use <code>mutate()</code> with <code>case_when()</code> for the categories.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MOE percentage and reliability categories using mutate()</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>county_data_texas <span class="ot">&lt;-</span> county_data_texas <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算家庭收入的 MOE 百分比</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">income_moe_pct =</span> (median_household_incomeM <span class="sc">/</span> median_household_incomeE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 根据百分比创建可靠性类别</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">income_reliability =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>      income_moe_pct <span class="sc">&lt;</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"High Confidence"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      income_moe_pct <span class="sc">&gt;=</span> <span class="dv">5</span> <span class="sc">&amp;</span> income_moe_pct <span class="sc">&lt;=</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Moderate Confidence"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      income_moe_pct <span class="sc">&gt;</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Low Confidence"</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 创建一个不可靠的标记（如果 MOE &gt; 10%）</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">unreliable_income =</span> income_moe_pct <span class="sc">&gt;</span> <span class="dv">10</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary showing count of counties in each reliability category</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: use count() and mutate() to add percentages</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>county_data_texas <span class="sc">%&gt;%</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(income_reliability) <span class="sc">%&gt;%</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">percentage =</span> (n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  income_reliability      n percentage
+  &lt;chr&gt;               &lt;int&gt;      &lt;dbl&gt;
+1 High Confidence        58     22.8  
+2 Low Confidence        113     44.5  
+3 Moderate Confidence    82     32.3  
+4 &lt;NA&gt;                    1      0.394</code></pre>
+</div>
+</div>
+</section>
+<section id="high-uncertainty-counties" class="level2">
+<h2 class="anchored" data-anchor-id="high-uncertainty-counties">2.3 High Uncertainty Counties</h2>
+<p><strong>Your Task:</strong> Identify the 5 counties with the highest MOE percentages.</p>
+<p><strong>Requirements:</strong> - Sort by MOE percentage (highest first) - Select the top 5 counties - Display: county name, median income, margin of error, MOE percentage, reliability category - Format as a professional table using <code>kable()</code></p>
+<p><strong>Hint:</strong> Use <code>arrange()</code>, <code>slice()</code>, and <code>select()</code> functions.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create table of top 5 counties by MOE percentage</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>county_data_texas <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(income_moe_pct)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">County Name</span><span class="st">`</span> <span class="ot">=</span> NAME,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median Income</span><span class="st">`</span> <span class="ot">=</span> median_household_incomeE,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Margin of Error</span><span class="st">`</span> <span class="ot">=</span> median_household_incomeM,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">MOE Percentage</span><span class="st">`</span> <span class="ot">=</span> income_moe_pct,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Reliability Category</span><span class="st">`</span> <span class="ot">=</span> income_reliability</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Format as table with kable() - include appropriate column names and caption</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Top 5 Counties with The Highest MOE Percentages"</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Top 5 Counties with The Highest MOE Percentages</caption>
+<colgroup>
+<col style="width: 15%">
+<col style="width: 17%">
+<col style="width: 20%">
+<col style="width: 19%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">County Name</th>
+<th style="text-align: right;">Median Income</th>
+<th style="text-align: right;">Margin of Error</th>
+<th style="text-align: right;">MOE Percentage</th>
+<th style="text-align: left;">Reliability Category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Jeff Davis</td>
+<td style="text-align: right;">38125</td>
+<td style="text-align: right;">25205</td>
+<td style="text-align: right;">66.11148</td>
+<td style="text-align: left;">Low Confidence</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Culberson</td>
+<td style="text-align: right;">35924</td>
+<td style="text-align: right;">18455</td>
+<td style="text-align: right;">51.37234</td>
+<td style="text-align: left;">Low Confidence</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">King</td>
+<td style="text-align: right;">59375</td>
+<td style="text-align: right;">29395</td>
+<td style="text-align: right;">49.50737</td>
+<td style="text-align: left;">Low Confidence</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kinney</td>
+<td style="text-align: right;">52386</td>
+<td style="text-align: right;">23728</td>
+<td style="text-align: right;">45.29454</td>
+<td style="text-align: left;">Low Confidence</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dimmit</td>
+<td style="text-align: right;">27374</td>
+<td style="text-align: right;">12374</td>
+<td style="text-align: right;">45.20348</td>
+<td style="text-align: left;">Low Confidence</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Data Quality Commentary:</strong></p>
+<p><strong>[Write 2-3 sentences explaining what these results mean for algorithmic decision-making. Consider: Which counties might be poorly served by algorithms that rely on this income data? What factors might contribute to higher uncertainty?]</strong></p>
+</section>
+</section>
+<section id="part-3-neighborhood-level-analysis" class="level1">
+<h1>Part 3: Neighborhood-Level Analysis</h1>
+<section id="focus-area-selection" class="level2">
+<h2 class="anchored" data-anchor-id="focus-area-selection">3.1 Focus Area Selection</h2>
+<p><strong>Your Task:</strong> Select 2-3 counties from your reliability analysis for detailed tract-level study.</p>
+<p><strong>Strategy:</strong> Choose counties that represent different reliability levels (e.g., 1 high confidence, 1 moderate, 1 low confidence) to compare how data quality varies.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use filter() to select 2-3 counties from your county_reliability data</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Store the selected counties in a variable called selected_counties</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>selected_counties <span class="ot">&lt;-</span> county_data_texas <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    income_moe_pct <span class="sc">&gt;</span> <span class="dv">30</span> <span class="sc">|</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    (income_moe_pct <span class="sc">&gt;=</span> <span class="dv">5</span> <span class="sc">&amp;</span> income_moe_pct <span class="sc">&lt;=</span> <span class="dv">10</span>) <span class="sc">|</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    income_moe_pct <span class="sc">&lt;</span> <span class="dv">2</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 进一步精简，确保只选择3个</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(income_reliability) <span class="sc">%&gt;%</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the selected counties with their key characteristics</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Show: county name, median income, MOE percentage, reliability category</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>selected_counties <span class="sc">%&gt;%</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">County Name</span><span class="st">`</span> <span class="ot">=</span> NAME,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median Income</span><span class="st">`</span> <span class="ot">=</span> median_household_incomeE,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">MOE Percentage</span><span class="st">`</span> <span class="ot">=</span> income_moe_pct,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Reliability Category</span><span class="st">`</span> <span class="ot">=</span> income_reliability</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"3 Counties Selected for Tract-Level Study"</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>3 Counties Selected for Tract-Level Study</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">County Name</th>
+<th style="text-align: right;">Median Income</th>
+<th style="text-align: right;">MOE Percentage</th>
+<th style="text-align: left;">Reliability Category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bexar</td>
+<td style="text-align: right;">67275</td>
+<td style="text-align: right;">1.151988</td>
+<td style="text-align: left;">High Confidence</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Brooks</td>
+<td style="text-align: right;">30566</td>
+<td style="text-align: right;">33.818622</td>
+<td style="text-align: left;">Low Confidence</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Anderson</td>
+<td style="text-align: right;">57445</td>
+<td style="text-align: right;">7.941509</td>
+<td style="text-align: left;">Moderate Confidence</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Comment on the output:</strong> [write something :)] 在high和low中选择了范围内较为极端的数据，意在使结果更典型，更好做对比。</p>
+</section>
+<section id="tract-level-demographics" class="level2">
+<h2 class="anchored" data-anchor-id="tract-level-demographics">3.2 Tract-Level Demographics</h2>
+<p><strong>Your Task:</strong> Get demographic data for census tracts in your selected counties.</p>
+<p><strong>Requirements:</strong> - Geography: tract level - Variables: white alone (B03002_003), Black/African American (B03002_004), Hispanic/Latino (B03002_012), total population (B03002_001) - Use the same state and year as before - Output format: wide</p>
+<p><strong>Challenge:</strong> You’ll need county codes, not names. Look at the GEOID patterns in your county data for hints.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define your race/ethnicity variables with descriptive names</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ethnicity_variables <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">white_alone =</span> <span class="st">"B03002_003"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Black_African_American =</span> <span class="st">"B03002_004"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Hispanic_Latino =</span> <span class="st">"B03002_012"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">total_population =</span> <span class="st">"B03002_001"</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Use get_acs() to retrieve tract-level data</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: You may need to specify county codes in the county parameter</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>selected_county_geoids <span class="ot">&lt;-</span> selected_counties<span class="sc">$</span>GEOID</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>selected_county_codes <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(selected_county_geoids, <span class="at">start =</span> <span class="sc">-</span><span class="dv">3</span>) <span class="co">#the last 3 numbers of GEOID is county codes</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>tract_data_texas <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">"tract"</span>,        <span class="co"># 普查区级别</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> ethnicity_variables,         <span class="co"># 指定要获取的变量及其描述性名称</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">state =</span> my_state,            <span class="co"># 指定州</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">county =</span> selected_county_codes, <span class="co"># 将县的 GEOID 作为 county 参数</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2022</span>,                 <span class="co"># 指定年份</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">survey =</span> <span class="st">"acs5"</span>,             <span class="co"># 指定使用5年期调查</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">output =</span> <span class="st">"wide"</span>              <span class="co"># 指定输出为宽格式</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate percentage of each group using mutate()</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Create percentages for white, Black, and Hispanic populations</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>tract_data_texas <span class="ot">&lt;-</span> tract_data_texas <span class="sc">%&gt;%</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_white =</span> (white_aloneE <span class="sc">/</span> total_populationE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_black =</span> (Black_African_AmericanE <span class="sc">/</span> total_populationE) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_hispanic =</span> (Hispanic_LatinoE <span class="sc">/</span> total_populationE) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Add readable tract and county name columns using str_extract() or similar</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>tract_data_texas <span class="ot">&lt;-</span> tract_data_texas <span class="sc">%&gt;%</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 使用 str_remove() 移除多余的普查区信息，只保留县名和州名</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">NAME =</span> <span class="fu">str_remove</span>(NAME, <span class="st">"Census Tract </span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">.?</span><span class="sc">\\</span><span class="st">d*, "</span>),</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 移除州名，只保留县名</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">NAME =</span> <span class="fu">str_remove</span>(NAME, <span class="st">", Texas"</span>),</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 将清理后的 NAME 列重命名为 county_name 以便更好地理解</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">county_name =</span> NAME,</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 普查区编号通常保存在 GEOID 的后六位</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">tract_id =</span> <span class="fu">str_sub</span>(GEOID, <span class="sc">-</span><span class="dv">6</span>)</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="demographic-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="demographic-analysis">3.3 Demographic Analysis</h2>
+<p><strong>Your Task:</strong> Analyze the demographic patterns in your selected areas.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the tract with the highest percentage of Hispanic/Latino residents</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: use arrange() and slice() to get the top tract</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>tract_data_texas <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(pct_hispanic)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Tract ID</span><span class="st">`</span> <span class="ot">=</span> tract_id,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">County Name</span><span class="st">`</span> <span class="ot">=</span> county_name,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Hispanic/Latino Percentage</span><span class="st">`</span> <span class="ot">=</span> pct_hispanic,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Population</span><span class="st">`</span> <span class="ot">=</span> total_populationE</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Tract with the Highest Percentage of Hispanic/Latino Residents"</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Tract with the Highest Percentage of Hispanic/Latino Residents</caption>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 42%">
+<col style="width: 29%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Tract ID</th>
+<th style="text-align: left;">County Name</th>
+<th style="text-align: right;">Hispanic/Latino Percentage</th>
+<th style="text-align: right;">Total Population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">160100</td>
+<td style="text-align: left;">Census Tract 1601; Bexar County; Texas</td>
+<td style="text-align: right;">99.74097</td>
+<td style="text-align: right;">6949</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average demographics by county using group_by() and summarize()</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Show: number of tracts, average percentage for each racial/ethnic group</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>county_demographics_summary <span class="ot">&lt;-</span> tract_data_texas <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. 按县名进行分组</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(county_name) <span class="sc">%&gt;%</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. 对每个县组进行汇总计算</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">number_of_tracts =</span> <span class="fu">n</span>(), <span class="co"># 计算每个县的普查区数量</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_white_pct =</span> <span class="fu">mean</span>(pct_white, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># 计算平均白人人口百分比</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_black_pct =</span> <span class="fu">mean</span>(pct_black, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># 计算平均非裔人口百分比</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_hispanic_pct =</span> <span class="fu">mean</span>(pct_hispanic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co"># 计算平均拉丁裔人口百分比</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a nicely formatted table of your results using kable()</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>county_demographics_summary <span class="sc">%&gt;%</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Average Demographics by County"</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Average Demographics by County</caption>
+<colgroup>
+<col style="width: 42%">
+<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">county_name</th>
+<th style="text-align: right;">number_of_tracts</th>
+<th style="text-align: right;">avg_white_pct</th>
+<th style="text-align: right;">avg_black_pct</th>
+<th style="text-align: right;">avg_hispanic_pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1101; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31.9548872</td>
+<td style="text-align: right;">3.8172354</td>
+<td style="text-align: right;">63.244650</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1103; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.2883788</td>
+<td style="text-align: right;">1.4347202</td>
+<td style="text-align: right;">77.833573</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1105; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8.5878707</td>
+<td style="text-align: right;">7.0385126</td>
+<td style="text-align: right;">83.621071</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1106; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">18.4995878</td>
+<td style="text-align: right;">12.8441880</td>
+<td style="text-align: right;">63.957131</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1107; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.3287671</td>
+<td style="text-align: right;">1.5981735</td>
+<td style="text-align: right;">78.995434</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1110; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.0711093</td>
+<td style="text-align: right;">6.4201544</td>
+<td style="text-align: right;">61.641609</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1111; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">36.4493123</td>
+<td style="text-align: right;">3.1074885</td>
+<td style="text-align: right;">54.075395</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1201; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">56.4691001</td>
+<td style="text-align: right;">12.7936393</td>
+<td style="text-align: right;">18.413444</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1203.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60.9956076</td>
+<td style="text-align: right;">1.3469985</td>
+<td style="text-align: right;">29.633968</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1203.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">78.7606197</td>
+<td style="text-align: right;">0.7246377</td>
+<td style="text-align: right;">18.315842</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1204.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">67.4211503</td>
+<td style="text-align: right;">2.3005566</td>
+<td style="text-align: right;">28.645640</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1204.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">79.5114007</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">15.472313</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1205.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14.9694889</td>
+<td style="text-align: right;">16.3043478</td>
+<td style="text-align: right;">67.334096</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1205.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20.4627249</td>
+<td style="text-align: right;">17.0437018</td>
+<td style="text-align: right;">47.789203</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1205.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">29.1070861</td>
+<td style="text-align: right;">5.0683190</td>
+<td style="text-align: right;">61.963775</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1206.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34.4557557</td>
+<td style="text-align: right;">3.3281128</td>
+<td style="text-align: right;">55.285826</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1206.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9855152</td>
+<td style="text-align: right;">5.1106860</td>
+<td style="text-align: right;">15.987975</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1207.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.9205527</td>
+<td style="text-align: right;">1.3126079</td>
+<td style="text-align: right;">54.525043</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1207.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">58.3585400</td>
+<td style="text-align: right;">0.6251260</td>
+<td style="text-align: right;">35.854003</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1208; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">75.0037442</td>
+<td style="text-align: right;">3.1451251</td>
+<td style="text-align: right;">18.151865</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1209.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">36.8067227</td>
+<td style="text-align: right;">5.0420168</td>
+<td style="text-align: right;">56.134454</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1209.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">39.7892780</td>
+<td style="text-align: right;">19.5847536</td>
+<td style="text-align: right;">36.008677</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1210; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">40.8041584</td>
+<td style="text-align: right;">2.6907201</td>
+<td style="text-align: right;">48.830454</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1211.10; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">44.1120708</td>
+<td style="text-align: right;">4.5502423</td>
+<td style="text-align: right;">49.884137</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1211.11; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24.6532247</td>
+<td style="text-align: right;">7.5790076</td>
+<td style="text-align: right;">59.130559</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1211.12; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.6428048</td>
+<td style="text-align: right;">2.9074029</td>
+<td style="text-align: right;">56.242365</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1211.15; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">51.6920641</td>
+<td style="text-align: right;">4.9673461</td>
+<td style="text-align: right;">41.579260</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1211.16; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">48.5312118</td>
+<td style="text-align: right;">5.5283558</td>
+<td style="text-align: right;">41.615667</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1211.17; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">45.7319588</td>
+<td style="text-align: right;">6.5979381</td>
+<td style="text-align: right;">38.288660</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1211.18; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50.0000000</td>
+<td style="text-align: right;">4.6399140</td>
+<td style="text-align: right;">41.454676</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1211.19; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">44.7803229</td>
+<td style="text-align: right;">1.7649268</td>
+<td style="text-align: right;">44.310927</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1211.20; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.2374867</td>
+<td style="text-align: right;">15.6123536</td>
+<td style="text-align: right;">57.742279</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1211.21; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">61.6164818</td>
+<td style="text-align: right;">2.3454834</td>
+<td style="text-align: right;">25.990491</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1211.22; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50.3693624</td>
+<td style="text-align: right;">1.9634526</td>
+<td style="text-align: right;">41.562986</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1211.23; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">37.2982321</td>
+<td style="text-align: right;">3.9008455</td>
+<td style="text-align: right;">52.940046</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1211.24; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">71.1349419</td>
+<td style="text-align: right;">4.1108132</td>
+<td style="text-align: right;">21.358356</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1212.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.3698239</td>
+<td style="text-align: right;">8.4007615</td>
+<td style="text-align: right;">64.017135</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1212.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34.0063178</td>
+<td style="text-align: right;">17.4426590</td>
+<td style="text-align: right;">44.197226</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1212.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.7991392</td>
+<td style="text-align: right;">12.7929220</td>
+<td style="text-align: right;">63.725490</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1212.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34.6471624</td>
+<td style="text-align: right;">2.5057565</td>
+<td style="text-align: right;">57.442774</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1213; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">47.3830907</td>
+<td style="text-align: right;">6.7358315</td>
+<td style="text-align: right;">37.550325</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1214.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20.0856531</td>
+<td style="text-align: right;">12.6552463</td>
+<td style="text-align: right;">54.635974</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1214.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">16.1979547</td>
+<td style="text-align: right;">28.7436085</td>
+<td style="text-align: right;">49.287801</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1214.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.1871921</td>
+<td style="text-align: right;">20.4532020</td>
+<td style="text-align: right;">50.935961</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1215.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">32.4396485</td>
+<td style="text-align: right;">14.8514851</td>
+<td style="text-align: right;">42.440761</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1215.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.4608150</td>
+<td style="text-align: right;">23.9247649</td>
+<td style="text-align: right;">46.595611</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1215.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">36.1994356</td>
+<td style="text-align: right;">9.8965193</td>
+<td style="text-align: right;">46.321731</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1215.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">32.5480958</td>
+<td style="text-align: right;">17.8837848</td>
+<td style="text-align: right;">48.115430</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1215.07; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24.5442586</td>
+<td style="text-align: right;">13.0426612</td>
+<td style="text-align: right;">53.204285</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1215.08; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.1930787</td>
+<td style="text-align: right;">13.1462334</td>
+<td style="text-align: right;">69.276219</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1216.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34.2450766</td>
+<td style="text-align: right;">12.7352298</td>
+<td style="text-align: right;">46.564551</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1216.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34.3442973</td>
+<td style="text-align: right;">16.2644169</td>
+<td style="text-align: right;">41.381888</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1216.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">48.9016237</td>
+<td style="text-align: right;">4.5845272</td>
+<td style="text-align: right;">39.493792</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1216.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">45.9208598</td>
+<td style="text-align: right;">4.7142159</td>
+<td style="text-align: right;">41.744016</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1217.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">39.7246406</td>
+<td style="text-align: right;">5.8716339</td>
+<td style="text-align: right;">50.455558</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1217.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">49.0871080</td>
+<td style="text-align: right;">11.1777003</td>
+<td style="text-align: right;">30.104530</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1218.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31.4572469</td>
+<td style="text-align: right;">12.8111778</td>
+<td style="text-align: right;">48.873364</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1218.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">36.0470085</td>
+<td style="text-align: right;">8.9957265</td>
+<td style="text-align: right;">51.324786</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1218.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30.1350722</td>
+<td style="text-align: right;">8.3527403</td>
+<td style="text-align: right;">54.743052</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1218.08; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">57.1923077</td>
+<td style="text-align: right;">1.7692308</td>
+<td style="text-align: right;">34.692308</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1218.09; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">37.7281115</td>
+<td style="text-align: right;">3.7728112</td>
+<td style="text-align: right;">51.917162</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1218.10; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">40.6354144</td>
+<td style="text-align: right;">4.3990224</td>
+<td style="text-align: right;">49.211286</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1218.11; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">37.4935534</td>
+<td style="text-align: right;">7.0139247</td>
+<td style="text-align: right;">43.854220</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1218.12; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">49.6985357</td>
+<td style="text-align: right;">6.0981912</td>
+<td style="text-align: right;">38.208441</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1218.13; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">37.7676833</td>
+<td style="text-align: right;">5.5807917</td>
+<td style="text-align: right;">44.321869</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1219.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">53.9848539</td>
+<td style="text-align: right;">12.3692752</td>
+<td style="text-align: right;">25.946628</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1219.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">42.5108763</td>
+<td style="text-align: right;">1.6469857</td>
+<td style="text-align: right;">34.959602</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1219.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">46.1632342</td>
+<td style="text-align: right;">5.4309687</td>
+<td style="text-align: right;">36.811594</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1219.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">41.2761715</td>
+<td style="text-align: right;">1.7091582</td>
+<td style="text-align: right;">40.620994</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1219.08; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">62.3134328</td>
+<td style="text-align: right;">0.6027555</td>
+<td style="text-align: right;">35.275545</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1219.09; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.8468418</td>
+<td style="text-align: right;">25.3661263</td>
+<td style="text-align: right;">36.221353</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1219.10; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">52.8066271</td>
+<td style="text-align: right;">4.2161227</td>
+<td style="text-align: right;">34.545005</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1219.11; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">43.0034522</td>
+<td style="text-align: right;">3.7399310</td>
+<td style="text-align: right;">41.714615</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1219.12; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.2045993</td>
+<td style="text-align: right;">11.4192925</td>
+<td style="text-align: right;">39.462828</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1302; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.1901840</td>
+<td style="text-align: right;">7.7300613</td>
+<td style="text-align: right;">88.098159</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1303; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.8374906</td>
+<td style="text-align: right;">9.9773243</td>
+<td style="text-align: right;">82.275132</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1304.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.6164384</td>
+<td style="text-align: right;">7.3150685</td>
+<td style="text-align: right;">86.328767</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1304.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8.7568413</td>
+<td style="text-align: right;">13.1613240</td>
+<td style="text-align: right;">77.247850</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1305; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.6365348</td>
+<td style="text-align: right;">17.7293516</td>
+<td style="text-align: right;">78.342749</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1306; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.6899863</td>
+<td style="text-align: right;">20.1097394</td>
+<td style="text-align: right;">66.200274</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1307; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.9980119</td>
+<td style="text-align: right;">25.2087475</td>
+<td style="text-align: right;">63.697813</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1308; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.5683123</td>
+<td style="text-align: right;">46.9957903</td>
+<td style="text-align: right;">44.489093</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1309; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.7831221</td>
+<td style="text-align: right;">24.9001563</td>
+<td style="text-align: right;">57.839903</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1310; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.7027608</td>
+<td style="text-align: right;">38.2574399</td>
+<td style="text-align: right;">49.031911</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1311; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.0221566</td>
+<td style="text-align: right;">32.2008863</td>
+<td style="text-align: right;">61.521418</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1312; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.2638436</td>
+<td style="text-align: right;">15.8523344</td>
+<td style="text-align: right;">64.386536</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1313; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.8470128</td>
+<td style="text-align: right;">18.5743532</td>
+<td style="text-align: right;">65.363856</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1314.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20.3110704</td>
+<td style="text-align: right;">11.7358396</td>
+<td style="text-align: right;">65.807203</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1314.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.8393960</td>
+<td style="text-align: right;">24.0905971</td>
+<td style="text-align: right;">62.491421</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1315.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30.8189023</td>
+<td style="text-align: right;">9.0695627</td>
+<td style="text-align: right;">51.130026</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1315.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.8659646</td>
+<td style="text-align: right;">9.4303494</td>
+<td style="text-align: right;">68.812829</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1315.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.6395001</td>
+<td style="text-align: right;">42.3164936</td>
+<td style="text-align: right;">45.625770</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1315.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.9041217</td>
+<td style="text-align: right;">19.0164514</td>
+<td style="text-align: right;">60.481160</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1315.07; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.9568921</td>
+<td style="text-align: right;">16.8607683</td>
+<td style="text-align: right;">62.245785</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1316.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35.5290393</td>
+<td style="text-align: right;">18.9090466</td>
+<td style="text-align: right;">34.177523</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1316.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.7108173</td>
+<td style="text-align: right;">20.1820941</td>
+<td style="text-align: right;">55.690440</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1316.08; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26.0235103</td>
+<td style="text-align: right;">29.5230374</td>
+<td style="text-align: right;">40.332388</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1316.09; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.5622536</td>
+<td style="text-align: right;">17.1563017</td>
+<td style="text-align: right;">39.959303</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1316.10; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14.9399552</td>
+<td style="text-align: right;">19.3568085</td>
+<td style="text-align: right;">59.596988</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1316.12; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24.8988764</td>
+<td style="text-align: right;">24.4044944</td>
+<td style="text-align: right;">43.415730</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1316.14; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27.0630344</td>
+<td style="text-align: right;">26.6056870</td>
+<td style="text-align: right;">41.459535</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1316.15; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.5061576</td>
+<td style="text-align: right;">25.2693966</td>
+<td style="text-align: right;">50.692734</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1316.16; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.3258616</td>
+<td style="text-align: right;">18.0722892</td>
+<td style="text-align: right;">50.812553</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1317; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">65.9414226</td>
+<td style="text-align: right;">7.9497908</td>
+<td style="text-align: right;">19.832636</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1318.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">67.1602501</td>
+<td style="text-align: right;">1.1516946</td>
+<td style="text-align: right;">27.706482</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1318.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">46.1339540</td>
+<td style="text-align: right;">5.3659167</td>
+<td style="text-align: right;">44.776312</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1401; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">16.1982249</td>
+<td style="text-align: right;">0.8875740</td>
+<td style="text-align: right;">79.068047</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1402; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.9821429</td>
+<td style="text-align: right;">2.7678571</td>
+<td style="text-align: right;">83.392857</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1403; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.0285261</td>
+<td style="text-align: right;">2.4088748</td>
+<td style="text-align: right;">95.023772</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1404; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.5046017</td>
+<td style="text-align: right;">1.3963821</td>
+<td style="text-align: right;">86.480482</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1405; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.4923747</td>
+<td style="text-align: right;">0.8169935</td>
+<td style="text-align: right;">85.866013</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1406; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8.2379017</td>
+<td style="text-align: right;">1.6254156</td>
+<td style="text-align: right;">89.471740</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1407; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">16.4630225</td>
+<td style="text-align: right;">3.9871383</td>
+<td style="text-align: right;">74.126474</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1408; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.1955350</td>
+<td style="text-align: right;">1.4819092</td>
+<td style="text-align: right;">93.841416</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1409; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.1479081</td>
+<td style="text-align: right;">3.2410136</td>
+<td style="text-align: right;">78.373600</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1410; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.2180012</td>
+<td style="text-align: right;">7.8609001</td>
+<td style="text-align: right;">84.687317</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1411.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.6394307</td>
+<td style="text-align: right;">9.5413811</td>
+<td style="text-align: right;">68.766473</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1411.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8.1570997</td>
+<td style="text-align: right;">2.9959718</td>
+<td style="text-align: right;">88.846929</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1412; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.4926144</td>
+<td style="text-align: right;">1.3193747</td>
+<td style="text-align: right;">92.800803</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1413; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.9377887</td>
+<td style="text-align: right;">18.9559593</td>
+<td style="text-align: right;">64.413305</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1414.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20.3673395</td>
+<td style="text-align: right;">2.4913621</td>
+<td style="text-align: right;">68.867067</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1414.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.7492163</td>
+<td style="text-align: right;">2.2391402</td>
+<td style="text-align: right;">75.615763</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1414.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14.1903915</td>
+<td style="text-align: right;">8.7188612</td>
+<td style="text-align: right;">77.090747</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1416; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.3019812</td>
+<td style="text-align: right;">1.0406244</td>
+<td style="text-align: right;">95.097058</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1417; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.8884026</td>
+<td style="text-align: right;">13.9752006</td>
+<td style="text-align: right;">61.123268</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1418; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27.2765246</td>
+<td style="text-align: right;">0.3341688</td>
+<td style="text-align: right;">71.365915</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1419; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">45.8893617</td>
+<td style="text-align: right;">4.2212766</td>
+<td style="text-align: right;">48.544681</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1501; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">16.7866174</td>
+<td style="text-align: right;">0.8558646</td>
+<td style="text-align: right;">80.898658</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1503; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9.6509240</td>
+<td style="text-align: right;">1.8480493</td>
+<td style="text-align: right;">85.596949</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1504; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.5821462</td>
+<td style="text-align: right;">2.2079772</td>
+<td style="text-align: right;">93.209876</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1505.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.2864918</td>
+<td style="text-align: right;">1.6328550</td>
+<td style="text-align: right;">97.080653</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1505.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5096618</td>
+<td style="text-align: right;">0.6340580</td>
+<td style="text-align: right;">96.829710</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1506; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.1923428</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">87.101185</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1507; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.8501557</td>
+<td style="text-align: right;">0.2198205</td>
+<td style="text-align: right;">97.930024</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1508; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8.4728033</td>
+<td style="text-align: right;">0.8019526</td>
+<td style="text-align: right;">89.958159</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1509; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.6133104</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">80.421687</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1510; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.6620466</td>
+<td style="text-align: right;">0.7962253</td>
+<td style="text-align: right;">93.541728</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1511; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.8714479</td>
+<td style="text-align: right;">3.4130206</td>
+<td style="text-align: right;">91.715531</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1512; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.4052473</td>
+<td style="text-align: right;">0.6293210</td>
+<td style="text-align: right;">93.148378</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1513.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.5297226</td>
+<td style="text-align: right;">0.0377430</td>
+<td style="text-align: right;">91.149273</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1513.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9.5771144</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">90.205224</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1514; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.7293628</td>
+<td style="text-align: right;">0.5474053</td>
+<td style="text-align: right;">91.394789</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1515; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.8712221</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">80.157687</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1516; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.1034309</td>
+<td style="text-align: right;">0.0252270</td>
+<td style="text-align: right;">87.310797</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1517; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8.0627255</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">91.049126</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1519; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.9835877</td>
+<td style="text-align: right;">1.0329393</td>
+<td style="text-align: right;">85.630667</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1520; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.8403694</td>
+<td style="text-align: right;">2.4076517</td>
+<td style="text-align: right;">83.146438</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1521; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.4527409</td>
+<td style="text-align: right;">4.2449229</td>
+<td style="text-align: right;">79.325088</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1522.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.8708781</td>
+<td style="text-align: right;">0.8575915</td>
+<td style="text-align: right;">86.967025</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1522.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">18.5322805</td>
+<td style="text-align: right;">0.8050782</td>
+<td style="text-align: right;">76.188264</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1601; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2590301</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">99.740970</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1602; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.9244476</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">98.075552</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1603; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.5383952</td>
+<td style="text-align: right;">4.7972390</td>
+<td style="text-align: right;">90.284728</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1604; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.6415094</td>
+<td style="text-align: right;">0.0209644</td>
+<td style="text-align: right;">96.981132</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1605.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.4335636</td>
+<td style="text-align: right;">6.0544494</td>
+<td style="text-align: right;">86.123527</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1605.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.6735700</td>
+<td style="text-align: right;">3.4763314</td>
+<td style="text-align: right;">92.800789</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1606; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.4464594</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">96.351468</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1607.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.1563342</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">97.843666</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1607.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.8597285</td>
+<td style="text-align: right;">4.4068464</td>
+<td style="text-align: right;">84.044855</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1609.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.4486856</td>
+<td style="text-align: right;">0.4321210</td>
+<td style="text-align: right;">95.210659</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1609.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.3463203</td>
+<td style="text-align: right;">0.7792208</td>
+<td style="text-align: right;">93.831169</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1610; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.1677062</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">92.330792</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1611; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.8864726</td>
+<td style="text-align: right;">0.4325967</td>
+<td style="text-align: right;">92.330176</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1612; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.7313150</td>
+<td style="text-align: right;">5.7237465</td>
+<td style="text-align: right;">80.061495</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1613.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.8544437</td>
+<td style="text-align: right;">3.8663401</td>
+<td style="text-align: right;">93.911827</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1613.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.0807372</td>
+<td style="text-align: right;">1.4041246</td>
+<td style="text-align: right;">92.057920</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1613.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.7293558</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">95.201038</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1614; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60.6076079</td>
+<td style="text-align: right;">12.3946898</td>
+<td style="text-align: right;">14.909369</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1615.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.2108190</td>
+<td style="text-align: right;">1.6177958</td>
+<td style="text-align: right;">84.908999</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1615.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.7259786</td>
+<td style="text-align: right;">1.0498221</td>
+<td style="text-align: right;">91.405694</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1615.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.6200603</td>
+<td style="text-align: right;">2.7644870</td>
+<td style="text-align: right;">87.382598</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1616; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.1386303</td>
+<td style="text-align: right;">3.9519967</td>
+<td style="text-align: right;">85.474860</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1618.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.7445556</td>
+<td style="text-align: right;">10.3884638</td>
+<td style="text-align: right;">69.952913</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1618.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.8598648</td>
+<td style="text-align: right;">6.9452981</td>
+<td style="text-align: right;">74.626101</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1619.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">29.7029703</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">68.316832</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1619.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.6515590</td>
+<td style="text-align: right;">3.3879781</td>
+<td style="text-align: right;">69.411765</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1620.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.2985135</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">86.701487</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1620.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.2446564</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">83.483484</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1620.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.9329117</td>
+<td style="text-align: right;">0.7698653</td>
+<td style="text-align: right;">84.547704</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1701.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.2907240</td>
+<td style="text-align: right;">1.6119910</td>
+<td style="text-align: right;">95.984163</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1701.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.9778623</td>
+<td style="text-align: right;">0.0345901</td>
+<td style="text-align: right;">95.883777</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1702; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.8752634</td>
+<td style="text-align: right;">0.8006743</td>
+<td style="text-align: right;">96.523388</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1703; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.9504950</td>
+<td style="text-align: right;">1.6439380</td>
+<td style="text-align: right;">92.546236</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1704.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.4132361</td>
+<td style="text-align: right;">13.1578947</td>
+<td style="text-align: right;">82.126107</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1704.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5645092</td>
+<td style="text-align: right;">0.4714959</td>
+<td style="text-align: right;">97.963995</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1705; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.8942731</td>
+<td style="text-align: right;">0.1554807</td>
+<td style="text-align: right;">86.473180</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1706; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.5897436</td>
+<td style="text-align: right;">0.2307692</td>
+<td style="text-align: right;">95.000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1707; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.4392708</td>
+<td style="text-align: right;">0.1976719</td>
+<td style="text-align: right;">99.165385</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1708; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.3453379</td>
+<td style="text-align: right;">7.4987667</td>
+<td style="text-align: right;">92.155895</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1709; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.6753175</td>
+<td style="text-align: right;">1.0215351</td>
+<td style="text-align: right;">91.303147</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1710; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.4896817</td>
+<td style="text-align: right;">0.5596362</td>
+<td style="text-align: right;">98.950682</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1711; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0603829</td>
+<td style="text-align: right;">1.8851252</td>
+<td style="text-align: right;">96.759941</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1712; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.3076349</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">96.692365</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1713.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.4113060</td>
+<td style="text-align: right;">0.2274204</td>
+<td style="text-align: right;">94.541910</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1713.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.1405152</td>
+<td style="text-align: right;">2.2716628</td>
+<td style="text-align: right;">85.761124</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1714.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.4426536</td>
+<td style="text-align: right;">2.4293389</td>
+<td style="text-align: right;">91.824340</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1714.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.4477355</td>
+<td style="text-align: right;">0.4231312</td>
+<td style="text-align: right;">95.220185</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1715.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.2061688</td>
+<td style="text-align: right;">6.2905844</td>
+<td style="text-align: right;">90.503247</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1715.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.8656336</td>
+<td style="text-align: right;">3.4812142</td>
+<td style="text-align: right;">92.209722</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1716.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.8005912</td>
+<td style="text-align: right;">4.5417898</td>
+<td style="text-align: right;">93.093255</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1716.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.1570792</td>
+<td style="text-align: right;">0.5810575</td>
+<td style="text-align: right;">93.066047</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1717; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.8408779</td>
+<td style="text-align: right;">3.4750800</td>
+<td style="text-align: right;">85.299497</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1718.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.1589840</td>
+<td style="text-align: right;">2.8222013</td>
+<td style="text-align: right;">77.422389</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1718.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.9048942</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">91.400340</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1719.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.4399261</td>
+<td style="text-align: right;">2.2365989</td>
+<td style="text-align: right;">83.475046</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1719.12; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.7279015</td>
+<td style="text-align: right;">14.0130032</td>
+<td style="text-align: right;">54.668695</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1719.13; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.8159645</td>
+<td style="text-align: right;">5.3658537</td>
+<td style="text-align: right;">76.186253</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1719.14; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.0927456</td>
+<td style="text-align: right;">5.0688705</td>
+<td style="text-align: right;">78.365473</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1719.15; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.3636364</td>
+<td style="text-align: right;">4.8701299</td>
+<td style="text-align: right;">69.805195</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1719.16; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.3298153</td>
+<td style="text-align: right;">10.0627786</td>
+<td style="text-align: right;">57.983805</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1719.17; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.0143438</td>
+<td style="text-align: right;">7.3538857</td>
+<td style="text-align: right;">62.738172</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1719.18; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.4840764</td>
+<td style="text-align: right;">7.7579618</td>
+<td style="text-align: right;">73.401274</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1719.19; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.4517318</td>
+<td style="text-align: right;">15.7406043</td>
+<td style="text-align: right;">67.560796</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1719.20; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14.4927536</td>
+<td style="text-align: right;">12.0845592</td>
+<td style="text-align: right;">71.363191</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1719.21; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24.3746674</td>
+<td style="text-align: right;">7.0117084</td>
+<td style="text-align: right;">65.553486</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1719.22; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.4740834</td>
+<td style="text-align: right;">7.0480405</td>
+<td style="text-align: right;">64.649178</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1719.23; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">16.5239814</td>
+<td style="text-align: right;">9.1799897</td>
+<td style="text-align: right;">60.020629</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1719.24; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.7970283</td>
+<td style="text-align: right;">11.0176619</td>
+<td style="text-align: right;">61.213905</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1719.26; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">38.7701537</td>
+<td style="text-align: right;">24.1469816</td>
+<td style="text-align: right;">28.158980</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1719.27; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.8779979</td>
+<td style="text-align: right;">11.2009037</td>
+<td style="text-align: right;">68.230796</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1719.28; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.4754927</td>
+<td style="text-align: right;">9.5334344</td>
+<td style="text-align: right;">62.775813</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1719.29; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">16.6290019</td>
+<td style="text-align: right;">5.9510358</td>
+<td style="text-align: right;">74.143126</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1720.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.0664517</td>
+<td style="text-align: right;">13.7775390</td>
+<td style="text-align: right;">55.737059</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1720.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.0384854</td>
+<td style="text-align: right;">6.7659839</td>
+<td style="text-align: right;">57.883302</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1720.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34.1419042</td>
+<td style="text-align: right;">7.1905051</td>
+<td style="text-align: right;">44.442519</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1720.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31.0895084</td>
+<td style="text-align: right;">10.6016141</td>
+<td style="text-align: right;">50.816214</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1720.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">28.3435238</td>
+<td style="text-align: right;">9.9866470</td>
+<td style="text-align: right;">53.397990</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1720.08; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.7019484</td>
+<td style="text-align: right;">11.1637704</td>
+<td style="text-align: right;">44.461998</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1720.09; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">28.3161512</td>
+<td style="text-align: right;">16.7403044</td>
+<td style="text-align: right;">47.579774</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1801.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.4836818</td>
+<td style="text-align: right;">0.0390854</td>
+<td style="text-align: right;">72.542505</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1801.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.5464363</td>
+<td style="text-align: right;">0.9179266</td>
+<td style="text-align: right;">78.239741</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1802.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.2961125</td>
+<td style="text-align: right;">1.8817204</td>
+<td style="text-align: right;">83.126551</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1802.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.0732551</td>
+<td style="text-align: right;">0.9036724</td>
+<td style="text-align: right;">77.715824</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1803; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9.2897407</td>
+<td style="text-align: right;">1.6685457</td>
+<td style="text-align: right;">86.944758</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1804; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.5622974</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">88.258453</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1805.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.5675955</td>
+<td style="text-align: right;">11.9504644</td>
+<td style="text-align: right;">75.211558</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1805.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.2592238</td>
+<td style="text-align: right;">2.9707714</td>
+<td style="text-align: right;">88.667944</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1805.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.8231642</td>
+<td style="text-align: right;">6.1014772</td>
+<td style="text-align: right;">87.861272</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1806.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.4424865</td>
+<td style="text-align: right;">2.0068527</td>
+<td style="text-align: right;">71.243270</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1806.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.6997056</td>
+<td style="text-align: right;">5.8390579</td>
+<td style="text-align: right;">69.038273</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1806.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9.8135272</td>
+<td style="text-align: right;">1.7225032</td>
+<td style="text-align: right;">87.895070</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1807.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">32.7797649</td>
+<td style="text-align: right;">7.1793562</td>
+<td style="text-align: right;">46.346449</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1807.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26.2764228</td>
+<td style="text-align: right;">8.2764228</td>
+<td style="text-align: right;">60.747968</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1808; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.3354110</td>
+<td style="text-align: right;">7.8301519</td>
+<td style="text-align: right;">74.250097</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1809.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14.3053375</td>
+<td style="text-align: right;">1.9819466</td>
+<td style="text-align: right;">79.650706</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1809.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.7809469</td>
+<td style="text-align: right;">0.2167712</td>
+<td style="text-align: right;">88.978893</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1810.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.7843770</td>
+<td style="text-align: right;">6.9722402</td>
+<td style="text-align: right;">73.660426</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1810.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.0262606</td>
+<td style="text-align: right;">7.7302429</td>
+<td style="text-align: right;">47.084207</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1810.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26.2341326</td>
+<td style="text-align: right;">7.9611346</td>
+<td style="text-align: right;">43.269080</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1810.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.6701510</td>
+<td style="text-align: right;">17.5609756</td>
+<td style="text-align: right;">54.285714</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1811; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">32.1925329</td>
+<td style="text-align: right;">3.9165447</td>
+<td style="text-align: right;">55.966325</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1812; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">49.1972250</td>
+<td style="text-align: right;">1.8235877</td>
+<td style="text-align: right;">43.310208</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1813.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">32.0188214</td>
+<td style="text-align: right;">3.4505938</td>
+<td style="text-align: right;">55.388752</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1813.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.6897488</td>
+<td style="text-align: right;">4.6164291</td>
+<td style="text-align: right;">56.805838</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1813.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.3834752</td>
+<td style="text-align: right;">20.6972276</td>
+<td style="text-align: right;">38.210266</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1814.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">29.2925938</td>
+<td style="text-align: right;">6.9412155</td>
+<td style="text-align: right;">39.123215</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1814.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.0232418</td>
+<td style="text-align: right;">11.8925445</td>
+<td style="text-align: right;">47.524902</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1814.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.0468155</td>
+<td style="text-align: right;">10.8691707</td>
+<td style="text-align: right;">41.843586</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1815.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24.1899441</td>
+<td style="text-align: right;">19.7653631</td>
+<td style="text-align: right;">46.379888</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1815.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20.6254545</td>
+<td style="text-align: right;">10.7345455</td>
+<td style="text-align: right;">60.509091</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1815.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">28.2727075</td>
+<td style="text-align: right;">0.4356349</td>
+<td style="text-align: right;">64.060118</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1815.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26.8060333</td>
+<td style="text-align: right;">7.0918232</td>
+<td style="text-align: right;">59.486637</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1816.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.1697833</td>
+<td style="text-align: right;">3.4728406</td>
+<td style="text-align: right;">82.190561</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1816.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.5739881</td>
+<td style="text-align: right;">4.1639018</td>
+<td style="text-align: right;">87.989383</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">45.0343912</td>
+<td style="text-align: right;">3.5235912</td>
+<td style="text-align: right;">42.995052</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.6516251</td>
+<td style="text-align: right;">2.7611234</td>
+<td style="text-align: right;">76.459451</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.4359785</td>
+<td style="text-align: right;">10.4173253</td>
+<td style="text-align: right;">57.287385</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.11; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.7680506</td>
+<td style="text-align: right;">5.9864821</td>
+<td style="text-align: right;">57.343633</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.12; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">29.3291354</td>
+<td style="text-align: right;">7.0719302</td>
+<td style="text-align: right;">58.440300</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.13; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27.1655144</td>
+<td style="text-align: right;">2.5484614</td>
+<td style="text-align: right;">64.335096</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.15; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.4738481</td>
+<td style="text-align: right;">2.1481943</td>
+<td style="text-align: right;">76.556663</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.16; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.6468383</td>
+<td style="text-align: right;">0.9497626</td>
+<td style="text-align: right;">81.754561</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.18; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">42.6348548</td>
+<td style="text-align: right;">1.9294606</td>
+<td style="text-align: right;">52.261411</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.20; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50.2622705</td>
+<td style="text-align: right;">2.6601723</td>
+<td style="text-align: right;">42.974897</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.21; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34.4838213</td>
+<td style="text-align: right;">1.3559322</td>
+<td style="text-align: right;">62.681048</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.22; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34.6427751</td>
+<td style="text-align: right;">5.6283023</td>
+<td style="text-align: right;">54.077648</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.23; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.3191950</td>
+<td style="text-align: right;">3.5057347</td>
+<td style="text-align: right;">66.197793</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.24; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31.2330885</td>
+<td style="text-align: right;">4.1553923</td>
+<td style="text-align: right;">53.942791</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.25; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">18.7500000</td>
+<td style="text-align: right;">3.9148352</td>
+<td style="text-align: right;">75.343407</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.26; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">29.4960141</td>
+<td style="text-align: right;">3.8710985</td>
+<td style="text-align: right;">60.998514</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.27; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.7423935</td>
+<td style="text-align: right;">5.6795132</td>
+<td style="text-align: right;">77.662272</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.29; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27.7106648</td>
+<td style="text-align: right;">6.2254502</td>
+<td style="text-align: right;">55.332395</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.30; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">18.9307851</td>
+<td style="text-align: right;">8.1611570</td>
+<td style="text-align: right;">68.801653</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.31; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24.1287614</td>
+<td style="text-align: right;">1.6515045</td>
+<td style="text-align: right;">70.636809</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1817.32; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31.0481708</td>
+<td style="text-align: right;">1.9418517</td>
+<td style="text-align: right;">54.983371</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1817.33; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.2046599</td>
+<td style="text-align: right;">3.3847607</td>
+<td style="text-align: right;">64.137280</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1818.08; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35.1727695</td>
+<td style="text-align: right;">1.5987622</td>
+<td style="text-align: right;">45.848376</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1818.09; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.0471106</td>
+<td style="text-align: right;">5.9202261</td>
+<td style="text-align: right;">62.280151</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1818.11; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">36.4314115</td>
+<td style="text-align: right;">5.7654076</td>
+<td style="text-align: right;">51.416501</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1818.13; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.5117129</td>
+<td style="text-align: right;">10.5130842</td>
+<td style="text-align: right;">54.976574</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1818.14; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30.0562183</td>
+<td style="text-align: right;">7.0752777</td>
+<td style="text-align: right;">53.229124</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1818.15; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">38.4817614</td>
+<td style="text-align: right;">12.0276043</td>
+<td style="text-align: right;">35.787052</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1818.16; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35.7727611</td>
+<td style="text-align: right;">3.8948152</td>
+<td style="text-align: right;">52.716448</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1818.17; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20.4173355</td>
+<td style="text-align: right;">11.4285714</td>
+<td style="text-align: right;">60.642055</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1818.18; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.8155831</td>
+<td style="text-align: right;">17.5004358</td>
+<td style="text-align: right;">39.602580</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1818.19; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26.0696750</td>
+<td style="text-align: right;">6.2076222</td>
+<td style="text-align: right;">52.151040</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1818.20; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.9102972</td>
+<td style="text-align: right;">14.3656103</td>
+<td style="text-align: right;">49.325584</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1818.21; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">32.8690062</td>
+<td style="text-align: right;">2.9199036</td>
+<td style="text-align: right;">54.567372</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1818.22; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34.1253677</td>
+<td style="text-align: right;">4.1412084</td>
+<td style="text-align: right;">57.614845</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1818.23; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">42.8384992</td>
+<td style="text-align: right;">3.5562806</td>
+<td style="text-align: right;">45.970636</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1818.24; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">18.1690536</td>
+<td style="text-align: right;">1.6568380</td>
+<td style="text-align: right;">66.301601</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1818.25; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">40.2416357</td>
+<td style="text-align: right;">2.0136307</td>
+<td style="text-align: right;">45.430607</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1818.26; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.3192358</td>
+<td style="text-align: right;">4.2438384</td>
+<td style="text-align: right;">62.870060</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1819.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">39.8270181</td>
+<td style="text-align: right;">6.3220758</td>
+<td style="text-align: right;">41.206755</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1819.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">39.1438418</td>
+<td style="text-align: right;">1.7231997</td>
+<td style="text-align: right;">46.644295</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1820.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">40.3275530</td>
+<td style="text-align: right;">1.7726397</td>
+<td style="text-align: right;">50.346821</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1820.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">48.2613975</td>
+<td style="text-align: right;">1.7110056</td>
+<td style="text-align: right;">39.695331</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1820.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">36.7692625</td>
+<td style="text-align: right;">3.6149556</td>
+<td style="text-align: right;">40.136336</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1821.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">67.3691099</td>
+<td style="text-align: right;">5.8573298</td>
+<td style="text-align: right;">21.839005</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1821.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60.0285331</td>
+<td style="text-align: right;">0.1510574</td>
+<td style="text-align: right;">31.478684</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1821.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">54.3600699</td>
+<td style="text-align: right;">1.4565935</td>
+<td style="text-align: right;">40.629248</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1821.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.9310233</td>
+<td style="text-align: right;">9.5791939</td>
+<td style="text-align: right;">51.215572</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1821.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35.7425642</td>
+<td style="text-align: right;">3.0453761</td>
+<td style="text-align: right;">55.263425</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1901; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.2327494</td>
+<td style="text-align: right;">2.1809081</td>
+<td style="text-align: right;">79.978548</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1902; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35.0827301</td>
+<td style="text-align: right;">4.9896587</td>
+<td style="text-align: right;">55.661841</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1904; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">45.8936123</td>
+<td style="text-align: right;">4.6739372</td>
+<td style="text-align: right;">36.167372</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1905.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14.0817004</td>
+<td style="text-align: right;">0.6642312</td>
+<td style="text-align: right;">84.921953</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1905.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25.3012048</td>
+<td style="text-align: right;">1.2048193</td>
+<td style="text-align: right;">69.843008</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1905.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.7186779</td>
+<td style="text-align: right;">1.1913912</td>
+<td style="text-align: right;">81.322060</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1906.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.9022361</td>
+<td style="text-align: right;">0.5460218</td>
+<td style="text-align: right;">93.473739</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1906.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.5714286</td>
+<td style="text-align: right;">0.3428571</td>
+<td style="text-align: right;">92.838095</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1906.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.6585313</td>
+<td style="text-align: right;">3.5519721</td>
+<td style="text-align: right;">93.789497</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1907; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30.3555686</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">67.646194</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1908; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">82.7209099</td>
+<td style="text-align: right;">1.7935258</td>
+<td style="text-align: right;">13.385827</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1909.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27.2811344</td>
+<td style="text-align: right;">2.0036991</td>
+<td style="text-align: right;">67.493835</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1909.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">29.8070050</td>
+<td style="text-align: right;">3.1689302</td>
+<td style="text-align: right;">65.117941</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1910.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.8598078</td>
+<td style="text-align: right;">3.7761447</td>
+<td style="text-align: right;">83.109101</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1910.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9.4854162</td>
+<td style="text-align: right;">4.4107185</td>
+<td style="text-align: right;">85.605881</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1910.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.5692042</td>
+<td style="text-align: right;">2.1193772</td>
+<td style="text-align: right;">90.311419</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1910.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.1801162</td>
+<td style="text-align: right;">0.3550678</td>
+<td style="text-align: right;">95.464816</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1911.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">57.5245365</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">33.860414</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1911.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">32.2160149</td>
+<td style="text-align: right;">0.8379888</td>
+<td style="text-align: right;">62.709497</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1912.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">38.5728379</td>
+<td style="text-align: right;">4.1104900</td>
+<td style="text-align: right;">53.798093</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1912.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33.2650972</td>
+<td style="text-align: right;">7.7379734</td>
+<td style="text-align: right;">57.052201</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1913.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">51.7078916</td>
+<td style="text-align: right;">2.5912839</td>
+<td style="text-align: right;">40.871614</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1913.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.7796799</td>
+<td style="text-align: right;">3.4983253</td>
+<td style="text-align: right;">77.967994</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1914.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">44.4251677</td>
+<td style="text-align: right;">6.1184363</td>
+<td style="text-align: right;">44.112885</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1914.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">62.2356965</td>
+<td style="text-align: right;">2.9228856</td>
+<td style="text-align: right;">30.907960</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1914.08; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26.3607257</td>
+<td style="text-align: right;">8.4311633</td>
+<td style="text-align: right;">56.207755</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1914.09; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21.8423943</td>
+<td style="text-align: right;">5.8621636</td>
+<td style="text-align: right;">60.900604</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1914.10; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27.3145780</td>
+<td style="text-align: right;">10.8951407</td>
+<td style="text-align: right;">60.784314</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1914.11; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">40.5190029</td>
+<td style="text-align: right;">2.7993461</td>
+<td style="text-align: right;">54.556600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1914.12; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">64.7619048</td>
+<td style="text-align: right;">1.9501134</td>
+<td style="text-align: right;">27.165533</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1914.13; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">49.9145007</td>
+<td style="text-align: right;">3.3515732</td>
+<td style="text-align: right;">40.082079</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1915.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">52.0287827</td>
+<td style="text-align: right;">0.0599640</td>
+<td style="text-align: right;">44.893064</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1915.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">57.7715683</td>
+<td style="text-align: right;">1.4320643</td>
+<td style="text-align: right;">37.408313</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1915.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">56.4040599</td>
+<td style="text-align: right;">2.0299662</td>
+<td style="text-align: right;">39.922668</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1915.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">38.1390412</td>
+<td style="text-align: right;">6.7220945</td>
+<td style="text-align: right;">45.055723</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1917.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">65.2233677</td>
+<td style="text-align: right;">8.7285223</td>
+<td style="text-align: right;">21.443299</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1917.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">68.7148647</td>
+<td style="text-align: right;">6.4975814</td>
+<td style="text-align: right;">19.479671</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1918.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">58.0438268</td>
+<td style="text-align: right;">6.2088010</td>
+<td style="text-align: right;">31.649742</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1918.06; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">52.6668418</td>
+<td style="text-align: right;">0.7356805</td>
+<td style="text-align: right;">29.703100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1918.07; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">38.7147172</td>
+<td style="text-align: right;">5.8118946</td>
+<td style="text-align: right;">47.703364</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1918.08; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">48.8952757</td>
+<td style="text-align: right;">7.4007544</td>
+<td style="text-align: right;">30.986169</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1918.09; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">46.3061323</td>
+<td style="text-align: right;">1.6296475</td>
+<td style="text-align: right;">41.948334</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1918.10; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">42.0728964</td>
+<td style="text-align: right;">9.8095095</td>
+<td style="text-align: right;">30.673466</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1918.11; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">46.9199640</td>
+<td style="text-align: right;">4.2940647</td>
+<td style="text-align: right;">31.699640</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1918.12; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">43.9313651</td>
+<td style="text-align: right;">2.9523089</td>
+<td style="text-align: right;">39.616452</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1918.13; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">43.3353808</td>
+<td style="text-align: right;">2.9176904</td>
+<td style="text-align: right;">42.598280</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1918.14; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">42.3382520</td>
+<td style="text-align: right;">1.3458732</td>
+<td style="text-align: right;">42.289606</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1918.15; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">42.8153921</td>
+<td style="text-align: right;">7.1602533</td>
+<td style="text-align: right;">37.092060</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1918.16; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">51.8311608</td>
+<td style="text-align: right;">0.7448790</td>
+<td style="text-align: right;">30.353818</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1918.18; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">48.7625066</td>
+<td style="text-align: right;">0.7021239</td>
+<td style="text-align: right;">47.077409</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1918.19; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">39.3013934</td>
+<td style="text-align: right;">5.4399695</td>
+<td style="text-align: right;">46.945982</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1919; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">28.2170543</td>
+<td style="text-align: right;">13.0749354</td>
+<td style="text-align: right;">55.012920</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1920; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">41.6900421</td>
+<td style="text-align: right;">4.1900421</td>
+<td style="text-align: right;">48.124123</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1921; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">41.9540230</td>
+<td style="text-align: right;">2.3872679</td>
+<td style="text-align: right;">53.183024</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 1922; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15.2553329</td>
+<td style="text-align: right;">6.3671622</td>
+<td style="text-align: right;">69.747899</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 1923; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">46.7561521</td>
+<td style="text-align: right;">5.9589180</td>
+<td style="text-align: right;">41.427700</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9501; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">77.0880790</td>
+<td style="text-align: right;">4.0432802</td>
+<td style="text-align: right;">9.263478</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9501; Brooks County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8.8658147</td>
+<td style="text-align: right;">1.7571885</td>
+<td style="text-align: right;">88.178914</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9502; Brooks County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.9692645</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">90.142700</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9504.01; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.5278186</td>
+<td style="text-align: right;">32.9414235</td>
+<td style="text-align: right;">38.547134</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9504.02; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">29.3577982</td>
+<td style="text-align: right;">36.9877676</td>
+<td style="text-align: right;">30.672783</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9505; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">44.5061300</td>
+<td style="text-align: right;">18.5287994</td>
+<td style="text-align: right;">32.061069</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9506; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60.3340675</td>
+<td style="text-align: right;">13.0506608</td>
+<td style="text-align: right;">26.046256</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9507; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.5781544</td>
+<td style="text-align: right;">50.6214689</td>
+<td style="text-align: right;">21.167608</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9508; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">46.1370034</td>
+<td style="text-align: right;">33.2655615</td>
+<td style="text-align: right;">15.233031</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9509.01; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">70.4863813</td>
+<td style="text-align: right;">7.8988327</td>
+<td style="text-align: right;">10.214008</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9509.02; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">72.5519606</td>
+<td style="text-align: right;">9.2350546</td>
+<td style="text-align: right;">7.713735</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9510.01; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">77.6673294</td>
+<td style="text-align: right;">9.0346808</td>
+<td style="text-align: right;">6.361829</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9510.02; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">82.3074636</td>
+<td style="text-align: right;">5.6497175</td>
+<td style="text-align: right;">7.612251</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9511; Anderson County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">76.1876127</td>
+<td style="text-align: right;">4.3295250</td>
+<td style="text-align: right;">10.903989</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9800.01; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NaN</td>
+<td style="text-align: right;">NaN</td>
+<td style="text-align: right;">NaN</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9800.02; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NaN</td>
+<td style="text-align: right;">NaN</td>
+<td style="text-align: right;">NaN</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9800.03; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">56.3586459</td>
+<td style="text-align: right;">16.7429094</td>
+<td style="text-align: right;">18.115279</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9800.04; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NaN</td>
+<td style="text-align: right;">NaN</td>
+<td style="text-align: right;">NaN</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Census Tract 9800.05; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Census Tract 9801; Bexar County; Texas</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.3519459</td>
+<td style="text-align: right;">10.3214890</td>
+<td style="text-align: right;">76.226734</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="part-4-comprehensive-data-quality-evaluation" class="level1">
+<h1>Part 4: Comprehensive Data Quality Evaluation</h1>
+<section id="moe-analysis-for-demographic-variables" class="level2">
+<h2 class="anchored" data-anchor-id="moe-analysis-for-demographic-variables">4.1 MOE Analysis for Demographic Variables</h2>
+<p><strong>Your Task:</strong> Examine margins of error for demographic variables to see if some communities have less reliable data.</p>
+<p><strong>Requirements:</strong> - Calculate MOE percentages for each demographic variable - Flag tracts where any demographic variable has MOE &gt; 15% - Create summary statistics</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MOE percentages for white, Black, and Hispanic variables</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: use the same formula as before (margin/estimate * 100)</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a flag for tracts with high MOE on any demographic variable</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use logical operators (| for OR) in an ifelse() statement</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary statistics showing how many tracts have data quality issues</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="pattern-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="pattern-analysis">4.2 Pattern Analysis</h2>
+<p><strong>Your Task:</strong> Investigate whether data quality problems are randomly distributed or concentrated in certain types of communities.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group tracts by whether they have high MOE issues</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average characteristics for each group:</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># - population size, demographic percentages</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use group_by() and summarize() to create this comparison</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a professional table showing the patterns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Pattern Analysis:</strong> [Describe any patterns you observe. Do certain types of communities have less reliable data? What might explain this?]</p>
+</section>
+</section>
+<section id="part-5-policy-recommendations" class="level1">
+<h1>Part 5: Policy Recommendations</h1>
+<section id="analysis-integration-and-professional-summary" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-integration-and-professional-summary">5.1 Analysis Integration and Professional Summary</h2>
+<p><strong>Your Task:</strong> Write an executive summary that integrates findings from all four analyses.</p>
+<p><strong>Executive Summary Requirements:</strong> 1. <strong>Overall Pattern Identification</strong>: What are the systematic patterns across all your analyses? 2. <strong>Equity Assessment</strong>: Which communities face the greatest risk of algorithmic bias based on your findings? 3. <strong>Root Cause Analysis</strong>: What underlying factors drive both data quality issues and bias risk? 4. <strong>Strategic Recommendations</strong>: What should the Department implement to address these systematic issues?</p>
+<p><strong>Executive Summary:</strong></p>
+<p>[Your integrated 4-paragraph summary here]</p>
+</section>
+<section id="specific-recommendations" class="level2">
+<h2 class="anchored" data-anchor-id="specific-recommendations">6.3 Specific Recommendations</h2>
+<p><strong>Your Task:</strong> Create a decision framework for algorithm implementation.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary table using your county reliability data</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Include: county name, median income, MOE percentage, reliability category</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a new column with algorithm recommendations using case_when():</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># - High Confidence: "Safe for algorithmic decisions"</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># - Moderate Confidence: "Use with caution - monitor outcomes"  </span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># - Low Confidence: "Requires manual review or additional data"</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Format as a professional table with kable()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Key Recommendations:</strong></p>
+<p><strong>Your Task:</strong> Use your analysis results to provide specific guidance to the department.</p>
+<ol type="1">
+<li><p><strong>Counties suitable for immediate algorithmic implementation:</strong> [List counties with high confidence data and explain why they’re appropriate]</p></li>
+<li><p><strong>Counties requiring additional oversight:</strong> [List counties with moderate confidence data and describe what kind of monitoring would be needed]</p></li>
+<li><p><strong>Counties needing alternative approaches:</strong> [List counties with low confidence data and suggest specific alternatives - manual review, additional surveys, etc.]</p></li>
+</ol>
+</section>
+<section id="questions-for-further-investigation" class="level2">
+<h2 class="anchored" data-anchor-id="questions-for-further-investigation">Questions for Further Investigation</h2>
+<p>[List 2-3 questions that your analysis raised that you’d like to explore further in future assignments. Consider questions about spatial patterns, time trends, or other demographic factors.]</p>
+</section>
+</section>
+<section id="technical-notes" class="level1">
+<h1>Technical Notes</h1>
+<p><strong>Data Sources:</strong> - U.S. Census Bureau, American Community Survey 2018-2022 5-Year Estimates - Retrieved via tidycensus R package on [date]</p>
+<p><strong>Reproducibility:</strong> - All analysis conducted in R version [your version] - Census API key required for replication - Complete code and documentation available at: [your portfolio URL]</p>
+<p><strong>Methodology Notes:</strong> [Describe any decisions you made about data processing, county selection, or analytical choices that might affect reproducibility]</p>
+<p><strong>Limitations:</strong> [Note any limitations in your analysis - sample size issues, geographic scope, temporal factors, etc.]</p>
+<hr>
+<section id="submission-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="submission-checklist">Submission Checklist</h2>
+<p>Before submitting your portfolio link on Canvas:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">All code chunks run without errors</label></li>
+<li><label><input type="checkbox">All “[Fill this in]” prompts have been completed</label></li>
+<li><label><input type="checkbox">Tables are properly formatted and readable</label></li>
+<li><label><input type="checkbox">Executive summary addresses all four required components</label></li>
+<li><label><input type="checkbox">Portfolio navigation includes this assignment</label></li>
+<li><label><input type="checkbox">Census API key is properly set</label></li>
+<li><label><input type="checkbox">Document renders correctly to HTML</label></li>
+</ul>
+<p><strong>Remember:</strong> Submit your portfolio URL on Canvas, not the file itself. Your assignment should be accessible at <code>your-portfolio-url/assignments/assignment_1/your_file_name.html</code></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
