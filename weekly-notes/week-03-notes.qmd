@@ -1,46 +1,31 @@
 ---
-title: "Week 1 Notes - Course Introduction"
-date: "2025-09-09"
+title: "Week 3 Notes - Data Visualization & Exploratory Analysis"
+date: "2025-09-22"
 ---
 
 ## Key Concepts Learned
-- GitHub Fundamentals
-  - Git
-    - Version control system that tracks changes in files
-  - GitHub
-    - Cloud hosting for Git repositories
-  - Key GitHub Concepts
-    1. Repository(repo)
-    2. Commit
-    3. Push
-    4. Pull
-- Quarto Introduction
-  - Quarto
-    - Publishing system that combines Code (R, Python, etc.), Text (explanations, analysis), Output (plots, tables, results)
-- Markdown Basics
-  - Text Formatting
-  - Headers
-  - Lists
-  - Links and Images
-- R and dplyr Review
-  - Tibbles vs. Data Frames
-    - “tibbles” - enhanced data frames(Shows first 10 rows by default, Displays column names)
-  - Essential dplyr functions
-    - select()- choose columns
-    - filter()- choose columns
-    - mutate()- choose columns
-    - summarize- choose columns
-    - group-by- choose columns
+- Why Visualization Matters
+  - the smaller the sample, the bigger the MoE
+- Grammar of Graphics(**GG**)
+  - The ggplot2 Philosophy
+    - 
+
 
 ## Coding Techniques
-- [New R functions or approaches]
+- Basic ggplot2 Structure
+  - make a plot
+    - ggplot(data = your_data) +   aes(x = variable1, y = variable2) +   geom_something() +   additional_layers()
+    - g ← ggplot(data=acs_data)
+    aes(x=Income, y=%bach, **color=blue**)
+    geom_Points(decorate..colors, size..)
 - [Quarto features learned]
 
 ## Questions & Challenges
 - What I didn't fully understand
-  - Clone VS Fork
+  - long & wide'
+  - Left_Join & Right_Join & Full_Join(result shows all the content) & Inner_Join(result shows the same content)
 - Areas needing more practice
-  - Commmit
+  - add a new chunk
 
 ## Connections to Policy
 - [How this week's content applies to real policy work]
