@@ -1,0 +1,35 @@
+---
+title: "Week 3 Notes - Data Visualization & Exploratory Analysis"
+date: "2025-09-22"
+---
+
+## Key Concepts Learned
+- Why Visualization Matters
+  - the smaller the sample, the bigger the MoE
+- Grammar of Graphics(**GG**)
+  - The ggplot2 Philosophy
+
+
+
+## Coding Techniques
+- Basic ggplot2 Structure
+  - make a plot
+    - ggplot(data = your_data) +   aes(x = variable1, y = variable2) +   geom_something() +   additional_layers()
+    - g ← ggplot(data=acs_data)
+    aes(x=Income, y=%bach, **color=blue**)
+    geom_Points(decorate..colors, size..)
+- [Quarto features learned]
+
+## Questions & Challenges
+- What I didn't fully understand
+  - long & wide'
+  - Left_Join & Right_Join & Full_Join(result shows all the content) & Inner_Join(result shows the same content)
+- Areas needing more practice
+  - add a new chunk
+
+## Connections to Policy
+- [How this week's content applies to real policy work]
+
+## Reflection
+- [What was most interesting]
+- [How I'll apply this knowledge]

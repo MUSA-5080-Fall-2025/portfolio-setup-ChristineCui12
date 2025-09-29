@@ -297,9 +297,7 @@ top_hispanic_tract %>%
 # Calculate average demographics by county using group_by() and summarize()
 # Show: number of tracts, average percentage for each racial/ethnic group
 county_demographics_summary <- tract_data_texas %>%
-  # 1. 按照县进行分组
   group_by(County) %>%
-  # 2. 计算每个县的汇总统计量
   summarize(
     number_of_tracts = n(),
     avg_pct_white = mean(pct_white, na.rm = TRUE),
@@ -398,7 +396,6 @@ tract_reliability_comparison %>%
 ```
 
 **Pattern Analysis:** 
-
 The analysis reveals an extreme, systemic data quality issue: 100% of the tracts in the selected focus areas fall into the High MOE category. This means data reliability is not merely poor in isolated cases, but universally insufficient across these tracts. The average population size for all these unreliable tracts is around 5,345 people, with a high average concentration of Hispanic residents (61.29%). This pattern strongly suggests that in small, high-minority counties, the reliability of demographic estimates completely breaks down at the tract level. The lack of sufficient sample size in these relatively small, rural, tracts makes the ACS data inherently unstable. Consequently, any algorithm relying on this demographic data in these counties would be making resource allocation decisions based on pure statistical uncertainty, disproportionately impacting Hispanic-majority communities with unreliable information.
 
 
@@ -461,7 +458,7 @@ mutate(
 # Format as a professional table with kable()
   kable(
     caption = "Algorithmic Implementation Framework",
-    digits = 2 # 保留两位小数
+    digits = 2 
   )
 ```
 
