@@ -2,7 +2,7 @@
 title: "Assignment 1: Census Data Quality for Policy Decisions"
 subtitle: "Evaluating Data Reliability for Algorithmic Decision-Making"
 author: "Xinyuan(Christine) Cui"
-date: Sep.19，2025
+date: September 29, 2025
 format: 
   html:
     code-fold: false
@@ -322,7 +322,7 @@ county_demographics_summary <- tract_data_texas %>%
     # 使用 kable() 格式化输出为表格
     kable(
       caption = "Average Demographics by County",
-      digits = 2 # 百分比和小数保留一位
+      digits = 2
     )
 ```
 
