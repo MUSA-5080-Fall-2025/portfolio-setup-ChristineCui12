@@ -180,8 +180,7 @@ kable(
 ```
 
 **Data Quality Commentary:**
-
-**Based on these results, algorithmic funding decisions relying on the median income in counties like Jeff Davis and Culberson (with MOE>50%) would be highly unreliable. These counties risk being poorly served because the true income value could be far outside the estimate, potentially leading to the algorithm severely over-allocating or under-allocating crucial resources. The extreme uncertainty is primarily due to small population size and low survey response rates, making precise income estimation statistically impossible in these sparsely populated areas.**
+Based on these results, algorithmic funding decisions relying on the median income in counties like Jeff Davis and Culberson (with MOE>50%) would be highly unreliable. These counties risk being poorly served because the true income value could be far outside the estimate, potentially leading to the algorithm severely over-allocating or under-allocating crucial resources. The extreme uncertainty is primarily due to small population size and low survey response rates, making precise income estimation statistically impossible in these sparsely populated areas.
 
 # Part 3: Neighborhood-Level Analysis
 
@@ -218,7 +217,7 @@ selected_counties %>%
   )
 ```
 
-**Comment on the output:** [write something :)]
+**Comment on the output:** 
 I deliberately selected counties representing the more extreme ends of the High and Low Confidence ranges. This strategy ensures a clearer and more impactful comparison of data quality. By focusing on these distinct cases (one very high confidence, one moderate, and one very low confidence), the tract-level analysis will better expose the full spectrum of data reliability issues that could affect the department's funding algorithms.
 
 ## 3.2 Tract-Level Demographics
@@ -400,8 +399,12 @@ tract_reliability_comparison %>%
   )
 ```
 
-**Pattern Analysis:** [Describe any patterns you observe. Do certain types of communities have less reliable data? What might explain this?]
+**Pattern Analysis:** 
+The analysis reveals an extreme, systemic data quality issue: 100% of the tracts in the selected focus areas fall into the High MOE category. This means data reliability is not merely poor in isolated cases, but universally insufficient across these neighborhoods.
 
+The average population size for all these unreliable tracts is around 5,345 people, with a high average concentration of Hispanic residents (61.29%). This pattern strongly suggests that in small, high-minority counties, the reliability of demographic estimates completely breaks down at the tract level. The lack of sufficient sample size in these relatively small, rural, tracts makes the ACS data inherently unstable.
+
+Consequently, any algorithm relying on this demographic data in these counties would be making resource allocation decisions based on pure statistical uncertainty, disproportionately impacting Hispanic-majority communities with unreliable information.
 
 
 # Part 5: Policy Recommendations
@@ -417,8 +420,19 @@ tract_reliability_comparison %>%
 4. **Strategic Recommendations**: What should the Department implement to address these systematic issues?
 
 **Executive Summary:**
+The analysis reveals a two-tiered, systematic breakdown in data reliability:
+County Level: High Margin of Error (MOE), some exceeding 60%, is concentrated in sparsely populated counties like Jeff Davis and Culberson. These areas immediately fail basic reliability thresholds for household income estimates.
+Tract Level: In the targeted focus areas—selected to represent the full spectrum of county-level reliability—100% of all tracts examined fell into the High Uncertainty category (MOE>15% on demographic variables). This means data quality completely collapses at the neighborhood level within these regions, rendering reliable demographic data universally insufficient for allocation decisions.
 
-[Your integrated 4-paragraph summary here]
+The communities facing the greatest risk of algorithmic bias are those defined by small population size and high minority concentration. The High MOE tracts show a distinct demographic profile, with an average of over 61% Hispanic residents. An algorithm relying on these unstable estimates will apply the highest level of statistical guesswork—with MOE values that often double the estimate—to resource decisions concerning these Hispanic-majority communities. This introduces a serious risk of systemic bias, where funding allocation is based on conjecture rather than precise, equitable data.
+
+The underlying factor driving both data quality issues and the resulting bias risk is the insufficient statistical sample size combined with geographical isolation. In sparsely populated, often rural counties, the ACS cannot collect enough household responses to produce stable estimates for either income or demographics. Because high-minority communities are overrepresented in these low-population areas in Texas, the data gaps systematically align with ethnic lines, translating a statistical problem into an undeniable equity problem.
+
+To mitigate this systemic risk and ensure equitable allocation, the Department should implement the following strategic measures:
+1. Mandatory Reliability Threshold: Implement a strict rule requiring that any data used by the allocation algorithm must have an MOE percentage below a pre-defined threshold (e.g., 10%). Funding allocation logic must be halted if this threshold is breached.
+2. Data Disaggregation Protocol: For all counties or tracts flagged as "High Uncertainty" (MOE>15% on key variables), the algorithm must default to using supplementary, non-ACS data (such as administrative program enrollment records, local school data, or poverty indices) rather than relying on unreliable census estimates.
+3. Human Review Flag: Program the algorithm to automatically flag and defer funding decisions for any tract with high data uncertainty to a human review committee, ensuring local context and qualitative data are applied where quantitative data is weakest.
+
 
 ## 6.3 Specific Recommendations
 
