@@ -97,9 +97,9 @@ county_data_texas <- get_acs(
 # Hint: use mutate() with str_remove()
 county_data_texas <- county_data_texas %>%
   mutate(
-    # 先移除州名（例如 ", Texas"）
+    # remove state name（Texas）
     NAME = str_remove(NAME, ", Texas"),
-    # 再移除 " County"
+    # remove " County"
     NAME = str_remove(NAME, " County")
   )
 # Display the first few rows
@@ -124,17 +124,17 @@ head(county_data_texas)
 # Calculate MOE percentage and reliability categories using mutate()
 county_data_texas <- county_data_texas %>%
   mutate(
-    # 计算家庭收入的 MOE 百分比
+    # Calculate MOE percentage
     income_moe_pct = (median_household_incomeM / median_household_incomeE) * 100,
     
-    # 根据百分比创建可靠性类别
+    # Create reliability categories
     income_reliability = case_when(
       income_moe_pct < 5 ~ "High Confidence",
       income_moe_pct >= 5 & income_moe_pct <= 10 ~ "Moderate Confidence",
       income_moe_pct > 10 ~ "Low Confidence"
     ),
     
-    # 创建一个不可靠的标记（如果 MOE > 10%）
+    # Create a flag for unreliable estimates
     unreliable_income = income_moe_pct > 10
   )
 # Create a summary showing count of counties in each reliability category
@@ -174,13 +174,14 @@ county_data_texas %>%
 
 # Format as table with kable() - include appropriate column names and caption
 kable(
-    caption = "Top 5 Counties with The Highest MOE Percentages"
+    caption = "Top 5 Counties with The Highest MOE Percentages",
+    digits = 2
   )
 ```
 
 **Data Quality Commentary:**
 
-**[Write 2-3 sentences explaining what these results mean for algorithmic decision-making. Consider: Which counties might be poorly served by algorithms that rely on this income data? What factors might contribute to higher uncertainty?]**
+**Based on these results, algorithmic funding decisions relying on the median income in counties like Jeff Davis and Culberson (with MOE>50%) would be highly unreliable. These counties risk being poorly served because the true income value could be far outside the estimate, potentially leading to the algorithm severely over-allocating or under-allocating crucial resources. The extreme uncertainty is primarily due to small population size and low survey response rates, making precise income estimation statistically impossible in these sparsely populated areas.**
 
 # Part 3: Neighborhood-Level Analysis
 
@@ -199,7 +200,7 @@ selected_counties <- county_data_texas %>%
     (income_moe_pct >= 5 & income_moe_pct <= 10) |
     income_moe_pct < 2
   ) %>%
-  # 进一步精简，确保只选择3个
+  # select 3
   group_by(income_reliability) %>%
   slice(1)
 # Display the selected counties with their key characteristics
@@ -212,12 +213,13 @@ selected_counties %>%
     `Reliability Category` = income_reliability
   ) %>%
   kable(
-    caption = "3 Counties Selected for Tract-Level Study"
+    caption = "3 Counties Selected for Tract-Level Study",
+    digits= 2
   )
 ```
 
 **Comment on the output:** [write something :)]
-在high和low中选择了范围内较为极端的数据，意在使结果更典型，更好做对比。
+I deliberately selected counties representing the more extreme ends of the High and Low Confidence ranges. This strategy ensures a clearer and more impactful comparison of data quality. By focusing on these distinct cases (one very high confidence, one moderate, and one very low confidence), the tract-level analysis will better expose the full spectrum of data reliability issues that could affect the department's funding algorithms.
 
 ## 3.2 Tract-Level Demographics
 
@@ -267,18 +269,11 @@ tract_data_texas <- tract_data_texas %>%
 # Add readable tract and county name columns using str_extract() or similar
 tract_data_texas <- tract_data_texas %>%
   mutate(
-    # 使用 str_remove() 移除多余的普查区信息，只保留县名和州名
-    NAME = str_remove(NAME, "Census Tract \\d+\\.?\\d*, "),
-    
-    # 移除州名，只保留县名
-    NAME = str_remove(NAME, ", Texas"),
-    
-    # 将清理后的 NAME 列重命名为 county_name 以便更好地理解
-    county_name = NAME,
-    
-    # 普查区编号通常保存在 GEOID 的后六位
-    tract_id = str_sub(GEOID, -6)
+   Tract  = str_extract(NAME, "Census Tract \\d+(?:\\.\\d+)?"),
+   County = str_extract(NAME, "[A-Za-z]+ County")
   )
+
+head(tract_data_texas)
 
 ```
 
@@ -289,38 +284,47 @@ tract_data_texas <- tract_data_texas %>%
 ```{r demographic-analysis}
 # Find the tract with the highest percentage of Hispanic/Latino residents
 # Hint: use arrange() and slice() to get the top tract
-tract_data_texas %>%
+
+top_hispanic_tract <- tract_data_texas %>%
+  # 1. 按照 Hispanic/Latino 百分比 (pct_hispanic) 降序排列
   arrange(desc(pct_hispanic)) %>%
-  slice(1) %>%
-  select(
-    `Tract ID` = tract_id,
-    `County Name` = county_name,
-    `Hispanic/Latino Percentage` = pct_hispanic,
-    `Total Population` = total_populationE
-  ) %>%
+  slice(1)
+top_hispanic_tract %>%
+  
   kable(
-    caption = "Tract with the Highest Percentage of Hispanic/Latino Residents"
+    caption = "Tract with the Highest Percentage of Hispanic/Latino Residents",
   )
 
 # Calculate average demographics by county using group_by() and summarize()
 # Show: number of tracts, average percentage for each racial/ethnic group
 county_demographics_summary <- tract_data_texas %>%
-  # 1. 按县名进行分组
-  group_by(county_name) %>%
-  
-  # 2. 对每个县组进行汇总计算
+  # 1. 按照县进行分组
+  group_by(County) %>%
+  # 2. 计算每个县的汇总统计量
   summarize(
-    number_of_tracts = n(), # 计算每个县的普查区数量
-    avg_white_pct = mean(pct_white, na.rm = TRUE), # 计算平均白人人口百分比
-    avg_black_pct = mean(pct_black, na.rm = TRUE), # 计算平均非裔人口百分比
-    avg_hispanic_pct = mean(pct_hispanic, na.rm = TRUE) # 计算平均拉丁裔人口百分比
+    number_of_tracts = n(),
+    # 计算各族裔/种族群体的平均百分比
+    avg_pct_white = mean(pct_white, na.rm = TRUE),
+    avg_pct_black = mean(pct_black, na.rm = TRUE),
+    avg_pct_hispanic = mean(pct_hispanic, na.rm = TRUE),
+    # 计算县的总人口 (可以选择计算所有普查区人口的总和)
+    total_population_E = sum(total_populationE, na.rm = TRUE),
   )
-
-# Create a nicely formatted table of your results using kable()
-county_demographics_summary %>%
-  kable(
-    caption = "Average Demographics by County"
-  )
+  # 3. 格式化并展示结果
+  county_demographics_summary %>%
+    select(
+      `County` = County,
+      `Tracts` = number_of_tracts,
+      `Avg White/%` = avg_pct_white,
+      `Avg Black/%` = avg_pct_black,
+      `Avg Hispanic/%` = avg_pct_hispanic,
+      `Total Pop` = total_population_E
+    ) %>%
+    # 使用 kable() 格式化输出为表格
+    kable(
+      caption = "Average Demographics by County",
+      digits = 2 # 百分比和小数保留一位
+    )
 ```
 
 # Part 4: Comprehensive Data Quality Evaluation
@@ -337,11 +341,28 @@ county_demographics_summary %>%
 ```{r demographic-moe}
 # Calculate MOE percentages for white, Black, and Hispanic variables
 # Hint: use the same formula as before (margin/estimate * 100)
-
+tract_data_texas <- tract_data_texas %>%
+  mutate(
+    # Calculate MOE percentage
+    white_moe_pct = (white_aloneM / white_aloneE) * 100,
+    black_moe_pct = (Black_African_AmericanM / Black_African_AmericanE) * 100,
+    hispanic_moe_pct = (Hispanic_LatinoM / Hispanic_LatinoE) * 100,
+    
 # Create a flag for tracts with high MOE on any demographic variable
 # Use logical operators (| for OR) in an ifelse() statement
-
+    demographic_reliability = ifelse(
+      white_moe_pct > 15 | black_moe_pct > 15 | hispanic_moe_pct > 15,"High MOE",
+      "Acceptable"
+    )
+  )
+    
 # Create summary statistics showing how many tracts have data quality issues
+# Calculate MOE percentage and reliability categories using mutate()
+tract_data_texas %>%
+  count(demographic_reliability) %>%
+  mutate(
+    percentage = (n / sum(n)) * 100
+  )
 ```
 
 ## 4.2 Pattern Analysis
@@ -352,12 +373,35 @@ county_demographics_summary %>%
 # Group tracts by whether they have high MOE issues
 # Calculate average characteristics for each group:
 # - population size, demographic percentages
-
 # Use group_by() and summarize() to create this comparison
 # Create a professional table showing the patterns
+tract_reliability_comparison <- tract_data_texas %>%
+  group_by(demographic_reliability) %>%
+  summarize(
+    Number_of_Tracts = n(),
+    Avg_Population = mean(total_populationE, na.rm = TRUE),
+    Avg_Pct_White = mean(pct_white, na.rm = TRUE),
+    Avg_Pct_Black = mean(pct_black, na.rm = TRUE),
+    Avg_Pct_Hispanic = mean(pct_hispanic, na.rm = TRUE)
+  )
+
+tract_reliability_comparison %>%
+  select(
+    `Reliability Group` = demographic_reliability,
+    `Tract Count` = Number_of_Tracts,
+    `Avg Pop. Size` = Avg_Population, 
+    `Avg White/%` = Avg_Pct_White,
+    `Avg Black/%` = Avg_Pct_Black,
+    `Avg Hispanic/%` = Avg_Pct_Hispanic
+  ) %>%             # <-- KEY：使用管道符将数据框传递给 kable
+  kable(
+    caption = "Comparison of Tract Characteristics by Data Reliability",
+    digits = 2
+  )
 ```
 
 **Pattern Analysis:** [Describe any patterns you observe. Do certain types of communities have less reliable data? What might explain this?]
+
 
 
 # Part 5: Policy Recommendations
