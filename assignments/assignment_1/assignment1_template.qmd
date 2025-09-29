@@ -441,13 +441,32 @@ To mitigate this systemic risk and ensure equitable allocation, the Department s
 ```{r recommendations-data}
 # Create a summary table using your county reliability data
 # Include: county name, median income, MOE percentage, reliability category
-
+county_data_texas %>%
+  select(
+    `County Name` = NAME,
+    `Median Income` = median_household_incomeE,
+    `MOE Percentage` = income_moe_pct,
+    `Reliability Category` = income_reliability
+  ) %>%
 # Add a new column with algorithm recommendations using case_when():
 # - High Confidence: "Safe for algorithmic decisions"
 # - Moderate Confidence: "Use with caution - monitor outcomes"  
 # - Low Confidence: "Requires manual review or additional data"
-
+mutate(
+    `Algorithm Recommendation` = case_when(
+      # High Confidence: MOE < 5%
+      `Reliability Category` == "High Confidence" ~ "Safe for algorithmic decisions",
+      # Moderate Confidence: MOE 5-10%
+      `Reliability Category` == "Moderate Confidence" ~ "Use with caution - monitor outcomes",
+      # Low Confidence: MOE > 10%
+      `Reliability Category` == "Low Confidence" ~ "Requires manual review or additional data"
+    )
+  ) %>%
 # Format as a professional table with kable()
+  kable(
+    caption = "Algorithmic Implementation Framework",
+    digits = 2 # 保留两位小数
+  )
 ```
 
 **Key Recommendations:**
