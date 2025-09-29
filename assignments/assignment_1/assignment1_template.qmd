@@ -2,7 +2,7 @@
 title: "Assignment 1: Census Data Quality for Policy Decisions"
 subtitle: "Evaluating Data Reliability for Algorithmic Decision-Making"
 author: "Xinyuan(Christine) Cui"
-date: Sep.19
+date: Sep.19，2025
 format: 
   html:
     code-fold: false
