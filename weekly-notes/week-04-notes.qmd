@@ -1,31 +1,77 @@
 ---
-title: "Week 3 Notes - Data Visualization & Exploratory Analysis"
-date: "2025-09-22"
+title: "Week 4 Notes - Spatial Data & GIS Operations in R"
+date: "2025-09-29"
 ---
 
 ## Key Concepts Learned
-- Why Visualization Matters
-  - the smaller the sample, the bigger the MoE
-- Grammar of Graphics(**GG**)
-  - The ggplot2 Philosophy
-
-
-
+- Why Spatial Analysis Matters
+  - Real Policy Questions Need Spatial Answers
+  - Algorithmic Bias
+- Spatial Data Fundamentals
+  - **Vector** Data Model矢量数据
+    - Points, Lines, Polygons with Geometry(Shape and location)&Attributes(Data about that feature (population, income, etc.)
+  - **sf** Package:Simple Features for R
+    - Key principle: Spatial data is just data.frame + geometry column
+  - **Raster** Pattern
+    - Shapefile(shp,shx,dbf)
+    - geojson(不需要三个，全部涵盖)
+    - KML/KMZ (Google Earth)
+- Spatial Operations
+  - Spatial Subsetting空间子集
+  - Understanding the .predicate Parameter
+    - Basic structure: st_filter(data_to_filter, reference_geometry, .predicate = relationship)
+  - Spatial Relationships
+    - st_touches(Share boundary, no interior overlap)
+    - st_intersects(Any overlap at all)
+    - st_within(Completely inside)
+    - st_contains(Completely contains)和intersects主宾位置互换
+    - st_overlaps()
+    - st_disjoint(No spatial relationship)
+- Geometry Operations
+  - Buffer Operations
+  - Intersection Operations(Find overlapping areas)
+    - st_intersection(Calculate / Clip)这是一个几何运算。它计算出 x 和 y 几何形状实际重叠的部分。返回一个新的 sf 对象。它的几何形状是 x 和 y 相交后产生的新形状。通常会合并 x 和 y 的属性数据。
+    - st_filte(Select)这是一个逻辑判断。它检查 x 中的每个要素是否与 y 存在空间关系，然后返回 TRUE 或 FALSE，并以此来筛选 x。返回 X 的一个子集。保留下来的行是原始的、几何形状未改变的行。只保留 x 的属性数据。
+  - Union Operations
+  - Spatial Aggregation  空间聚合
+- Coordinate Reference Systems
+  - Geographic vs. Projected Coordinates
+    - **GCS**(Latitude/longitude coordinates, Good for: Global datasets, web mapping,Bad for: Area/distance calculations)
+    - **PCS**(X/Y coordinates on a flat plane, Good for: Local analysis, accurate measurements, Bad for: Large areas, global datasets)
+  - Common Coordinate Reference Systems坐标参考系
+    - WGS84 (EPSG:4326)Geographic system
+    - Web Mercator (EPSG:3857)Projected system
+    - State Plane / UTM zones (Different zones for different regions)
+    - Albers Equal Area(Good for demographic/statistical analysis)
+    
+- Elipsoid
+  - Step1:Approximate Earth Shape with Elipsoid
+  - Step2:Tie Elipsoid to the real earth(Datum)
+  - Step3:Put dowm Lat/Long grid
+  
+- Example(Geographic(Geodetic) coordinate systems-3D model, lat/long)
+  - 1866 Clark,origin point,Meades Ranch,Kansas(North American Datum 1927 NAD1927)最开始就用这个
+  - NAD83,GRS80,earth centered
+  - WGS84,earth centered
+  
+- Project 3D Coordinates(由中间向两侧变大distorted！)
+  - Line of Tangency
+  - Cylindrical-Mercator
+  - Transverse Cylindrical
+  - Conic(同纬度)
+  - Planar（arctic）
+- Projected Coordinate System-nondistorted
+  - UTM 6 zones 6 degrees
+  
+- Checking and Setting CRS
+  - pa_counties_projected <- pa_counties %>%   st_transform(crs = 3365)
+  
+  
 ## Coding Techniques
-- Basic ggplot2 Structure
-  - make a plot
-    - ggplot(data = your_data) +   aes(x = variable1, y = variable2) +   geom_something() +   additional_layers()
-    - g ← ggplot(data=acs_data)
-    aes(x=Income, y=%bach, **color=blue**)
-    geom_Points(decorate..colors, size..)
-- [Quarto features learned]
+- 
 
 ## Questions & Challenges
-- What I didn't fully understand
-  - long & wide'
-  - Left_Join & Right_Join & Full_Join(result shows all the content) & Inner_Join(result shows the same content)
-- Areas needing more practice
-  - add a new chunk
+- 
 
 ## Connections to Policy
 - [How this week's content applies to real policy work]
