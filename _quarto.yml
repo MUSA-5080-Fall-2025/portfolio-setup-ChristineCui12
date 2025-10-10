@@ -16,23 +16,23 @@ website:
             text: "Week 2: Algorithmic Decision Making & Census Data"
           - href: weekly-notes/week-03-notes.qmd
             text: "Week 3: Data Visualization & Exploratory Analysis"
-          - href: labs/week-03_lab_exercise/scrips/week3_lab_exercise.qmd
+          - href: weekly-notes/week-03/week3_lab_exercise.qmd
             text: "In-Class Lab 3: Data Visualization and EDA"
           - href: weekly-notes/week-04-notes.qmd
             text: "Week 4: Spatial Data & GIS Operations in R"
-          - href: labs/week-04/scripts/week4_inclass_practice.qmd
+          - href: weekly-notes/week-04/scripts/week4_inclass_practice.qmd
             text: "In-Class Lab 4: Spatial Operations with Pennsylvania Data" 
           - href: weekly-notes/week-05-notes.qmd
             text: "Week 5: Introduction to Linear Regression"
-          - href: labs/week-05/lecture/week5-complete-slides.qmd
+          - href: weekly-notes/week-05/week5-complete-slides.qmd
             text: "In-Class Lab 5" 
       - text: Labs
         menu:
           - href: labs/lab_0/lab0.qmd
             text: "Lab 0: Dplyr Basics"
-          - href: assignments/assignment_1/assignment1_template.qmd
+          - href: labs/lab_1/assignment1_template.qmd
             text: "Assignment 1: Census Data Exploration"
-          - href: assignments/assignment_2/assignment2_template.qmd
+          - href: labs/lab_2/assignment2_template.qmd
             text: "Assignment 2: Spatial Analysis and Visualization"
 format:
   html:
