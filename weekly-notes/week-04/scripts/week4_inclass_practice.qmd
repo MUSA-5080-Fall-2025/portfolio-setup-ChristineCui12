@@ -385,11 +385,6 @@ ggplot(counties_with_errors) +
 # Your code here!
 
 
-
-
-
-
-
 ```
 
 
