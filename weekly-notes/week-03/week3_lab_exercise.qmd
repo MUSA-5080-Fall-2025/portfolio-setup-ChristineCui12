@@ -61,10 +61,9 @@ head(acs_vars_2022)
 **Your Task:** Find the variable code for total population.
 
 ```{r}
-# Search for population-related variables
+# Search for population-related variables  (string)
 population_vars <- acs_vars_2022 %>%
   filter(str_detect(label, "Total.*population"))
-#string
 
 # Look at the results
 head(population_vars, 10)
@@ -446,7 +445,7 @@ income using different visualization techniques.
 # Basic scatter plot
 ggplot(county_data) +
   aes(x = median_ageE, y = median_incomeE) +
-  geom_smooth(method = "lm", se = TRUE, color = "red", )
+  geom_smooth(method = "lm", se = TRUE, color = "red" ) +
   geom_point() +
   labs(
     title = "Population vs Median Income",
@@ -549,14 +548,14 @@ county_reliability <- county_data %>%
     age_moe_pct = (median_ageM / median_ageE) * 100,
     )
 ggplot(county_reliability) +
-  aes(x = median_ageE, y = age_moe_pct) +
+  aes(x = total_popE, y = age_moe_pct) +
   geom_point(alpha = 0.7, color = "purple", size = 2) +
-  geom_hline(color = "blue", linetype = "dashed") +
+  geom_hline(yintercept = 5, color = "blue", linetype = "dashed") +
   labs(
     title = "Data Reliability of Median Age Data Across Counties",
     x = "Total Population",
     y = "Margin of Error (%)",
-    caption = "Red line = 10% reliability threshold"
+    caption = "Blue line = 5% reliability threshold"
   ) +
   theme_classic() +
   scale_x_continuous(labels = comma)
@@ -805,7 +804,7 @@ p3 <- ggplot(full_data) +
 
 # Plot 4: Data reliability by population
 p4 <- ggplot(county_reliability) +
-  aes(x = total_popE, y = income_moe_pct) +
+  aes(x = total_popE, y = age_moe_pct) +
   geom_point(alpha = 0.7) +
   geom_hline(yintercept = 10, color = "red", linetype = "dashed") +
   labs(title = "D) Data Reliability",

@@ -47,8 +47,6 @@ Load the required spatial data:
 
 **Your Task:**
 ```{r}
-install.packages("here")
-
 # Load required packages
 library(sf)
 library(tidyverse)
@@ -61,14 +59,14 @@ library(here)
 # Load spatial data
 # 1. Pennsylvania county boundaries
 census_api_key("20068788c6e79d5716fbceb0dcd562ab23f74ca1")
-pa_counties <- st_read(here("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/assignments/assignment_2/data/Pennsylvania_County_Boundaries.shp"))
-districts <- st_read(here("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/assignments/assignment_2/data/districts.geojson"))
+pa_counties <- st_read(here("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/labs/lab_2/data/Pennsylvania_County_Boundaries.shp"))
+districts <- st_read(here("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/labs/lab_2/data/districts.geojson"))
 
 # 2. Pennsylvania hospitals (from lecture data)
-hospitals <- st_read(here("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/assignments/assignment_2/data/hospitals.geojson"))
+hospitals <- st_read(here("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/labs/lab_2/data/hospitals.geojson"))
 
 # 3. Pennsylvania census tracts
-census_tracts <- tracts(state = "PA", cb = TRUE)
+
 
 # Check that all data loaded correctly
 
