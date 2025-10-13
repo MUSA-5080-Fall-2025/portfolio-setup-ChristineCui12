@@ -244,19 +244,37 @@ window.Quarto = {
 </ul></li>
 <li>Parametric Approach: Linear Regression参数方法：线性回归
 <ul>
-<li>The assumption: Relationship between X and Y is linear. Y≈β0+β1X1+β2X2+…+βpXp(Estimate the β coefficient系数)</li>
+<li><strong>The assumption</strong>: Relationship between X and Y is linear. Y≈β0+β1X1+β2X2+…+βpXp(Estimate the β coefficient系数)</li>
+<li><strong>The task</strong>: Estimate the β coefficients using our sample data</li>
+<li><strong>The method</strong>: Ordinary Least Squares (OLS)</li>
 </ul></li>
 </ul></li>
-<li>2.Two Different Goals</li>
+<li>2.Two Different Goals
+<ul>
+<li>Inference
+<ul>
+<li>Focus on coefficients</li>
+<li>Statistical significance matters</li>
+<li>Understand mechanisms 了解机制</li>
+</ul></li>
+<li>Prediction
+<ul>
+<li>Focus on accuracy</li>
+<li>Prediction intervals matter</li>
+</ul></li>
+</ul></li>
 <li>3.Building Your First Model
 <ul>
-<li>Fit the Model</li>
+<li>Fit the Model
+<ul>
+<li>R2，p value(&lt;0.001→ Very unlikely to see this if true β₁ = 0,We can reject the null hypothesis)</li>
+</ul></li>
 <li>Interpreting Coefficients</li>
 <li>The “Holy Grail” Concept(all the estimation is based on the sample,not the entire pop.so we will never know the true relationship)(No relationship一条横线: Null Hypothesis)</li>
 <li>Statistical Significance
 <ul>
-<li>t value</li>
-<li>p value</li>
+<li>t value(更大 |t|= 更有信心这种关系是真实的)</li>
+<li>p value(p 值：如果 H₀ 为真，则看到我们的估计值的概率;小 p →拒绝 H₀，得出关系存在)</li>
 </ul></li>
 </ul></li>
 <li>4.Model Evaluation
@@ -274,16 +292,16 @@ window.Quarto = {
 <li>Code:# Calculate prediction error (RMSE) rmse_test &lt;- sqrt(mean((test_data<span class="math inline">\(median_incomeE - test_predictions)^2))
 rmse_train &lt;- summary(model_train)\)</span>sigma平方是为了放大error</li>
 </ul></li>
-<li>Cross-Validation(Better approach: Multiple train/test splits)</li>
+<li><strong>Cross-Validation</strong>(Better approach: Multiple train/test splits)</li>
 </ul></li>
 <li>5.Checking Assumptions
 <ul>
 <li><strong>Assumption 1: Linearity</strong>
 <ul>
 <li>What we assume: Relationship is actually linear</li>
-<li>How to check: Residual plot(clear funnel pattern &amp; random scatter)</li>
+<li>How to check: Residual plot(clear funnel pattern &amp; random scatter随机散点)</li>
 </ul></li>
-<li><strong>Assumption 2: Constant Variance</strong>
+<li><strong>Assumption 2: Constant Variance</strong>常定方差
 <ul>
 <li>Heteroscedasticity(异方差性): Variance changes across X(residual变大的时候思考是否需要引入新变量来解释→Adding the right predictor can fix heteroscedasticity)</li>
 <li>Impact: Standard errors are wrong → p-values misleading</li>

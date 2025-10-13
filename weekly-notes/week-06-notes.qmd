@@ -1,18 +1,40 @@
 ---
-title: "Week 6 Notes - Introduction to Linear Regression"
+title: "Week 6 Notes - Spatial Machine Learning & Advanced Regression"
 date: "2025-10-13"
 ---
 
 ## Key Concepts Learned
-- 
-  
+- Converting to Spatial Data
+  - Step 1: Make your data spatial
+    - library(sf）
+      # Convert boston data to sf object
+      boston.sf <- boston %>%
+        st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>%
+        st_transform('ESRI:102286')  # MA State Plane (feet)
+  - Step 2: Spatial Join with Neighborhoods
+    - Categoral variables: NOT continuous numeric data
+- Expanding Your Regression Toolkit
+  - Dummy Variables
+  - Add Dummy (Categorical) Variables to the Model
+    - 当你的自变量是文字而不是数字时（比如社区名称"Back Bay", "Beacon Hill"等），R会自动将它们转换成一系列二进制虚拟变量。
+    - 关键规则：(n-1)原则,如果有n个类别，R只会创建(n-1)个虚拟变量，自动省略一个作为参照组。
+  - Interpreting Neighborhood Dummy Variables
+  - Interaction Effects: When Relationships Depend
+    - Theory: Luxury Premium Hypothesis()
+  - Create the Neighborhood Categories
+    - Model 1: No Interaction (Parallel Slopes)
+    - Model 2: With Interaction (Different Slopes)
+    - Interpreting the Interaction Coefficients()
+    - Compare Model Performance
+    
+        
 ## Coding Techniques
 - [New R functions or approaches]
 - [Quarto features learned]
 
 ## Questions & Challenges
 - What I didn't fully understand
-  - t value & p value
+  - **left out?????**
 - Areas needing more practice
   - 1
 

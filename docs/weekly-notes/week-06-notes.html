@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-22">
+<meta name="dcterms.date" content="2025-10-13">
 
-<title>Week 3 Notes - Data Visualization &amp; Exploratory Analysis – Christine Cui - MUSA 5080 Portfolio</title>
+<title>Week 6 Notes - Spatial Machine Learning &amp; Advanced Regression – Christine Cui - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -180,7 +180,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 3 Notes - Data Visualization &amp; Exploratory Analysis</h1>
+<h1 class="title">Week 6 Notes - Spatial Machine Learning &amp; Advanced Regression</h1>
 </div>
 
 
@@ -191,7 +191,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 22, 2025</p>
+      <p class="date">October 13, 2025</p>
     </div>
   </div>
   
@@ -206,27 +206,44 @@ ul.task-list li input[type="checkbox"] {
 <section id="key-concepts-learned" class="level2">
 <h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
 <ul>
-<li>Why Visualization Matters
+<li>Converting to Spatial Data
 <ul>
-<li>the smaller the sample, the bigger the MoE</li>
+<li>Step 1: Make your data spatial
+<ul>
+<li>library(sf） # Convert boston data to sf object boston.sf &lt;- boston %&gt;% st_as_sf(coords = c(“Longitude”, “Latitude”), crs = 4326) %&gt;% st_transform(‘ESRI:102286’) # MA State Plane (feet)</li>
 </ul></li>
-<li>Grammar of Graphics(<strong>GG</strong>)
+<li>Step 2: Spatial Join with Neighborhoods
 <ul>
-<li>The ggplot2 Philosophy</li>
+<li>Categoral variables: NOT continuous numeric data</li>
+</ul></li>
+</ul></li>
+<li>Expanding Your Regression Toolkit
+<ul>
+<li>Dummy Variables</li>
+<li>Add Dummy (Categorical) Variables to the Model
+<ul>
+<li>当你的自变量是文字而不是数字时（比如社区名称”Back Bay”, “Beacon Hill”等），R会自动将它们转换成一系列二进制虚拟变量。</li>
+<li>关键规则：(n-1)原则,如果有n个类别，R只会创建(n-1)个虚拟变量，自动省略一个作为参照组。</li>
+</ul></li>
+<li>Interpreting Neighborhood Dummy Variables</li>
+<li>Interaction Effects: When Relationships Depend
+<ul>
+<li>Theory: Luxury Premium Hypothesis()</li>
+</ul></li>
+<li>Create the Neighborhood Categories
+<ul>
+<li>Model 1: No Interaction (Parallel Slopes)</li>
+<li>Model 2: With Interaction (Different Slopes)</li>
+<li>Interpreting the Interaction Coefficients()</li>
+<li>Compare Model Performance</li>
+</ul></li>
 </ul></li>
 </ul>
 </section>
 <section id="coding-techniques" class="level2">
 <h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
 <ul>
-<li>Basic ggplot2 Structure
-<ul>
-<li>make a plot
-<ul>
-<li>ggplot(data = your_data) + aes(x = variable1, y = variable2) + geom_something() + additional_layers()</li>
-<li>g ← ggplot(data=acs_data) aes(x=Income, y=%bach, <strong>color=blue</strong>) geom_Points(decorate..colors, size..)</li>
-</ul></li>
-</ul></li>
+<li>[New R functions or approaches]</li>
 <li>[Quarto features learned]</li>
 </ul>
 </section>
@@ -235,12 +252,11 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>What I didn’t fully understand
 <ul>
-<li>long &amp; wide’</li>
-<li>Left_Join &amp; Right_Join &amp; Full_Join(result shows all the content) &amp; Inner_Join(result shows the same content)</li>
+<li><strong>left out?????</strong></li>
 </ul></li>
 <li>Areas needing more practice
 <ul>
-<li>add a new chunk</li>
+<li>1</li>
 </ul></li>
 </ul>
 </section>
