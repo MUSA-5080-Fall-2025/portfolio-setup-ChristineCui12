@@ -1,7 +1,7 @@
 ---
 title: "Week 4 In-Class Practice Exercises"
 subtitle: "Spatial Operations with Pennsylvania Data"
-author: "Your Name Here"
+author: "Christine"
 date: today
 format: 
   html:
