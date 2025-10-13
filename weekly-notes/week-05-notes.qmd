@@ -9,15 +9,25 @@ date: "2025-10-6"
     - Why Estimate f? 1.Prediction 2. Inference推理
     - How Do We Estimate f? **Parametric Methods**(We assume f is linear, then estimate β₀ and β₁) Non-Parametric Method(We let the data determine the shape of f)
   - Parametric Approach: Linear Regression参数方法：线性回归
-    - The assumption: Relationship between X and Y is linear. Y≈β0+β1X1+β2X2+...+βpXp(Estimate the β coefficient系数)
+    - **The assumption**: Relationship between X and Y is linear. Y≈β0+β1X1+β2X2+...+βpXp(Estimate the β coefficient系数)
+    - **The task**: Estimate the β coefficients using our sample data
+    - **The method**: Ordinary Least Squares (OLS)
 - 2.Two Different Goals
+  - Inference
+    - Focus on coefficients
+    - Statistical significance matters
+    - Understand mechanisms  了解机制
+  - Prediction
+    - Focus on accuracy
+    - Prediction intervals matter
 - 3.Building Your First Model
   - Fit the Model
+    - R2，p value(<0.001→ Very unlikely to see this if true β₁ = 0,We can reject the null hypothesis)
   - Interpreting Coefficients
   - The “Holy Grail” Concept(all the estimation is based on the sample,not the entire pop.so we will never know the true relationship)(No relationship一条横线: Null Hypothesis)
   - Statistical Significance
-    - t value
-    - p value
+    - t value(更大 |t|= 更有信心这种关系是真实的)
+    - p value(p 值：如果 H₀ 为真，则看到我们的估计值的概率;小 p →拒绝 H₀，得出关系存在)
 - 4.Model Evaluation
   - How Good is This Model?
     - How well does it fit the data we used? (in-sample fit:**R²**,R² = 0.208 means “21% of variation in income is explained by population”**R² alone doesn’t tell us if the model is trustworthy**)(**Overfitting**:High R² doesn’t mean good predictions!)
@@ -28,12 +38,12 @@ n <- nrow(pa_data)
     - Code:# Calculate prediction error (RMSE)
 rmse_test <- sqrt(mean((test_data$median_incomeE - test_predictions)^2))
 rmse_train <- summary(model_train)$sigma平方是为了放大error
-  - Cross-Validation(Better approach: Multiple train/test splits)
+  - **Cross-Validation**(Better approach: Multiple train/test splits)
 - 5.Checking Assumptions
   - **Assumption 1: Linearity**
     - What we assume: Relationship is actually linear
-    - How to check: Residual plot(clear funnel pattern & random scatter)
-  - **Assumption 2: Constant Variance**
+    - How to check: Residual plot(clear funnel pattern & random scatter随机散点)
+  - **Assumption 2: Constant Variance**常定方差
     - Heteroscedasticity(异方差性): Variance changes across X(residual变大的时候思考是否需要引入新变量来解释→Adding the right predictor can fix heteroscedasticity)
     - Impact: Standard errors are wrong → p-values misleading
   - Formal Test: Breusch-Pagan(进行异方差性（Heteroscedasticity）的统计假设检验，而 p 值是这个检验的最终输出和决策工具)

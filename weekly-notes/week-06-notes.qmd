@@ -1,0 +1,24 @@
+---
+title: "Week 6 Notes - Introduction to Linear Regression"
+date: "2025-10-13"
+---
+
+## Key Concepts Learned
+- 
+  
+## Coding Techniques
+- [New R functions or approaches]
+- [Quarto features learned]
+
+## Questions & Challenges
+- What I didn't fully understand
+  - t value & p value
+- Areas needing more practice
+  - 1
+
+## Connections to Policy
+- [How this week's content applies to real policy work]
+
+## Reflection
+- [What was most interesting]
+- [How I'll apply this knowledge]
