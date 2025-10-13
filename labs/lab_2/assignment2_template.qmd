@@ -176,6 +176,9 @@ Identify census tracts with vulnerable populations based on TWO criteria:
 **Your Task:**
 ```{r}
 # Filter for vulnerable tracts based on your criteria
+pa_tracts_demographics <- pa_tracts_demographics %>%
+  mutate(pct_65_over = (pop_65_over / total_pop) * 100)
+
 income_threshold <- quantile(pa_tracts_demographics$med_hh_income, 0.25, na.rm = TRUE)
 elderly_threshold <- quantile(pa_tracts_demographics$pct_65_over, 0.75, na.rm = TRUE)
 
@@ -314,11 +317,34 @@ county_summary <- tracts_county_join %>%
     underserved_tracts = sum(underserved, na.rm = TRUE),
     pct_underserved_vulnerable = round((underserved_tracts / vulnerable_tracts) * 100, 1),
     avg_distance_vulnerable = mean(dist_to_hospital_mi[vulnerable == TRUE], na.rm = TRUE),
-    total_vulnerable_pop = sum(total_pop[vulnerable == TRUE], na.rm = TRUE)
+    total_vulnerable_pop = sum(total_pop[vulnerable == TRUE], na.rm = TRUE),
+    underserved_vulnerable_pop = sum(total_pop[vulnerable == TRUE & underserved == TRUE], na.rm = TRUE)
   ) %>%
   arrange(desc(pct_underserved_vulnerable))
 
 head(county_summary, 10)
+```
+```{r}
+# Plot map of percent underserved by Pennsylvania counties.
+
+county_map <- pa_counties_proj %>%
+  left_join(county_summary %>% select(COUNTY_NAM, pct_underserved_vulnerable),
+            by = c("COUNTY_NAM" = "COUNTY_NAM"))
+
+ggplot(county_map) +
+  geom_sf(aes(fill = pct_underserved_vulnerable), color = "white", size = 0.5) +
+  scale_fill_viridis_c(
+    name = "Percent Underserved",
+    option = "magma",
+    # Format to show percent sign on color bar.
+    labels = function(x) paste0(x, "%")
+  ) +
+  labs(
+    title = "Most Underserved Counties",
+    subtitle = "Pennsylvania, United States",
+    caption = "Source: ACS 2019–2023"
+  ) +
+  theme_void()
 ```
 
 **Required county-level statistics:**
@@ -335,7 +361,7 @@ top5_pct <- county_summary %>%
 top5_pct
 
 top1_pop <- county_summary %>% 
-  arrange(desc(total_vulnerable_pop)) %>% 
+  arrange(desc(underserved_vulnerable_pop)) %>% 
   slice_head(n = 1)
 top1_pop
 
@@ -346,7 +372,7 @@ top1_pop
   - The top five counties with the highest percentage of underserved vulnerable tracts are BRADFORD,COLUMBIA,JUNIATA,MONROE and PERRY. They are primarily rural, located in northern and central Pennsylvania. These areas tend to have sparse hospital coverage and lower population density, contributing to longer travel distances for healthcare access.
   
 - Which counties have the most vulnerable people living far from hospitals?
-  - Philadelphia has the largest total vulnerable populations living far from hospitals, reflecting both large overall populations and concentrated pockets of vulnerability within certain tracts.
+  - PERRY has the largest underserved vulnerable population, reflecting both a relatively high overall share of vulnerable residents and the presence of several tracts located far from hospitals. This suggests that limited healthcare infrastructure and rural settlement patterns contribute to significant access challenges for vulnerable groups in the county.
   
 - Are there any patterns in where underserved counties are located?
   - Underserved counties are primarily located in rural and mountainous regions of Pennsylvania, particularly in the north-central and western parts of the state. These areas have lower population density, fewer major healthcare facilities, and longer travel distances between communities, making them more susceptible to healthcare access inequities.
@@ -468,7 +494,38 @@ Create a map highlighting underserved vulnerable tracts.
 **Your Task:**
 ```{r}
 # Create detailed tract-level map
-
+ggplot() +
+  # 1. 所有普查区背景（灰色）——表示非弱势区域
+  geom_sf(data = pa_tracts_proj, fill = "grey90", color = NA) +
+  
+  # 2. 弱势但不服务不足的区域（浅黄色）
+  geom_sf(data = filter(pa_tracts_proj, vulnerable == TRUE & underserved == FALSE),
+          fill = "#FED976", color = NA) +
+  
+  # 3. 服务不足的弱势区域（亮红色，最突出）
+  geom_sf(data = filter(pa_tracts_proj, underserved == TRUE & vulnerable == TRUE),
+          fill = "#E31A1C", color = "white", size = 0.05) +
+  
+  # 4. 县界线（白色）
+  geom_sf(data = pa_counties_proj, fill = NA, color = "white", size = 0.3) +
+  
+  # 5. 医院位置（蓝色点）
+  geom_sf(data = hospitals_proj, color = "blue", size = 0.8, alpha = 0.7) +
+  
+  # 6. 添加标题、说明与数据来源
+  labs(
+    title = "Underserved Vulnerable Tracts in Pennsylvania",
+    subtitle = "Red areas represent vulnerable tracts located more than 15 miles from the nearest hospital",
+    caption = "Data sources: ACS (2022), Pennsylvania Hospital Data, U.S. Census TIGER/Line Shapefiles"
+  ) +
+  
+  # 7. 设置样式
+  theme_void() +
+  theme(
+    plot.title = element_text(size = 18, face = "bold"),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(size = 9, color = "grey50")
+  )
 
 
 
@@ -490,10 +547,35 @@ Create a visualization showing the distribution of distances to hospitals for vu
 **Your Task:**
 ```{r}
 # Create distribution visualization
+library(ggplot2)
+library(scales)
 
-
-
-
+vulnerable_dist <- pa_tracts_demographics %>%
+  filter(vulnerable == TRUE)
+ggplot(pa_tracts_proj, aes(x = dist_to_hospital_mi)) +
+  geom_histogram(
+    aes(y = ..density..), 
+    bins = 30, 
+    fill = "#74add1", 
+    color = "white", 
+    alpha = 0.8
+  ) +
+  geom_density(color = "#0571b0", size = 1) +
+  geom_vline(xintercept = 15, linetype = "dashed", color = "red", size = 1) +
+  annotate("text", x = 15.5, y = 0.02, label = "15-mile threshold", hjust = 0, color = "red", size = 3) +
+  labs(
+    title = "Distribution of Distance to Nearest Hospital for Vulnerable Tracts",
+    subtitle = "Dashed line indicates the 15-mile threshold used to define underserved areas",
+    x = "Distance to Nearest Hospital (miles)",
+    y = "Density",
+    caption = "Source: ACS (2022), Pennsylvania Hospital Data, TIGER/Line Shapefiles"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 11),
+    plot.caption = element_text(size = 9, color = "gray50")
+  )
 ```
 
 **Suggested chart types:**
@@ -507,7 +589,7 @@ Create a visualization showing the distribution of distances to hospitals for vu
 - Appropriate title
 - Professional formatting
 - Brief interpretation (1-2 sentences as a caption or in text)
-
+  - **11111**
 ---
 
 ## Part 3: Bring Your Own Data Analysis 
