@@ -17,7 +17,7 @@ execute:
 
 ## Assignment Overview
 
-**Learning Objectives:**
+### **Learning Objectives:**
 - Apply spatial operations to answer policy-relevant research questions
 - Integrate census demographic data with spatial analysis
 - Create publication-quality visualizations and maps
@@ -40,13 +40,13 @@ Complete the following analysis, documenting each step with code and brief expla
 
 #### Step 1: Data Collection (5 points)
 
-Load the required spatial data:
-- Pennsylvania county boundaries
-- Pennsylvania hospitals (from lecture data)
-- Pennsylvania census tracts
+Load the required spatial data:  
+- Pennsylvania county boundaries  
+- Pennsylvania hospitals (from lecture data)  
+- Pennsylvania census tracts  
 
 **Your Task:**
-```{r}
+```{r setup, include=FALSE}
 # Load required packages
 library(sf)
 library(tidyverse)
@@ -55,8 +55,12 @@ library(tidycensus)
 library(scales)
 library(patchwork)
 library(here)
-census_api_key("20068788c6e79d5716fbceb0dcd562ab23f74ca1")
 
+# Set census API key (this will be hidden in final output)
+census_api_key("20068788c6e79d5716fbceb0dcd562ab23f74ca1", install = TRUE, overwrite = TRUE)
+```
+
+```{r}
 # Load spatial data
 # 1. Pennsylvania county boundaries
 pa_counties <- st_read(here("labs/lab_2/data/Pennsylvania_County_Boundaries.shp"))
@@ -65,10 +69,11 @@ pa_counties <- st_read(here("labs/lab_2/data/Pennsylvania_County_Boundaries.shp"
 hospitals <- st_read(here("labs/lab_2/data/hospitals.geojson"))
 
 # 3. Pennsylvania census tracts
-census_tracts <- tracts(state = "PA", cb = TRUE)
+census_tracts <- tracts(state = "PA", cb = TRUE, progress_bar = FALSE)
 
 # Check that all data loaded correctly
 ```
+
 ```{r}
 #check the CRS
 cat("1. PA Counties:", st_crs(pa_counties)$input, "\n")
@@ -95,9 +100,9 @@ cat("3. Census Tracts:", st_crs(census_tracts)$input, "\n")
 
 Use `tidycensus` to download tract-level demographic data for Pennsylvania.
 
-**Required variables:**
-- Total population
-- Median household income
+**Required variables:**  
+- Total population  
+- Median household income  
 - Population 65 years and over (you may need to sum multiple age categories)
 
 **Your Task:**
@@ -259,9 +264,9 @@ vulnerable_distance_summary
 
 ```
 
-**Requirements:**
-- Use an appropriate projected coordinate system for Pennsylvania
-- Calculate distances in miles
+**Requirements:**  
+- Use an appropriate projected coordinate system for Pennsylvania  
+- Calculate distances in miles  
 - Explain why you chose your projection
 
 **Questions to answer:**
@@ -402,7 +407,7 @@ ggplot() +
   )
 ```
 
-**Required county-level statistics:**
+**Required county-level statistics:**  
 - Number of vulnerable tracts  
 - Number of underserved tracts  
 - Percentage of vulnerable tracts that are underserved  
@@ -474,12 +479,12 @@ kable(
 
 ```
 
-**Requirements:**
-- Use `knitr::kable()` or similar for formatting
-- Include descriptive column names
-- Format numbers appropriately (commas for population, percentages, etc.)
-- Add an informative caption
-- Sort by priority (you decide the metric)
+**Requirements:**  
+- Use `knitr::kable()` or similar for formatting  
+- Include descriptive column names  
+- Format numbers appropriately (commas for population, percentages, etc.)  
+- Add an informative caption  
+- Sort by priority (you decide the metric)  
 
 ---
 
@@ -565,13 +570,13 @@ ggplot() +
 
 ```
 
-**Requirements:**
-- Fill counties by percentage of vulnerable tracts that are underserved
-- Include hospital locations as points
-- Use an appropriate color scheme
-- Include clear title, subtitle, and caption
-- Use `theme_void()` or similar clean theme
-- Add a legend with formatted labels
+**Requirements:**  
+- Fill counties by percentage of vulnerable tracts that are underserved  
+- Include hospital locations as points  
+- Use an appropriate color scheme  
+- Include clear title, subtitle, and caption  
+- Use `theme_void()` or similar clean theme  
+- Add a legend with formatted labels  
 
 ---
 
@@ -583,31 +588,25 @@ Create a map highlighting underserved vulnerable tracts.
 ```{r}
 # Create detailed tract-level map
 ggplot() +
-  # 1. 所有普查区背景（灰色）——表示非弱势区域
   geom_sf(data = pa_tracts_proj, fill = "grey90", color = NA) +
   
-  # 2. 弱势但不服务不足的区域（浅黄色）
   geom_sf(data = filter(pa_tracts_proj, vulnerable == TRUE & underserved == FALSE),
           fill = "#FED976", color = NA) +
   
-  # 3. 服务不足的弱势区域（亮红色，最突出）
   geom_sf(data = filter(pa_tracts_proj, underserved == TRUE & vulnerable == TRUE),
           fill = "#E31A1C", color = "white", size = 0.05) +
   
-  # 4. 县界线（白色）
   geom_sf(data = pa_counties_proj, fill = NA, color = "white", size = 0.3) +
   
-  # 5. 医院位置（蓝色点）
   geom_sf(data = hospitals_proj, color = "blue", size = 0.8, alpha = 0.7) +
   
-  # 6. 添加标题、说明与数据来源
   labs(
     title = "Underserved Vulnerable Tracts in Pennsylvania",
-    subtitle = "Red areas represent vulnerable tracts located more than 15 miles from the nearest hospital",
+    subtitle = "Red areas represent underserved tracts, Yellow areas represent vulnerable tracts",
     caption = "Data sources: ACS (2022)"
   ) +
   
-  # 7. 设置样式
+  # style
   theme_void() +
   theme(
     plot.title = element_text(size = 18, face = "bold"),
@@ -615,16 +614,14 @@ ggplot() +
     plot.caption = element_text(size = 9, color = "grey50",face = "italic",)
   )
 
-
-
 ```
 
-**Requirements:**
-- Show underserved vulnerable tracts in a contrasting color
-- Include county boundaries for context
-- Show hospital locations
-- Use appropriate visual hierarchy (what should stand out?)
-- Include informative title and subtitle
+**Requirements:**  
+- Show underserved vulnerable tracts in a contrasting color  
+- Include county boundaries for context  
+- Show hospital locations  
+- Use appropriate visual hierarchy (what should stand out?)  
+- Include informative title and subtitle  
 
 ---
 
@@ -641,12 +638,11 @@ library(scales)
 vulnerable_tract <- pa_tracts_demographics %>%
   filter(vulnerable == TRUE)
 ggplot(
-  # 1. 筛选出脆弱区域的数据进行绘图
+  
   data = pa_tracts_proj %>% filter(vulnerable == TRUE), 
   aes(x = dist_to_hospital_mi)
 ) +
-  # 2. 使用 geom_histogram 并设置 weight = total_pop
-  #    这使得直方图的条高代表该距离范围内的总人口数
+  
   geom_histogram(
     aes(y = after_stat(count), weight = total_pop), 
     bins = 30, 
@@ -654,29 +650,24 @@ ggplot(
     color = "white", 
     alpha = 0.8
   ) +
-  # 3. 删除 geom_density()：密度图不适用于加权人口总数直方图
   
-  # 4. 垂直线和标注
   geom_vline(xintercept = 15, linetype = "dashed", color = "red", size = 1) +
-  # 注意：y 轴现在是人口数，0.02 可能太小，需要调整 y 轴标注位置
-  # 假设最大人口数大约在 100,000 左右，将 y 调整为 10000 
+  
   annotate("text", x = 15.5, y = 10000, label = "15-mile threshold", hjust = 0, color = "red", size = 3) +
   
-  # 5. 标签和主题
   labs(
     title = "Distribution of Hospital Distance for Vulnerable Population",
     subtitle = "Histogram weighted by the total population of vulnerable census tracts",
     x = "Distance to Nearest Hospital (miles)",
-    # Y 轴标签现在代表人口数量
     y = "Total Vulnerable Population Count", 
     caption = "Source: ACS (2022), Pennsylvania Hospital Data"
   ) +
-  scale_y_continuous(labels = scales::comma) + # 格式化 Y 轴数字
+  scale_y_continuous(labels = scales::comma) + 
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold"),
     plot.subtitle = element_text(size = 11),
-    plot.caption = element_text(size = 9, color = "gray50")
+    plot.caption = element_text(size = 9, color = "gray50",face = "italic",)
   )
 
 ```
@@ -700,109 +691,6 @@ ggplot(
 
 Choose your own additional spatial dataset and conduct a supplementary analysis.
 
-### Challenge Options
-
-Choose ONE of the following challenge exercises, or propose your own research question using OpenDataPhilly data (https://opendataphilly.org/datasets/). 
-
-**Note these are just loose suggestions to spark ideas - follow or make your own as the data permits and as your ideas evolve. This analysis should include bringing in your own dataset, ensuring the projection/CRS of your layers align and are appropriate for the analysis (not lat/long or geodetic coordinate systems). The analysis portion should include some combination of spatial and attribute operations to answer a relatively straightforward question**
-
----
-
-#### Education & Youth Services
-
-**Option A: Educational Desert Analysis**
-- **Data:** Schools, Libraries, Recreation Centers, Census tracts (child population)
-- **Question:** "Which neighborhoods lack adequate educational infrastructure for children?"
-- **Operations:** Buffer schools/libraries (0.5 mile walking distance), identify coverage gaps, overlay with child population density
-- **Policy relevance:** School district planning, library placement, after-school program siting
-
-**Option B: School Safety Zones**
-- **Data:** Schools, Crime Incidents, Bike Network
-- **Question:** "Are school zones safe for walking/biking, or are they crime hotspots?"
-- **Operations:** Buffer schools (1000ft safety zone), spatial join with crime incidents, assess bike infrastructure coverage
-- **Policy relevance:** Safe Routes to School programs, crossing guard placement
-
----
-
-#### Environmental Justice
-
-**Option C: Green Space Equity** 
-- **Data:** Parks, Street Trees, Census tracts (race/income demographics)
-- **Question:** "Do low-income and minority neighborhoods have equitable access to green space?"
-- **Operations:** Buffer parks (10-minute walk = 0.5 mile), calculate tree canopy or park acreage per capita, compare by demographics
-- **Policy relevance:** Climate resilience, environmental justice, urban forestry investment
----
-
-#### Public Safety & Justice
-
-**Option D: Crime & Community Resources**
-- **Data:** Crime Incidents, Recreation Centers, Libraries, Street Lights
-- **Question:** "Are high-crime areas underserved by community resources?"
-- **Operations:** Aggregate crime counts to census tracts or neighborhoods, count community resources per area, spatial correlation analysis
-- **Policy relevance:** Community investment, violence prevention strategies
----
-
-#### Infrastructure & Services
-
-**Option E: Polling Place Accessibility**
-- **Data:** Polling Places, SEPTA stops, Census tracts (elderly population, disability rates)
-- **Question:** "Are polling places accessible for elderly and disabled voters?"
-- **Operations:** Buffer polling places and transit stops, identify vulnerable populations, find areas lacking access
-- **Policy relevance:** Voting rights, election infrastructure, ADA compliance
-
----
-
-#### Health & Wellness
-
-**Option F: Recreation & Population Health**
-- **Data:** Recreation Centers, Playgrounds, Parks, Census tracts (demographics)
-- **Question:** "Is lack of recreation access associated with vulnerable populations?"
-- **Operations:** Calculate recreation facilities per capita by neighborhood, buffer facilities for walking access, overlay with demographic indicators
-- **Policy relevance:** Public health investment, recreation programming, obesity prevention
-
----
-
-#### Emergency Services
-
-**Option G: EMS Response Coverage**
-- **Data:** Fire Stations, EMS stations, Population density, High-rise buildings
-- **Question:** "Are population-dense areas adequately covered by emergency services?"
-- **Operations:** Create service area buffers (5-minute drive = ~2 miles), assess population coverage, identify gaps in high-density areas
-- **Policy relevance:** Emergency preparedness, station siting decisions
-
----
-
-#### Arts & Culture
-
-**Option H: Cultural Asset Distribution**
-- **Data:** Public Art, Museums, Historic sites/markers, Neighborhoods
-- **Question:** "Do all neighborhoods have equitable access to cultural amenities?"
-- **Operations:** Count cultural assets per neighborhood, normalize by population, compare distribution across demographic groups
-- **Policy relevance:** Cultural equity, tourism, quality of life, neighborhood identity
-
----
-
-### Data Sources
-
-**OpenDataPhilly:** https://opendataphilly.org/datasets/
-- Most datasets available as GeoJSON, Shapefile, or CSV with coordinates
-- Always check the Metadata for a data dictionary of the fields.
-
-**Additional Sources:**
-- **Pennsylvania Open Data:** https://data.pa.gov/
-- **Census Bureau (via tidycensus):** Demographics, economic indicators, commute patterns
-- **TIGER/Line (via tigris):** Geographic boundaries
-
-### Recommended Starting Points
-
-**If you're feeling confident:** Choose an advanced challenge with multiple data layers. 
-**If you are a beginner, choose something more manageable that helps you understand the basics**
-
-
-**If you have a different idea:** Propose your own question! Just make sure:
-- You can access the spatial data
-- You can perform at least 2 spatial operations
-
 ### Your Analysis
 
 **Your Task:**
@@ -822,33 +710,36 @@ parks_proj <- st_transform(parks, crs = 4326)
 trees_proj <- st_transform(trees, crs = 4326)
 
 # Basic summary statistics
-cat("\n--- Summary Statistics ---\n")
 cat("Total parks in Philadelphia:", nrow(parks), "\n")
 cat("Total street trees in Philadelphia:", nrow(trees), "\n")
+```
 
+```{r, include=FALSE}
 # 2. Get Philadelphia-specific census tracts and demographics for the analysis
-# 下载费城县的 tract-level 数据 (geometry = TRUE 会包含地理边界)
 philly_tracts <- get_acs(
   geography = "tract",
   variables = c(
-    total_pop = "B01003_001",        # 总人口
-    median_income = "B19013_001",    # 家庭收入中位数
-    white = "B02001_002",            # 白人
-    black = "B02001_003",            # 黑人
-    asian = "B02001_005",            # 亚裔
-    hispanic = "B03003_003"          # 西语裔
+    total_pop = "B01003_001",        
+    median_income = "B19013_001",    
+    white = "B02001_002",            
+    black = "B02001_003",           
+    asian = "B02001_005",           
+    hispanic = "B03003_003"         
   ),
   state = "PA",
   county = "Philadelphia",
   geometry = TRUE,
   year = 2022,
-  survey = "acs5"
+  survey = "acs5",
+  cache = TRUE
 )
+```
 
+```{r}
 philly_tracts <- philly_tracts %>%
   select(GEOID, NAME, variable, estimate, geometry) %>%
   st_as_sf() %>%
-  st_transform(3857) %>%  # 投影到适合空间计算的坐标（如 Web Mercator）
+  st_transform(3857) %>%  
   pivot_wider(names_from = variable, values_from = estimate) %>%
   mutate(
     pct_white = white / total_pop * 100,
@@ -860,7 +751,6 @@ philly_tracts <- philly_tracts %>%
 
 philly_tracts_proj <- st_transform(philly_tracts, crs = 4326)
 
-cat("\n--- Summary Statistics ---\n")
 cat("Total tracts in Philadelphia:", nrow(philly_tracts), "\n")
 ```
 
@@ -927,7 +817,6 @@ philly_tracts_proj <- philly_tracts_proj %>%
 cor_test_income <- cor.test(philly_tracts_proj$median_income, philly_tracts_proj$dist_to_park_km, use = "complete.obs")
 cor_test_nonwhite <- cor.test(philly_tracts_proj$pct_nonwhite, philly_tracts_proj$dist_to_park_km, use = "complete.obs")
 
-cat("\n--- Correlation Results ---\n")
 cat("Income vs. Distance to Park (r):", round(cor_test_income$estimate, 3), "\n")
 cat("Pct Nonwhite vs. Distance to Park (r):", round(cor_test_nonwhite$estimate, 3), "\n")
 
@@ -959,31 +848,31 @@ ggplot(philly_tracts_proj %>% st_drop_geometry(),
 
 # --- 5. Map visualization: spatial distribution of green access ---
 green_access_map <- ggplot(philly_tracts_proj) +
-  # 普查区按到公园距离填充颜色
+  # Census tracts are color-filled by distance to parks
   geom_sf(
     aes(fill = dist_to_park_km),
     color = "white",
     linewidth = 0.1
   ) +
-  # 公园边界
+  # parks boundary
   geom_sf(
     data = parks_proj, 
-    fill = "#74c476", 
-    color = "#006d2c", 
+    fill = "#c7e9c0", 
+    color = "#a1d99b", 
     alpha = 0.7,
     linewidth = 0.3
   ) +
-  # 树木位置（抽样显示以避免过度拥挤）
+  # trees location
   geom_sf(
-    data = trees_proj %>% sample_n(min(5000, nrow(trees_proj))),  # 限制显示数量
-    color = "#238b45",
+    data = trees_proj %>% sample_n(min(5000, nrow(trees_proj))),  
+    color = "#006d2c",
     size = 0.1,
     alpha = 0.3
   ) +
-  # 使用绿色系连续色标
+  # Use a sequential color scale
   scale_fill_gradientn(
     name = "Distance to Park (km)",
-    colors = c("#f7fcf5", "#e5f5e0", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#006d2c", "#00441b"),
+    colors = c("#fff7ec", "#fee8c8", "#fdd49e", "#fdbb84", "#fc8d59", "#ef6548", "#d7301f", "#b30000"),
     limits = c(0, max(philly_tracts_proj$dist_to_park_km, na.rm = TRUE)),
     na.value = "grey80"
   ) +
@@ -994,7 +883,7 @@ green_access_map <- ggplot(philly_tracts_proj) +
   ) +
   theme_void()
 
-# 应用主题样式
+# Apply the theme style
 green_access_map + theme(
   panel.background = element_rect(fill = "white", color = NA),
   plot.background = element_rect(fill = "white", color = NA),
@@ -1006,18 +895,75 @@ green_access_map + theme(
   plot.caption = element_text(margin = margin(t = 15, unit = "pt"), face = "italic", size = 9)
 )
 ```
+```{r}
+# --- 6. Scatter Plot: Income vs. Park Accessibility ---
+scatter_plot <- ggplot(philly_tracts_proj %>% st_drop_geometry(), 
+                       aes(x = median_income, y = dist_to_park_km)) +
+  geom_point(aes(color = pct_nonwhite, size = total_pop), alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, color = "#e31a1c", linetype = "dashed") +
+  scale_color_gradientn(
+    name = "Nonwhite %",
+    colors = c("#fef0d9", "#fdcc8a", "#fc8d59", "#e34a33", "#b30000")
+  ) +
+  scale_size_continuous(name = "Population", range = c(1, 6)) +
+  labs(
+    title = "INCOME VS. PARK ACCESSIBILITY",
+    subtitle = "Each point represents a census tract (size = population, color = % nonwhite)",
+    x = "Median Household Income ($)",
+    y = "Distance to Nearest Park (km)",
+    caption = paste("Correlation r =", round(cor_test_income$estimate, 3))
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
+    legend.position = "right"
+  )
 
-**Analysis requirements:**
-- Clear code comments explaining each step
-- Appropriate CRS transformations
-- Summary statistics or counts
-- At least one map showing your findings
-- Brief interpretation of results (3-5 sentences)
+print(scatter_plot)
+
+# --- 7. Scatter Plot: Racial Composition vs. Park Accessibility ---
+scatter_plot_race <- ggplot(philly_tracts_proj %>% st_drop_geometry(), 
+                           aes(x = pct_nonwhite, y = dist_to_park_km)) +
+  geom_point(aes(color = median_income, size = total_pop), alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, color = "#e31a1c", linetype = "dashed") +
+  scale_color_gradientn(
+    name = "Median Income ($)",
+    colors = c("#f7fbff", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"),
+    labels = scales::dollar
+  ) +
+  scale_size_continuous(name = "Population", range = c(1, 6)) +
+  scale_x_continuous(labels = scales::percent_format(scale = 1)) +
+  labs(
+    title = "RACIAL COMPOSITION VS. PARK ACCESSIBILITY",
+    subtitle = "Each point represents a census tract (size = population, color = median income)",
+    x = "Percentage Nonwhite Population",
+    y = "Distance to Nearest Park (km)",
+    caption = paste("Correlation r =", round(cor_test_nonwhite$estimate, 3))
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
+    legend.position = "right"
+  )
+
+print(scatter_plot_race)
+
+```
+
+**Analysis requirements:**  
+- Clear code comments explaining each step  
+- Appropriate CRS transformations  
+- Summary statistics or counts  
+- At least one map showing your findings  
+- Brief interpretation of results (3-5 sentences)  
 
 **Your interpretation:**
 
 The spatial analysis and the provided visualizations suggest a clear pattern of inequitable access to parks in Philadelphia based on both race and income.  
-The statistical analysis showed a positive correlation between the percentage of nonwhite residents and distance to the park (r≈0.288), and a negative correlation between median income and park distance (r≈−0.197). This means that census tracts with a higher proportion of nonwhite residents or lower incomes tend to be farther away from the nearest park.  
+The statistical analysis showed a positive correlation between the percentage of nonwhite residents and distance to the park (r≈0.104), and a negative correlation between median income and park distance (r≈−0.132). This means that census tracts with a higher proportion of nonwhite residents or lower incomes tend to be farther away from the nearest park. More specifically, based on the two scatter plots, the visualizations further demonstrate that income distribution spans widely from approximately $20,000 to over $150,000, while most park distances cluster within 0-1.5 kilometers, though with notable outliers. Population sizes vary significantly across census tracts, ranging from very small to over 10,000 residents, though population size doesn't show systematic relationships with either income or park accessibility. The color coding reveals clear patterns: lower-income areas tend to have higher nonwhite percentages, while higher-income areas show lower nonwhite representation. Similarly, the racial composition plot shows communities range from nearly 0% to almost 100% nonwhite, with higher nonwhite percentage areas typically having lower incomes and lower nonwhite areas having higher incomes.  
+Notably, both correlation coefficients are relatively weak, suggesting that while statistically significant, income and race individually explain only limited variation in park accessibility. This complexity highlights that environmental justice issues exist but require nuanced understanding - some low-income or high-minority communities actually enjoy good park access, while the relationships are not absolute. The findings emphasize the need for multivariate analysis and targeted interventions rather than one-size-fits-all approaches to addressing green space inequality.
 The boxplot clearly visualizes this disparity:  
   - High Nonwhite tracts consistently exhibit a higher median distance to the nearest park compared to Low Nonwhite tracts, regardless of the income group.  
   - The most spatially disadvantaged group is the Low Income / High Nonwhite group, which has a median park distance of about 0.35 km, significantly higher than the High Income / Low Nonwhite group's median of approximately 0.2 km.  
@@ -1026,7 +972,7 @@ In summary, the findings strongly support the research question, demonstrating t
 
 
 ## Finally - A few comments about your incorporation of feedback!
-Take a few moments to clean up your markdown document and then write a line or two or three about how you may have incorporated feedback that you recieved after your first assignment. 
+I have incorporated feedback from my first assignment by hiding sensitive API keys in setup code blocks with include = FALSE and suppressing verbose progress bars to create cleaner, more professional output. I also improved code organization by separating data loading, analysis, and visualization into logical sections with clear documentation. 
 
 ---
 
