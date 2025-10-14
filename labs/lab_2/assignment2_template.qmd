@@ -436,7 +436,7 @@ top1_pop
   - PERRY has the largest underserved vulnerable population, reflecting both a relatively high overall share of vulnerable residents and the presence of several tracts located far from hospitals. This suggests that limited healthcare infrastructure and rural settlement patterns contribute to significant access challenges for vulnerable groups in the county.
   
 - Are there any patterns in where underserved counties are located?  
-  - Underserved counties are primarily located in rural and mountainous regions of Pennsylvania, particularly in the north-central and western parts of the state. These areas have lower population density, fewer major healthcare facilities, and longer travel distances between communities, making them more susceptible to healthcare access inequities.
+  - The choropleth map reveals clear geographic disparities in healthcare access across Pennsylvania, with underserved counties concentrated primarily in rural northern and central regions. This pattern contrasts sharply with urban centers like Philadelphia and Pittsburgh, which show significantly better healthcare accessibility. The clustering of high-need counties in remote areas highlights systemic infrastructure gaps and underscores the need for targeted healthcare interventions in Pennsylvania's rural communities.
   
 ---
 
@@ -890,7 +890,7 @@ green_access_map + theme(
   legend.box.margin = margin(l = 10, unit = "pt"),
   legend.title = element_text(face = "bold", size = 10),
   legend.text = element_text(size = 8),
-  plot.title = element_text(face = "bold", size = 16, hjust = 0.6),
+  plot.title = element_text(face = "bold", size = 16, hjust = 0.4),
   plot.subtitle = element_text(size = 12, hjust = 0.5, margin = margin(b = 15, t = 5, unit = "pt")),
   plot.caption = element_text(margin = margin(t = 15, unit = "pt"), face = "italic", size = 9)
 )
@@ -969,7 +969,7 @@ In summary, the findings strongly support the research question, demonstrating t
 
 
 ## Finally - A few comments about your incorporation of feedback!
-I have incorporated feedback from my first assignment by hiding sensitive API keys in setup code blocks with include = FALSE and suppressing verbose progress bars to create cleaner, more professional output. I also improved code organization by separating data loading, analysis, and visualization into logical sections with clear documentation. 
+I have incorporated feedback from my first assignment by hiding sensitive API keys in setup code blocks with "include = FALSE" and suppressing verbose progress bars to create cleaner, more professional output. I also improved code organization by separating data loading, analysis, and visualization into logical sections with clear documentation. 
 
 ---
 
