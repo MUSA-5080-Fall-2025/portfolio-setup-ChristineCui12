@@ -673,17 +673,17 @@ ggplot(
 ```
 **Interpretation:** The distribution reveals that the vast majority of vulnerable populations reside within 5 miles of healthcare facilities, with a sharp decline in population counts as distance increases. However, a small but significant number of vulnerable individuals still face substantial barriers, living more than 15 miles from the nearest hospital, highlighting persistent healthcare access disparities in remote areas of Pennsylvania.
 
-**Suggested chart types:**
-- Histogram or density plot of distances
-- Box plot comparing distances across regions
-- Bar chart of underserved tracts by county
-- Scatter plot of distance vs. vulnerable population size
+**Suggested chart types:**  
+- Histogram or density plot of distances  
+- Box plot comparing distances across regions  
+- Bar chart of underserved tracts by county  
+- Scatter plot of distance vs. vulnerable population size  
 
-**Requirements:**
-- Clear axes labels with units
-- Appropriate title
-- Professional formatting
-- Brief interpretation (1-2 sentences as a caption or in text)
+**Requirements:**  
+- Clear axes labels with units  
+- Appropriate title  
+- Professional formatting  
+- Brief interpretation (1-2 sentences as a caption or in text)  
 
 ---
 
@@ -778,13 +778,13 @@ cat("Total tracts in Philadelphia:", nrow(philly_tracts), "\n")
 
 Use at least TWO spatial operations to answer your research question.
 
-**Required operations (choose 2+):**
-- Buffers
-- Spatial joins
-- Spatial filtering with predicates
-- Distance calculations
-- Intersections or unions
-- Point-in-polygon aggregation
+**Required operations (choose 2+):**  
+- Buffers  
+- Spatial joins  
+- Spatial filtering with predicates  
+- Distance calculations  
+- Intersections or unions  
+- Point-in-polygon aggregation  
 
 **Your Task:**
 ```{r}
@@ -890,7 +890,7 @@ green_access_map + theme(
   legend.box.margin = margin(l = 10, unit = "pt"),
   legend.title = element_text(face = "bold", size = 10),
   legend.text = element_text(size = 8),
-  plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+  plot.title = element_text(face = "bold", size = 16, hjust = 0.6),
   plot.subtitle = element_text(size = 12, hjust = 0.5, margin = margin(b = 15, t = 5, unit = "pt")),
   plot.caption = element_text(margin = margin(t = 15, unit = "pt"), face = "italic", size = 9)
 )
@@ -962,11 +962,8 @@ print(scatter_plot_race)
 **Your interpretation:**
 
 The spatial analysis and the provided visualizations suggest a clear pattern of inequitable access to parks in Philadelphia based on both race and income.  
-The statistical analysis showed a positive correlation between the percentage of nonwhite residents and distance to the park (r≈0.104), and a negative correlation between median income and park distance (r≈−0.132). This means that census tracts with a higher proportion of nonwhite residents or lower incomes tend to be farther away from the nearest park. More specifically, based on the two scatter plots, the visualizations further demonstrate that income distribution spans widely from approximately $20,000 to over $150,000, while most park distances cluster within 0-1.5 kilometers, though with notable outliers. Population sizes vary significantly across census tracts, ranging from very small to over 10,000 residents, though population size doesn't show systematic relationships with either income or park accessibility. The color coding reveals clear patterns: lower-income areas tend to have higher nonwhite percentages, while higher-income areas show lower nonwhite representation. Similarly, the racial composition plot shows communities range from nearly 0% to almost 100% nonwhite, with higher nonwhite percentage areas typically having lower incomes and lower nonwhite areas having higher incomes.  
-Notably, both correlation coefficients are relatively weak, suggesting that while statistically significant, income and race individually explain only limited variation in park accessibility. This complexity highlights that environmental justice issues exist but require nuanced understanding - some low-income or high-minority communities actually enjoy good park access, while the relationships are not absolute. The findings emphasize the need for multivariate analysis and targeted interventions rather than one-size-fits-all approaches to addressing green space inequality.
-The boxplot clearly visualizes this disparity:  
-  - High Nonwhite tracts consistently exhibit a higher median distance to the nearest park compared to Low Nonwhite tracts, regardless of the income group.  
-  - The most spatially disadvantaged group is the Low Income / High Nonwhite group, which has a median park distance of about 0.35 km, significantly higher than the High Income / Low Nonwhite group's median of approximately 0.2 km.  
+The statistical analysis showed a positive correlation between the percentage of nonwhite residents and distance to the park (r≈0.104), and a negative correlation between median income and park distance (r≈−0.132). This means that census tracts with a higher proportion of nonwhite residents or lower incomes tend to be farther away from the nearest park. Notably, both correlation coefficients are relatively weak, suggesting that while statistically significant, income and race individually explain only limited variation in park accessibility. This complexity highlights that environmental justice issues exist but require nuanced understanding - some low-income or high-minority communities actually enjoy good park access, while the relationships are not absolute. The findings emphasize the need for multivariate analysis and targeted interventions rather than one-size-fits-all approaches to addressing green space inequality.
+The boxplot clearly visualizes high Nonwhite tracts consistently exhibit a higher median distance to the nearest park compared to Low Nonwhite tracts, regardless of the income group. And the most spatially disadvantaged group is the Low Income / High Nonwhite group, which has a median park distance of about 0.35 km, significantly higher than the High Income / Low Nonwhite group's median of approximately 0.2 km.  
 The choropleth map, "Green Space Accessibility in Philadelphia," visually confirms this pattern, showing that the darkest green areas (closest proximity to parks) are concentrated along the major river parks, while lighter green and white areas (lower accessibility) are prevalent in parts of North and Northeast Philadelphia, regions that often correlate with the socioeconomically disadvantaged tracts identified in the boxplot.  
 In summary, the findings strongly support the research question, demonstrating that low-income and minority neighborhoods in Philadelphia generally experience less equitable spatial access to nearby green spaces.
 
