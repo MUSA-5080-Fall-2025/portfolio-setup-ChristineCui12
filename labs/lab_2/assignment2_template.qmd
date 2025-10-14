@@ -221,8 +221,8 @@ For each vulnerable tract, calculate the distance to the nearest hospital.
 **Your Task:**
 ```{r}
 # Transform to appropriate projected CRS
-pa_tracts_proj <- st_transform(pa_tracts_demographics, crs = 5070)
-hospitals_proj <- st_transform(hospitals, crs = 5070)
+pa_tracts_proj <- st_transform(pa_tracts_demographics, crs = 4326)
+hospitals_proj <- st_transform(hospitals, crs = 4326)
 
 # Calculate distance from each tract centroid to nearest hospital 中心点 (Centroid)
 tract_centroids <- st_centroid(pa_tracts_proj)
@@ -342,7 +342,7 @@ ggplot(county_map) +
   labs(
     title = "Most Underserved Counties",
     subtitle = "Pennsylvania, United States",
-    caption = "Source: ACS 2019–2023"
+    caption = "Source: ACS 2018–2022"
   ) +
   theme_void()
 ```
@@ -475,6 +475,7 @@ ggplot() +
     plot.caption = element_text(size = 9, color = "gray40"),
     legend.position = "bottom"
   )
+
 ```
 
 **Requirements:**
@@ -550,26 +551,40 @@ Create a visualization showing the distribution of distances to hospitals for vu
 library(ggplot2)
 library(scales)
 
-vulnerable_dist <- pa_tracts_demographics %>%
+vulnerable_tract <- pa_tracts_demographics %>%
   filter(vulnerable == TRUE)
-ggplot(pa_tracts_proj, aes(x = dist_to_hospital_mi)) +
+ggplot(
+  # 1. 筛选出脆弱区域的数据进行绘图
+  data = pa_tracts_proj %>% filter(vulnerable == TRUE), 
+  aes(x = dist_to_hospital_mi)
+) +
+  # 2. 使用 geom_histogram 并设置 weight = total_pop
+  #    这使得直方图的条高代表该距离范围内的总人口数
   geom_histogram(
-    aes(y = ..density..), 
+    aes(y = after_stat(count), weight = total_pop), 
     bins = 30, 
     fill = "#74add1", 
     color = "white", 
     alpha = 0.8
   ) +
-  geom_density(color = "#0571b0", size = 1) +
+  # 3. 删除 geom_density()：密度图不适用于加权人口总数直方图
+  
+  # 4. 垂直线和标注
   geom_vline(xintercept = 15, linetype = "dashed", color = "red", size = 1) +
-  annotate("text", x = 15.5, y = 0.02, label = "15-mile threshold", hjust = 0, color = "red", size = 3) +
+  # 注意：y 轴现在是人口数，0.02 可能太小，需要调整 y 轴标注位置
+  # 假设最大人口数大约在 100,000 左右，将 y 调整为 10000 
+  annotate("text", x = 15.5, y = 10000, label = "15-mile threshold", hjust = 0, color = "red", size = 3) +
+  
+  # 5. 标签和主题
   labs(
-    title = "Distribution of Distance to Nearest Hospital for Vulnerable Tracts",
-    subtitle = "Dashed line indicates the 15-mile threshold used to define underserved areas",
+    title = "Distribution of Hospital Distance for Vulnerable Population",
+    subtitle = "Histogram weighted by the total population of vulnerable census tracts",
     x = "Distance to Nearest Hospital (miles)",
-    y = "Density",
-    caption = "Source: ACS (2022), Pennsylvania Hospital Data, TIGER/Line Shapefiles"
+    # Y 轴标签现在代表人口数量
+    y = "Total Vulnerable Population Count", 
+    caption = "Source: ACS (2022), Pennsylvania Hospital Data"
   ) +
+  scale_y_continuous(labels = scales::comma) + # 格式化 Y 轴数字
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold"),
@@ -710,9 +725,17 @@ Choose ONE of the following challenge exercises, or propose your own research qu
 
 ```{r}
 # Load your additional dataset
+parks <- st_read(here("labs/lab_2/data/PPR_Properties.geojson"))
+trees <- st_read(here("labs/lab_2/data/ppr_tree_canopy_points_2015.geojson"))
 
+# Transform to match our previous analysis (EPSG:4326)
+parks_proj <- st_transform(parks, crs = 4326)
+trees_proj <- st_transform(trees, crs = 4326)
 
-
+# Basic summary statistics
+cat("\n--- Summary Statistics ---\n")
+cat("Total parks in Philadelphia:", nrow(parks), "\n")
+cat("Total street trees in Philadelphia:", nrow(trees), "\n")
 
 ```
 

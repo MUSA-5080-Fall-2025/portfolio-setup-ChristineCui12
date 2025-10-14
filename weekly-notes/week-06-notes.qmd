@@ -26,7 +26,8 @@ date: "2025-10-13"
     - Model 2: With Interaction (Different Slopes)
     - Interpreting the Interaction Coefficients()
     - Compare Model Performance
-    
+    - When Not To Use Interactions
+    - 
         
 ## Coding Techniques
 - [New R functions or approaches]
