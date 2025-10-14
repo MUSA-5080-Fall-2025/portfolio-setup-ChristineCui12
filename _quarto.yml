@@ -24,6 +24,8 @@ website:
             text: "In-Class Lab 4: Spatial Operations with Pennsylvania Data" 
           - href: weekly-notes/week-05-notes.qmd
             text: "Week 5: Introduction to Linear Regression"
+          - href: weekly-notes/week-06-notes.qmd
+            text: "Week 6: Spatial Machine Learning & Advanced Regression"
       - text: "Labs"
         menu:
           - href: labs/lab_0/lab0.qmd
