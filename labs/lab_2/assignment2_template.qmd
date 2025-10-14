@@ -77,13 +77,16 @@ cat("3. Census Tracts:", st_crs(census_tracts)$input, "\n")
 ```
 
 **Questions to answer:**
-- How many hospitals are in your dataset? 
+
+- How many hospitals are in your dataset?  
   - 223
-- How many census tracts?
-  - 3445
-- What coordinate reference system is each dataset in? 
-  - PA county boundaries CRS: PCS WGS 84 / Pseudo-Mercator
-  - PA hospitals CRS: GCS WGS 84
+
+- How many census tracts?  
+  - 3,445
+
+- What coordinate reference system is each dataset in?  
+  - PA county boundaries CRS: PCS WGS 84 / Pseudo-Mercator  
+  - PA hospitals CRS: GCS WGS 84  
   - PA census tracts CRS: GCS NAD 83
 
 ---
@@ -159,18 +162,22 @@ median_tract_income <- pa_tracts_demographics %>%
 ```
 
 **Questions to answer:**
-- What year of ACS data are you using?
+
+- What year of ACS data are you using?  
   - 2022 ACS data
-- How many tracts have missing income data?
+
+- How many tracts have missing income data?  
   - 62 tracts
-- What is the median income across all PA census tracts?
+
+- What is the median income across all PA census tracts?  
   - $70,188
+  
 ---
 
 #### Step 3: Define Vulnerable Populations 
 
-Identify census tracts with vulnerable populations based on TWO criteria:
-1. Low median household income (choose an appropriate threshold)
+Identify census tracts with vulnerable populations based on TWO criteria:  
+1. Low median household income (choose an appropriate threshold)  
 2. Significant elderly population (choose an appropriate threshold)
 
 **Your Task:**
@@ -204,14 +211,19 @@ vulnerable_summary
 ```
 
 **Questions to answer:**
-- What income threshold did you choose and why?
-  - I defined low-income tracts as those with a median household income below the 25th percentile of all Pennsylvania census tracts. This data-driven threshold identifies the bottom quarter of tracts in terms of income, representing communities that are relatively economically disadvantaged compared to the rest of the state. Using a percentile-based cutoff avoids arbitrary dollar amounts and allows for consistent comparison across regions and time periods.
-- What elderly population threshold did you choose and why?
-  - I defined tracts with a significant elderly population as those where the percentage of residents aged 65 and over exceeds the 75th percentile statewide. This threshold highlights the top quartile of tracts with the highest concentration of older adults—populations that are more likely to experience increased healthcare needs and mobility challenges. By focusing on the upper quartile, the analysis targets areas where aging demographics are most pronounced and where healthcare accessibility is especially critical.
-- How many tracts meet your vulnerability criteria?
-  - 165 tracts
-- What percentage of PA census tracts are considered vulnerable by your definition?
+
+- What income threshold did you choose and why?  
+  - I defined low-income tracts as those with a median household income below the 25th percentile of all Pennsylvania census tracts. This data-driven threshold identifies the bottom quarter of tracts in terms of income, representing communities that are relatively economically disadvantaged compared to the rest of the state. Using a percentile-based cutoff avoids arbitrary dollar amounts and allows for consistent comparison across regions and time periods.  
+  
+- What elderly population threshold did you choose and why?  
+  - I defined tracts with a significant elderly population as those where the percentage of residents aged 65 and over exceeds the 75th percentile statewide. This threshold highlights the top quartile of tracts with the highest concentration of older adults—populations that are more likely to experience increased healthcare needs and mobility challenges. By focusing on the upper quartile, the analysis targets areas where aging demographics are most pronounced and where healthcare accessibility is especially critical.  
+  
+- How many tracts meet your vulnerability criteria?  
+  - 165 tracts  
+  
+- What percentage of PA census tracts are considered vulnerable by your definition?  
   - 4.8%
+  
 ---
 
 #### Step 4: Calculate Distance to Hospitals 
@@ -253,15 +265,19 @@ vulnerable_distance_summary
 - Explain why you chose your projection
 
 **Questions to answer:**
-- What is the average distance to the nearest hospital for vulnerable tracts?
-  - 4.75 miles
-- What is the maximum distance?
-  - 19.32 miles
-- How many vulnerable tracts are more than 15 miles from the nearest hospital?
-  - 10 tracts
-- Why you chose your projection
-  - For this analysis, I used the NAD83 / Conus Albers Equal Area projection (EPSG:5070). This projection is commonly used for spatial analysis across the continental United States because it preserves both area and distance reasonably well over large regions. Pennsylvania spans multiple UTM zones, so using a single statewide or national projection like Albers Equal Area helps avoid spatial distortion that would occur near zone boundaries. The units of this projection are in meters, which allows for accurate distance calculations when measuring the proximity of census tracts to hospitals. Overall, EPSG:5070 provides a balance between accuracy and consistency, making it appropriate for statewide healthcare accessibility analysis.
 
+- What is the average distance to the nearest hospital for vulnerable tracts?  
+  - 4.75 miles
+
+- What is the maximum distance?  
+  - 19.32 miles
+
+- How many vulnerable tracts are more than 15 miles from the nearest hospital?  
+  - 10 tracts
+
+- Why you chose your projection  
+  - For this analysis, I used the NAD83 / Conus Albers Equal Area projection (EPSG:5070). This projection is commonly used for spatial analysis across the continental United States because it preserves both area and distance reasonably well over large regions. Pennsylvania spans multiple UTM zones, so using a single statewide or national projection like Albers Equal Area helps avoid spatial distortion that would occur near zone boundaries. The units of this projection are in meters, which allows for accurate distance calculations when measuring the proximity of census tracts to hospitals. Overall, EPSG:5070 provides a balance between accuracy and consistency, making it appropriate for statewide healthcare accessibility analysis.
+  
 ---
 
 #### Step 5: Identify Underserved Areas 
@@ -288,11 +304,12 @@ underserved_summary
 ```
 
 **Questions to answer:**
-- How many tracts are underserved?
+
+- How many tracts are underserved?  
   - 10 tracts
-- What percentage of vulnerable tracts are underserved?
+- What percentage of vulnerable tracts are underserved?  
   - 6.1%
-- Does this surprise you? Why or why not?
+- Does this surprise you? Why or why not?  
   - The results show that only a small percentage of vulnerable tracts are located more than 15 miles from the nearest hospital. This is not particularly surprising, as Pennsylvania has a relatively dense healthcare network, especially around urban and suburban areas. However, the underserved tracts that do exist are likely concentrated in rural or mountainous regions where population density is low and travel distances are longer. These areas may require targeted healthcare investment or mobile medical services to improve access.
 
 ---
@@ -348,7 +365,7 @@ ggplot() +
   labs(
     title = "PERCENT UNDERSERVED BY PENNSYLVANIA COUNTIES",
     subtitle = "Pennsylvania, US",
-    caption = "Source: American Community Survey (2022)"
+    caption = "Data sources: ACS (2022)"
   ) +
   
   # Clean minimal theme with custom styling
@@ -381,16 +398,16 @@ ggplot() +
       margin = margin(t = 10, unit = "pt")
     ),
     legend.position = "right",
-    legend.box.margin = margin(l = 10, unit = "pt")
+    legend.box.margin = margin(l = 0, unit = "pt")
   )
 ```
 
 **Required county-level statistics:**
-- Number of vulnerable tracts
+- Number of vulnerable tracts  
 - Number of underserved tracts  
-- Percentage of vulnerable tracts that are underserved
-- Average distance to nearest hospital for vulnerable tracts
-- Total vulnerable population
+- Percentage of vulnerable tracts that are underserved  
+- Average distance to nearest hospital for vulnerable tracts  
+- Total vulnerable population  
 
 ```{r}
 top5_pct <- county_summary %>% 
@@ -406,14 +423,16 @@ top1_pop
 ```
 
 **Questions to answer:**
-- Which 5 counties have the highest percentage of underserved vulnerable tracts?
+
+- Which 5 counties have the highest percentage of underserved vulnerable tracts?  
   - The top five counties with the highest percentage of underserved vulnerable tracts are BRADFORD,COLUMBIA,JUNIATA,MONROE and PERRY. They are primarily rural, located in northern and central Pennsylvania. These areas tend to have sparse hospital coverage and lower population density, contributing to longer travel distances for healthcare access.
   
-- Which counties have the most vulnerable people living far from hospitals?
+- Which counties have the most vulnerable people living far from hospitals?  
   - PERRY has the largest underserved vulnerable population, reflecting both a relatively high overall share of vulnerable residents and the presence of several tracts located far from hospitals. This suggests that limited healthcare infrastructure and rural settlement patterns contribute to significant access challenges for vulnerable groups in the county.
   
-- Are there any patterns in where underserved counties are located?
+- Are there any patterns in where underserved counties are located?  
   - Underserved counties are primarily located in rural and mountainous regions of Pennsylvania, particularly in the north-central and western parts of the state. These areas have lower population density, fewer major healthcare facilities, and longer travel distances between communities, making them more susceptible to healthcare access inequities.
+  
 ---
 
 #### Step 7: Create Summary Table 
@@ -508,7 +527,7 @@ ggplot() +
   labs(
     title = "URDERSERVED COUNTIES AND HOSPITAL LOCATION",
     subtitle = "Pennsylvania, US",
-    caption = "Source: American Community Survey (2022), Pennsylvania Hospital Data"
+    caption = "Data sources: ACS (2022), Pennsylvania Hospital Data"
   ) +
   
   # Clean minimal theme with custom styling
@@ -585,7 +604,7 @@ ggplot() +
   labs(
     title = "Underserved Vulnerable Tracts in Pennsylvania",
     subtitle = "Red areas represent vulnerable tracts located more than 15 miles from the nearest hospital",
-    caption = "Data sources: ACS (2022), Pennsylvania Hospital Data, U.S. Census TIGER/Line Shapefiles"
+    caption = "Data sources: ACS (2022)"
   ) +
   
   # 7. 设置样式
@@ -593,7 +612,7 @@ ggplot() +
   theme(
     plot.title = element_text(size = 18, face = "bold"),
     plot.subtitle = element_text(size = 12),
-    plot.caption = element_text(size = 9, color = "grey50")
+    plot.caption = element_text(size = 9, color = "grey50",face = "italic",)
   )
 
 
@@ -659,7 +678,9 @@ ggplot(
     plot.subtitle = element_text(size = 11),
     plot.caption = element_text(size = 9, color = "gray50")
   )
+
 ```
+**Interpretation:** The distribution reveals that the vast majority of vulnerable populations reside within 5 miles of healthcare facilities, with a sharp decline in population counts as distance increases. However, a small but significant number of vulnerable individuals still face substantial barriers, living more than 15 miles from the nearest hospital, highlighting persistent healthcare access disparities in remote areas of Pennsylvania.
 
 **Suggested chart types:**
 - Histogram or density plot of distances
@@ -672,7 +693,7 @@ ggplot(
 - Appropriate title
 - Professional formatting
 - Brief interpretation (1-2 sentences as a caption or in text)
-  - **11111**
+
 ---
 
 ## Part 3: Bring Your Own Data Analysis 
@@ -839,24 +860,27 @@ philly_tracts <- philly_tracts %>%
 
 philly_tracts_proj <- st_transform(philly_tracts, crs = 4326)
 
+cat("\n--- Summary Statistics ---\n")
+cat("Total tracts in Philadelphia:", nrow(philly_tracts), "\n")
 ```
 
 **Questions to answer:**
-- What dataset did you choose and why?
-- What is the data source and date?
-- How many features does it contain?
-- What CRS is it in? Did you need to transform it?
+
+- What dataset did you choose and why?  
+  - I chose three datasets for this analysis: PPR Properties (parks), PPR Tree Canopy Points (street trees), and demographic data from the U.S. Census Bureau's American Community Survey (ACS) for Philadelphia census tracts. These datasets were selected to address the Green Space Equity challenge, which aims to answer the question: "Do low-income and minority neighborhoods have equitable access to green space?" To investigate this, I need spatial data on green infrastructure (parks and trees) and demographic data (like race and income) at a neighborhood level (census tracts).
+- What is the data source and date?  
+  - Parks & Trees: The data comes from Philadelphia Parks & Recreation (PPR), likely sourced from OpenDataPhilly. The tree canopy data is explicitly from 2015, as indicated by the filename (ppr_tree_canopy_points_2015.geojson). The date for the park properties is not specified in the file name but is assumed to be a contemporary dataset from the same source.  
+  - Census Demographics: The data is from the U.S. Census Bureau. Specifically, it's the 2022 American Community Survey (ACS) 5-Year Estimates.
+- How many features does it contain?  
+  - The parks data has 504 features, trees data has 2480 features, and census data has 408 features.
+- What CRS is it in? Did you need to transform it?  
+  - The original CRS for the parks and trees datasets is not stated in the code, but it is clear that a transformation was necessary. Both the parks and trees datasets were immediately re-projected to WGS 84 (EPSG: 4326) to ensure they align. Similarly, the census tract data, after being downloaded, was transformed first to a projected CRS suitable for spatial calculations (EPSG: 3857) and then to WGS 84 (EPSG: 4326) to match the other layers. This standardization is crucial for performing accurate spatial operations.
 
 ---
 
 2. **Pose a research question**
 
-**Do low-income and minority neighborhoods have equitable access to green space?**
-
-**Examples:**
-- "Do vulnerable tracts have adequate public transit access to hospitals?"
-- "Are EMS stations appropriately located near vulnerable populations?"
-- "Do areas with low vehicle access have worse hospital access?"
+- **Do low-income and minority neighborhoods have equitable access to green space?**
 
 ---
 
@@ -966,7 +990,7 @@ green_access_map <- ggplot(philly_tracts_proj) +
   labs(
     title = "GREEN SPACE ACCESSIBILITY IN PHILADELPHIA",
     subtitle = "Distance to Nearest Park by Census Tract",
-    caption = "Source: OpenDataPhilly, ACS 2022"
+    caption = "Data sources: ACS (2022)"
   ) +
   theme_void()
 
@@ -979,7 +1003,7 @@ green_access_map + theme(
   legend.text = element_text(size = 8),
   plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
   plot.subtitle = element_text(size = 12, hjust = 0.5, margin = margin(b = 15, t = 5, unit = "pt")),
-  plot.caption = element_text(margin = margin(t = 15, unit = "pt"), face = "italic", family = "mono", size = 9)
+  plot.caption = element_text(margin = margin(t = 15, unit = "pt"), face = "italic", size = 9)
 )
 ```
 
@@ -992,7 +1016,13 @@ green_access_map + theme(
 
 **Your interpretation:**
 
-[Write your findings here]
+The spatial analysis and the provided visualizations suggest a clear pattern of inequitable access to parks in Philadelphia based on both race and income.  
+The statistical analysis showed a positive correlation between the percentage of nonwhite residents and distance to the park (r≈0.288), and a negative correlation between median income and park distance (r≈−0.197). This means that census tracts with a higher proportion of nonwhite residents or lower incomes tend to be farther away from the nearest park.  
+The boxplot clearly visualizes this disparity:  
+  - High Nonwhite tracts consistently exhibit a higher median distance to the nearest park compared to Low Nonwhite tracts, regardless of the income group.  
+  - The most spatially disadvantaged group is the Low Income / High Nonwhite group, which has a median park distance of about 0.35 km, significantly higher than the High Income / Low Nonwhite group's median of approximately 0.2 km.  
+The choropleth map, "Green Space Accessibility in Philadelphia," visually confirms this pattern, showing that the darkest green areas (closest proximity to parks) are concentrated along the major river parks, while lighter green and white areas (lower accessibility) are prevalent in parts of North and Northeast Philadelphia, regions that often correlate with the socioeconomically disadvantaged tracts identified in the boxplot.  
+In summary, the findings strongly support the research question, demonstrating that low-income and minority neighborhoods in Philadelphia generally experience less equitable spatial access to nearby green spaces.
 
 
 ## Finally - A few comments about your incorporation of feedback!
