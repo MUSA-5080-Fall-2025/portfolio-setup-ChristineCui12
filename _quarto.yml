@@ -38,6 +38,8 @@ website:
         menu:
           - href: midterm/CuiXinyuan_Presentation.qmd
             text: "Midterm Slides"
+          - href: midterm/CuiXinyuan_Appendix.qmd
+            text: "Midterm Appendix"
 format:
   html:
     theme: cosmo
