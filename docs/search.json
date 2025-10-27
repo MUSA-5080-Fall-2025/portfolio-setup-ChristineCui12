@@ -823,7 +823,7 @@
     "href": "labs/lab_3/Presentation_slides_final.html#recommendations-and-limitations",
     "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
     "section": "Recommendations and Limitations",
-    "text": "Recommendations and Limitations\n\nCorrect the assessed values in low-income communities that have been systematically overestimated.\nRoutinely incorporate the effective spatial features—particularly surrounding transaction prices and neighborhood fixed effects.\n\n\n\n\n\n\n\nLimitations: Algorithmic Fairness\n\n\n\nSpatial Coverage Bias and Data Quality Bias\nFeature Omission Bias and Spatial Dependence Bias"
+    "text": "Recommendations and Limitations\n\nCorrect the assessed values in low-income communities that have been systematically overestimated.\nRoutinely incorporate the effective spatial features—particularly surrounding transaction prices and neighborhood fixed effects.\nExtreme high values almost exclusively stem from corporate transactions and require manual review for outliers.\n\n\n\n\n\n\n\nLimitations: Algorithmic Fairness\n\n\n\nSpatial Coverage Bias and Data Quality Bias\nFeature Omission Bias and Spatial Dependence Bias"
   },
   {
     "objectID": "labs/lab_3/Presentation_slides_final.html#why-are-they-expensive",

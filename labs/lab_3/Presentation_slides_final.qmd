@@ -178,6 +178,7 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 
 1. Correct the assessed values in **low-income communities** that have been **systematically overestimated**.
 2. Routinely incorporate the effective **spatial features**—particularly surrounding transaction prices and neighborhood fixed effects.
+3. **Extreme high values** almost exclusively stem from corporate transactions and require manual review for outliers.
 
 ::: {.callout-important}
 ## Limitations: Algorithmic Fairness
