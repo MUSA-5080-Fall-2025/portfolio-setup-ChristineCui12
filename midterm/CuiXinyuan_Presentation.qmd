@@ -87,13 +87,6 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 - Account for the specific **"micro-market"** in which a property is situated.
 :::
 :::
-
-```{r}
-#| eval: true
-#| echo: false
-# price histogram
-
-```
 :::
 
 
