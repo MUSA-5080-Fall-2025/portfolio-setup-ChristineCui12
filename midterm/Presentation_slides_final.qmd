@@ -1,0 +1,182 @@
+---
+title: "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation"
+subtitle: "Lumberjack Consultancy"
+author: "Jinyang Xu, Xinyuan(Christine) Cui, Yuqing(Demi) Yang"
+date: "October 27, 2025"
+format: 
+  revealjs:
+    theme: simple
+    slide-number: true
+    smaller: true
+    scrollable: true
+---
+
+# Chapter 1. The Challenge: Rethinking How Philadelphia Values Its Homes
+
+## The Problem
+
+Every year, thousands of Philadelphians buy or sell homes, and every transaction tells a story about how people value location, convenience, and opportunity.  
+Yet the city’s current Automated Valuation Model doesn’t always capture these stories. Some neighborhoods are undervalued, while others bear unfairly high assessments.
+
+::: {.callout-tip}
+## What we are trying to explore?
+
+1. **Price Gap:** Why do two homes with similar size and design sell for very different prices in Philadelphia?
+2. **Spatial Drivers:** Which neighborhood, accessibility, and socioeconomic factors drive these differences?
+3. **Fair Valuation:** How can understanding them help the city create a fairer, smarter system for property tax assessment?
+
+:::
+
+---
+
+## Data Sources
+
+::: {.columns}
+::: {.column width="50%"}
+### 🏠Property sales
+(n = 34,559 2023-2024)
+
+- Livable Area
+- Bedrooms Counts
+- Bathrooms Counts
+- House Age
+- Interior Condition
+- Quality Grade
+- Fireplaces
+- Garage Spaces
+- Central Air
+- Market Value
+- **Sale Price**
+:::
+
+::: {.column width="50%"}
+### 🔢Census ACS
+(n = 2023)
+
+- Median Income
+- Education Level
+- Unemployment Rate
+
+### 🏛OpenDataPhilly
+
+- Transit
+- Parks and Recreation center
+- Hospitals
+- Crime(2023)
+- Point of Interest
+:::
+:::
+
+# Chapter 2. The Approach: From Simple Models to Smarter Predictions
+
+
+
+## Where Are Expensive Homes?
+::: {.columns}
+::: {.column width="62%"}
+![](Housing Sales in Philadelphia.png)
+:::
+
+
+::: {.columns}
+::: {.column width="38%"}
+
+- Residential sale prices exhibited clear signs of **spatial clustering**.
+-  **highest-priced properties**: Center City core, University City.
+-  **Middle & Lower-Price tiers** : North Philadelphia, West Philadelphia (outside the university sphere), and South Philadelphia.
+- Account for the specific **"micro-market"** in which a property is situated.
+:::
+:::
+
+```{r}
+#| eval: true
+#| echo: false
+# price histogram
+
+```
+:::
+
+
+---
+
+## Why Are They Expensive?
+![](Buffered Area Mean Sold Price of 2022.png)
+
+---
+
+## Highlight
+![Our adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).](highlight.png)
+
+- **Principle**：Retain all information that the data tells us (including outliers) rather than deleting it.
+
+- **Objective**：Ensure equity.
+
+- **Relationship Formula**: `Sale Price = -9189.29 + 1.03*Market value`
+
+- **Approach**: Unreliable sale price(**low** weight)~ Reliable sale price(**high** weight)
+
+
+## Model Building and Validation
+
+**Model Performance Improves with Each Layer**
+
+| Model | CV RMSE (log) | R² | RMSE |
+|-------|---------------|----|------|
+| Structural Only | 0.5497 | 0.5235 | 221675.8 |
+| + Census | 0.4519 | 0.6779 | 178383.4 |
+| + Spatial | 0.3994 | 0.7486 | 132547.4 |
+| + Interactions/FE | 0.389 | 0.7611 | 124417.4|
+
+- R² = 0.76  => The model explains **76%** of the variation in residential sale prices.
+- RMSE = 124,417.4  => The average error between the model's predicted sale price and the actual sale price is approximately $\$124,417.4$.
+
+::: {.callout-important}
+## Important
+- For K-fold cross-validation, we use the **entire dataset with replaced outliers for training** to maintain consistency with the model derivation process. For the final test, however, we use a **purified set that excludes all handled data**, ensuring a reliable performance evaluation on genuine, trustworthy data.
+:::
+
+# Chapter 3. The Insight: Interpretation and Reality
+
+## Key Factors
+
+1. **Livable Area**
+2. **Comparable Sales**
+3. **Interior Condition**
+4. **Zip Code**
+
+
+## Identifying the Hardest-to-Predict Neighborhoods
+
+::: {.columns}
+::: {.column width="62%"}
+![](Hardest to Predict Neighborhoods in Philadelphia.png)
+
+:::
+
+::: {.columns}
+::: {.column width="38%"}
+**Interpretation**
+
+1. **Underestimate zip code:** 19130, 19123, 19104, 19144...  
+**Overestimate zip code:** 19102, 19107, 19116, 19154...
+2. Market is moving faster than the city’s valuation system can keep up.
+:::
+:::
+:::
+
+
+## Recommendations and Limitations
+
+1. Correct the assessed values in **low-income communities** that have been **systematically overestimated**.
+2. Routinely incorporate the effective **spatial features**—particularly surrounding transaction prices and neighborhood fixed effects.
+3. **Extreme high values** almost exclusively stem from corporate transactions and require manual review for outliers.
+
+::: {.callout-important}
+## Limitations: Algorithmic Fairness
+- Spatial Coverage Bias and Data Quality Bias
+- Feature Omission Bias and Spatial Dependence Bias
+:::
+
+
+# Thank you. Questions?
+

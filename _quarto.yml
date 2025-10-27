@@ -36,6 +36,10 @@ website:
             text: "Lab 2: Spatial Analysis and Visualization"
           - href: labs/lab_3/Presentation_slides_final.qmd
             text: "Lab 3: Midterm_Slides"
+      - text: "Midterm Project"
+        menu:
+          - href: midterm/Presentation_slides_final.qmd
+            text: "Midterm Slides"
 format:
   html:
     theme: cosmo
