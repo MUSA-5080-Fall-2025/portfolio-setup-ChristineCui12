@@ -915,5 +915,68 @@
     "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
     "section": "Recommendations and Limitations",
     "text": "Recommendations and Limitations\n\nCorrect the assessed values in low-income communities that have been systematically overestimated.\nRoutinely incorporate the effective spatial features—particularly surrounding transaction prices and neighborhood fixed effects.\nExtreme high values almost exclusively stem from corporate transactions and require manual review for outliers.\n\n\n\n\n\n\n\nLimitations: Algorithmic Fairness\n\n\n\nSpatial Coverage Bias and Data Quality Bias\nFeature Omission Bias and Spatial Dependence Bias"
+  },
+  {
+    "objectID": "midterm/CuiXinyuan_Presentation.html#the-problem",
+    "href": "midterm/CuiXinyuan_Presentation.html#the-problem",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "The Problem",
+    "text": "The Problem\nEvery year, thousands of Philadelphians buy or sell homes, and every transaction tells a story about how people value location, convenience, and opportunity.\nYet the city’s current Automated Valuation Model doesn’t always capture these stories. Some neighborhoods are undervalued, while others bear unfairly high assessments.\n\n\n\n\n\n\nWhat we are trying to explore?\n\n\n\nPrice Gap: Why do two homes with similar size and design sell for very different prices in Philadelphia?\nSpatial Drivers: Which neighborhood, accessibility, and socioeconomic factors drive these differences?\nFair Valuation: How can understanding them help the city create a fairer, smarter system for property tax assessment?"
+  },
+  {
+    "objectID": "midterm/CuiXinyuan_Presentation.html#data-sources",
+    "href": "midterm/CuiXinyuan_Presentation.html#data-sources",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "Data Sources",
+    "text": "Data Sources\n\n\n🏠Property sales\n(n = 34,559 2023-2024)\n\nLivable Area\nBedrooms Counts\nBathrooms Counts\nHouse Age\nInterior Condition\nQuality Grade\nFireplaces\nGarage Spaces\nCentral Air\nMarket Value\nSale Price\n\n\n🔢Census ACS\n(n = 2023)\n\nMedian Income\nEducation Level\nUnemployment Rate\n\n🏛OpenDataPhilly\n\nTransit\nParks and Recreation center\nHospitals\nCrime(2023)\nPoint of Interest"
+  },
+  {
+    "objectID": "midterm/CuiXinyuan_Presentation.html#where-are-expensive-homes",
+    "href": "midterm/CuiXinyuan_Presentation.html#where-are-expensive-homes",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "Where Are Expensive Homes?",
+    "text": "Where Are Expensive Homes?\n\n\n\n\n\n\nResidential sale prices exhibited clear signs of spatial clustering.\nhighest-priced properties: Center City core, University City.\nMiddle & Lower-Price tiers : North Philadelphia, West Philadelphia (outside the university sphere), and South Philadelphia.\nAccount for the specific “micro-market” in which a property is situated."
+  },
+  {
+    "objectID": "midterm/CuiXinyuan_Presentation.html#why-are-they-expensive",
+    "href": "midterm/CuiXinyuan_Presentation.html#why-are-they-expensive",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "Why Are They Expensive?",
+    "text": "Why Are They Expensive?"
+  },
+  {
+    "objectID": "midterm/CuiXinyuan_Presentation.html#highlight",
+    "href": "midterm/CuiXinyuan_Presentation.html#highlight",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "Highlight",
+    "text": "Highlight\n\nOur adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).\nPrinciple：Retain all information that the data tells us (including outliers) rather than deleting it.\nObjective：Ensure equity.\nRelationship Formula: Sale Price = -9189.29 + 1.03*Market value\nApproach: Unreliable sale price(low weight)~ Reliable sale price(high weight)"
+  },
+  {
+    "objectID": "midterm/CuiXinyuan_Presentation.html#model-building-and-validation",
+    "href": "midterm/CuiXinyuan_Presentation.html#model-building-and-validation",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "Model Building and Validation",
+    "text": "Model Building and Validation\nModel Performance Improves with Each Layer\n\n\n\nModel\nCV RMSE (log)\nR²\nRMSE\n\n\n\n\nStructural Only\n0.5497\n0.5235\n221675.8\n\n\n+ Census\n0.4519\n0.6779\n178383.4\n\n\n+ Spatial\n0.3994\n0.7486\n132547.4\n\n\n+ Interactions/FE\n0.389\n0.7611\n124417.4\n\n\n\n\nR² = 0.76 =&gt; The model explains 76% of the variation in residential sale prices.\nRMSE = 124,417.4 =&gt; The average error between the model’s predicted sale price and the actual sale price is approximately \\(\\$124,417.4\\).\n\n\n\n\n\n\n\nImportant\n\n\n\nFor K-fold cross-validation, we use the entire dataset with replaced outliers for training to maintain consistency with the model derivation process. For the final test, however, we use a purified set that excludes all handled data, ensuring a reliable performance evaluation on genuine, trustworthy data."
+  },
+  {
+    "objectID": "midterm/CuiXinyuan_Presentation.html#key-factors",
+    "href": "midterm/CuiXinyuan_Presentation.html#key-factors",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "Key Factors",
+    "text": "Key Factors\n\nLivable Area\nComparable Sales\nInterior Condition\nZip Code"
+  },
+  {
+    "objectID": "midterm/CuiXinyuan_Presentation.html#identifying-the-hardest-to-predict-neighborhoods",
+    "href": "midterm/CuiXinyuan_Presentation.html#identifying-the-hardest-to-predict-neighborhoods",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "Identifying the Hardest-to-Predict Neighborhoods",
+    "text": "Identifying the Hardest-to-Predict Neighborhoods\n\n\n\n\n\nInterpretation\n\nUnderestimate zip code: 19130, 19123, 19104, 19144…\nOverestimate zip code: 19102, 19107, 19116, 19154…\nMarket is moving faster than the city’s valuation system can keep up."
+  },
+  {
+    "objectID": "midterm/CuiXinyuan_Presentation.html#recommendations-and-limitations",
+    "href": "midterm/CuiXinyuan_Presentation.html#recommendations-and-limitations",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "Recommendations and Limitations",
+    "text": "Recommendations and Limitations\n\nCorrect the assessed values in low-income communities that have been systematically overestimated.\nRoutinely incorporate the effective spatial features—particularly surrounding transaction prices and neighborhood fixed effects.\nExtreme high values almost exclusively stem from corporate transactions and require manual review for outliers.\n\n\n\n\n\n\n\nLimitations: Algorithmic Fairness\n\n\n\nSpatial Coverage Bias and Data Quality Bias\nFeature Omission Bias and Spatial Dependence Bias"
   }
 ]

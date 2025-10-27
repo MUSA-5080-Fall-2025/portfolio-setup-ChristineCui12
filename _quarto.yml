@@ -34,11 +34,9 @@ website:
             text: "Lab 1: Census Data Exploration"
           - href: labs/lab_2/assignment2_template.qmd
             text: "Lab 2: Spatial Analysis and Visualization"
-          - href: labs/lab_3/Presentation_slides_final.qmd
-            text: "Lab 3: Midterm_Slides"
       - text: "Midterm Project"
         menu:
-          - href: midterm/Presentation_slides_final.qmd
+          - href: midterm/CuiXinyuan_Presentation.qmd
             text: "Midterm Slides"
 format:
   html:

@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="Presentation_slides_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Presentation_slides_files/libs/quarto-html/tabby.min.js"></script>
-<script src="Presentation_slides_files/libs/quarto-html/popper.min.js"></script>
-<script src="Presentation_slides_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="Presentation_slides_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Presentation_slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="Presentation_slides_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.23">
 
-  <meta name="author" content="Your Name">
-  <title>Philadelphia Housing Price Prediction</title>
+  <meta name="author" content="Jinyang Xu, Xinyuan(Christine) Cui, Yuqing(Demi) Yang">
+  <meta name="dcterms.date" content="2025-10-27">
+  <title>Christine Cui - MUSA 5080 Portfolio – The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="Presentation_slides_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="Presentation_slides_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,11 +30,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="Presentation_slides_files/libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
-  <link href="Presentation_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="Presentation_slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="Presentation_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="Presentation_slides_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -45,6 +46,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -127,35 +129,234 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Philadelphia Housing Price Prediction</h1>
-  <p class="subtitle">Improving Property Tax Assessments</p>
+  <h1 class="title">The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation</h1>
+  <p class="subtitle">Lumberjack Consultancy</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Your Name 
+Jinyang Xu, Xinyuan(Christine) Cui, Yuqing(Demi) Yang 
 </div>
 </div>
 </div>
 
+  <p class="date">2025-10-27</p>
 </section>
 <section>
-<section id="introduction" class="title-slide slide level1 center">
-<h1>Introduction</h1>
+<section id="chapter-1.-the-challenge-rethinking-how-philadelphia-values-its-homes" class="title-slide slide level1 center">
+<h1>Chapter 1. The Challenge: Rethinking How Philadelphia Values Its Homes</h1>
+
+</section>
+<section id="the-problem" class="slide level2 scrollable">
+<h2>The Problem</h2>
+<p>Every year, thousands of Philadelphians buy or sell homes, and every transaction tells a story about how people value location, convenience, and opportunity.<br>
+Yet the city’s current Automated Valuation Model doesn’t always capture these stories. Some neighborhoods are undervalued, while others bear unfairly high assessments.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>What we are trying to explore?</strong></p>
+</div>
+<div class="callout-content">
+<ol type="1">
+<li><strong>Price Gap:</strong> Why do two homes with similar size and design sell for very different prices in Philadelphia?</li>
+<li><strong>Spatial Drivers:</strong> Which neighborhood, accessibility, and socioeconomic factors drive these differences?</li>
+<li><strong>Fair Valuation:</strong> How can understanding them help the city create a fairer, smarter system for property tax assessment?</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="data-sources" class="slide level2">
+<h2>Data Sources</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="property-sales">🏠Property sales</h3>
+<p>(n = 34,559 2023-2024)</p>
 <ul>
-<li>Housing prices are a key factor in determining fair property taxes.</li>
-<li>Our goal: improve accuracy of property tax assessments using machine learning.</li>
+<li>Livable Area</li>
+<li>Bedrooms Counts</li>
+<li>Bathrooms Counts</li>
+<li>House Age</li>
+<li>Interior Condition</li>
+<li>Quality Grade</li>
+<li>Fireplaces</li>
+<li>Garage Spaces</li>
+<li>Central Air</li>
+<li>Market Value</li>
+<li><strong>Sale Price</strong></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="census-acs">🔢Census ACS</h3>
+<p>(n = 2023)</p>
+<ul>
+<li>Median Income</li>
+<li>Education Level</li>
+<li>Unemployment Rate</li>
+</ul>
+<h3 id="opendataphilly">🏛OpenDataPhilly</h3>
+<ul>
+<li>Transit</li>
+<li>Parks and Recreation center</li>
+<li>Hospitals</li>
+<li>Crime(2023)</li>
+<li>Point of Interest</li>
+</ul>
+</div></div>
+</section></section>
+<section>
+<section id="chapter-2.-the-approach-from-simple-models-to-smarter-predictions" class="title-slide slide level1 center">
+<h1>Chapter 2. The Approach: From Simple Models to Smarter Predictions</h1>
+
+</section>
+<section id="where-are-expensive-homes" class="slide level2">
+<h2>Where Are Expensive Homes?</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<p><img data-src="Housing Sales in Philadelphia.png"></p>
+</div><div class="columns">
+<div class="column" style="width:38%;">
+<ul>
+<li>Residential sale prices exhibited clear signs of <strong>spatial clustering</strong>.</li>
+<li><strong>highest-priced properties</strong>: Center City core, University City.</li>
+<li><strong>Middle &amp; Lower-Price tiers</strong> : North Philadelphia, West Philadelphia (outside the university sphere), and South Philadelphia.</li>
+<li>Account for the specific <strong>“micro-market”</strong> in which a property is situated.</li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="why-are-they-expensive" class="slide level2">
+<h2>Why Are They Expensive?</h2>
+
+<img data-src="Buffered Area Mean Sold Price of 2022.png" class="r-stretch"></section>
+<section id="highlight" class="slide level2">
+<h2>Highlight</h2>
+
+<img data-src="highlight.png" class="r-stretch quarto-figure-center"><p class="caption">Our adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).</p><ul>
+<li><p><strong>Principle</strong>：Retain all information that the data tells us (including outliers) rather than deleting it.</p></li>
+<li><p><strong>Objective</strong>：Ensure equity.</p></li>
+<li><p><strong>Relationship Formula</strong>: <code>Sale Price = -9189.29 + 1.03*Market value</code></p></li>
+<li><p><strong>Approach</strong>: Unreliable sale price(<strong>low</strong> weight)~ Reliable sale price(<strong>high</strong> weight)</p></li>
 </ul>
 </section>
-<section class="slide level2">
-
-</section></section>
-<section id="data-overview" class="title-slide slide level1 center">
-<h1>Data Overview</h1>
+<section id="model-building-and-validation" class="slide level2">
+<h2>Model Building and Validation</h2>
+<p><strong>Model Performance Improves with Each Layer</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>CV RMSE (log)</th>
+<th>R²</th>
+<th>RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Structural Only</td>
+<td>0.5497</td>
+<td>0.5235</td>
+<td>221675.8</td>
+</tr>
+<tr class="even">
+<td>+ Census</td>
+<td>0.4519</td>
+<td>0.6779</td>
+<td>178383.4</td>
+</tr>
+<tr class="odd">
+<td>+ Spatial</td>
+<td>0.3994</td>
+<td>0.7486</td>
+<td>132547.4</td>
+</tr>
+<tr class="even">
+<td>+ Interactions/FE</td>
+<td>0.389</td>
+<td>0.7611</td>
+<td>124417.4</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>Dataset: Philadelphia property sales (2017–2024)</li>
-<li>Variables include:</li>
+<li>R² = 0.76 =&gt; The model explains <strong>76%</strong> of the variation in residential sale prices.</li>
+<li>RMSE = 124,417.4 =&gt; The average error between the model’s predicted sale price and the actual sale price is approximately <span class="math inline">\(\$124,417.4\)</span>.</li>
 </ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>For K-fold cross-validation, we use the <strong>entire dataset with replaced outliers for training</strong> to maintain consistency with the model derivation process. For the final test, however, we use a <strong>purified set that excludes all handled data</strong>, ensuring a reliable performance evaluation on genuine, trustworthy data.</li>
+</ul>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="chapter-3.-the-insight-interpretation-and-reality" class="title-slide slide level1 center">
+<h1>Chapter 3. The Insight: Interpretation and Reality</h1>
+
+</section>
+<section id="key-factors" class="slide level2 scrollable">
+<h2>Key Factors</h2>
+<ol type="1">
+<li><strong>Livable Area</strong></li>
+<li><strong>Comparable Sales</strong></li>
+<li><strong>Interior Condition</strong></li>
+<li><strong>Zip Code</strong></li>
+</ol>
+</section>
+<section id="identifying-the-hardest-to-predict-neighborhoods" class="slide level2 scrollable">
+<h2>Identifying the Hardest-to-Predict Neighborhoods</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<p><img data-src="Hardest to Predict Neighborhoods in Philadelphia.png"></p>
+</div><div class="columns">
+<div class="column" style="width:38%;">
+<p><strong>Interpretation</strong></p>
+<ol type="1">
+<li><strong>Underestimate zip code:</strong> 19130, 19123, 19104, 19144…<br>
+<strong>Overestimate zip code:</strong> 19102, 19107, 19116, 19154…</li>
+<li>Market is moving faster than the city’s valuation system can keep up.</li>
+</ol>
+</div></div>
+</div>
+</section>
+<section id="recommendations-and-limitations" class="slide level2 scrollable">
+<h2>Recommendations and Limitations</h2>
+<ol type="1">
+<li>Correct the assessed values in <strong>low-income communities</strong> that have been <strong>systematically overestimated</strong>.</li>
+<li>Routinely incorporate the effective <strong>spatial features</strong>—particularly surrounding transaction prices and neighborhood fixed effects.</li>
+<li><strong>Extreme high values</strong> almost exclusively stem from corporate transactions and require manual review for outliers.</li>
+</ol>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Limitations: Algorithmic Fairness</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Spatial Coverage Bias and Data Quality Bias</li>
+<li>Feature Omission Bias and Spatial Dependence Bias</li>
+</ul>
+</div>
+</div>
+</div>
+</section></section>
+<section id="thank-you.-questions" class="title-slide slide level1 center">
+<h1>Thank you. Questions?</h1>
+
 
 </section>
     </div>
@@ -166,19 +367,19 @@ Your Name
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="Presentation_slides_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="Presentation_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="Presentation_slides_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="Presentation_slides_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="Presentation_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="Presentation_slides_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="Presentation_slides_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="Presentation_slides_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="Presentation_slides_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="Presentation_slides_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -373,6 +574,82 @@ Your Name
         ]
       });
     </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
