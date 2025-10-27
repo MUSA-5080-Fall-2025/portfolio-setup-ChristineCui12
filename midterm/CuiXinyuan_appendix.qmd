@@ -41,7 +41,6 @@ options(tigris_progress = FALSE)
 
 - 1.1.1 Load data
 ```{r}
-library(tidyverse)
 opa <- read_csv("opa_properties_public1.csv")
 ```
 
