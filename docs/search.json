@@ -781,7 +781,7 @@
     "href": "labs/lab_3/Presentation_slides_final.html#highlight",
     "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
     "section": "Highlight",
-    "text": "Highlight\n - Principle：Retain all information that the data tells us (including outliers) rather than deleting it.\n\nObjective：Ensure equity.\nRelationship Formula: Sale Price = -9189.29 + 1.03*Market value\nApproach: Unreliable sale price(low weight)~ Reliable sale price(high weight)"
+    "text": "Highlight\n\nOur adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).\nPrinciple：Retain all information that the data tells us (including outliers) rather than deleting it.\nObjective：Ensure equity.\nRelationship Formula: Sale Price = -9189.29 + 1.03*Market value\nApproach: Unreliable sale price(low weight)~ Reliable sale price(high weight)"
   },
   {
     "objectID": "labs/lab_3/Presentation_slides_final.html#model-building",
@@ -845,5 +845,12 @@
     "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
     "section": "Algorithmic Fairness",
     "text": "Algorithmic Fairness\n\nxxx\nxxx"
+  },
+  {
+    "objectID": "labs/lab_3/Presentation_slides_final.html#model-building-and-validation",
+    "href": "labs/lab_3/Presentation_slides_final.html#model-building-and-validation",
+    "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
+    "section": "Model Building and Validation",
+    "text": "Model Building and Validation\nModel Performance Improves with Each Layer\n\n\n\nModel\nCV RMSE (log)\nR²\nRMSE\n\n\n\n\nStructural Only\n0.5497\n0.5235\n221675.8\n\n\n+ Census\n0.4519\n0.6779\n178383.4\n\n\n+ Spatial\n0.3994\n0.7486\n132547.4\n\n\n+ Interactions/FE\n0.389\n0.7611\n124417.4\n\n\n\n\nR² = 0.76 =&gt; The model explains 76% of the variation in residential sale prices.\nRMSE = 124,417.4 =&gt; The average error between the model’s predicted sale price and the actual sale price is approximately \\(\\$124,417.4\\).\n\n\n\n\n\n\n\nImportant\n\n\n\nFor K-fold cross-validation, we use the entire dataset with replaced outliers for training to maintain consistency with the model derivation process. For the final test, however, we use a purified set that excludes all handled data, ensuring a reliable performance evaluation on genuine, trustworthy data."
   }
 ]

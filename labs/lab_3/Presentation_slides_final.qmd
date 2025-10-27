@@ -106,16 +106,17 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 
 ## Highlight
 ![Our adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).](highlight.png)
+
 - **Principle**：Retain all information that the data tells us (including outliers) rather than deleting it.
 
 - **Objective**：Ensure equity.
 
-- **Relationship Formula**: Sale Price = -9189.29 + 1.03*Market value
+- **Relationship Formula**: `Sale Price = -9189.29 + 1.03*Market value`
 
-- **Approach**: Unreliable sale price(low weight)~ Reliable sale price(high weight)
+- **Approach**: Unreliable sale price(**low** weight)~ Reliable sale price(**high** weight)
 
 
-## Model Building
+## Model Building and Validation
 
 **Model Performance Improves with Each Layer**
 
@@ -126,27 +127,17 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 | + Spatial | 0.3994 | 0.7486 | 132547.4 |
 | + Interactions/FE | 0.389 | 0.7611 | 124417.4|
 
-
-## Reliability__Model Validation
-
-```{r}
-#Summary model_4
-
-```
+- R² = 0.76  => The model explains **76%** of the variation in residential sale prices.
+- RMSE = 124,417.4  => The average error between the model's predicted sale price and the actual sale price is approximately $\$124,417.4$.
 
 ::: {.callout-important}
 ## Important
-- For K-fold cross-validation, we use the entire dataset with replaced outliers for training to maintain consistency with the model derivation process. For the final test, however, we use a purified set that excludes all handled data, ensuring a reliable performance evaluation on genuine, trustworthy data.
+- For K-fold cross-validation, we use the **entire dataset with replaced outliers for training** to maintain consistency with the model derivation process. For the final test, however, we use a **purified set that excludes all handled data**, ensuring a reliable performance evaluation on genuine, trustworthy data.
 :::
 
 # Chapter 3. The Insight: Interpretation and Reality
 
 ## Key Factors
-
-```{r}
-# partial R2
-
-```
 
 1. **Livable Area**
 2. **Comparable Sales**
@@ -187,5 +178,5 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 :::
 
 
-# Thank you, Questions?
+# Thank you. Questions?
 

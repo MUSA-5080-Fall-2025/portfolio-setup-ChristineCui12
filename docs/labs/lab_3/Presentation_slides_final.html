@@ -233,15 +233,16 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 <img data-src="Buffered Area Mean Sold Price of 2022.png" class="r-stretch"></section>
 <section id="highlight" class="slide level2">
 <h2>Highlight</h2>
-<p><img data-src="highlight.png" alt="Our adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023)."> - <strong>Principle</strong>：Retain all information that the data tells us (including outliers) rather than deleting it.</p>
-<ul>
+
+<img data-src="highlight.png" class="r-stretch quarto-figure-center"><p class="caption">Our adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).</p><ul>
+<li><p><strong>Principle</strong>：Retain all information that the data tells us (including outliers) rather than deleting it.</p></li>
 <li><p><strong>Objective</strong>：Ensure equity.</p></li>
-<li><p><strong>Relationship Formula</strong>: Sale Price = -9189.29 + 1.03*Market value</p></li>
-<li><p><strong>Approach</strong>: Unreliable sale price(low weight)~ Reliable sale price(high weight)</p></li>
+<li><p><strong>Relationship Formula</strong>: <code>Sale Price = -9189.29 + 1.03*Market value</code></p></li>
+<li><p><strong>Approach</strong>: Unreliable sale price(<strong>low</strong> weight)~ Reliable sale price(<strong>high</strong> weight)</p></li>
 </ul>
 </section>
-<section id="model-building" class="slide level2">
-<h2>Model Building</h2>
+<section id="model-building-and-validation" class="slide level2">
+<h2>Model Building and Validation</h2>
 <p><strong>Model Performance Improves with Each Layer</strong></p>
 <table class="caption-top">
 <thead>
@@ -279,9 +280,10 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 </tr>
 </tbody>
 </table>
-</section>
-<section id="reliability__model-validation" class="slide level2">
-<h2>Reliability__Model Validation</h2>
+<ul>
+<li>R² = 0.76 =&gt; The model explains <strong>76%</strong> of the variation in residential sale prices.</li>
+<li>RMSE = 124,417.4 =&gt; The average error between the model’s predicted sale price and the actual sale price is approximately <span class="math inline">\(\$124,417.4\)</span>.</li>
+</ul>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -292,7 +294,7 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 </div>
 <div class="callout-content">
 <ul>
-<li>For K-fold cross-validation, we use the entire dataset with replaced outliers for training to maintain consistency with the model derivation process. For the final test, however, we use a purified set that excludes all handled data, ensuring a reliable performance evaluation on genuine, trustworthy data.</li>
+<li>For K-fold cross-validation, we use the <strong>entire dataset with replaced outliers for training</strong> to maintain consistency with the model derivation process. For the final test, however, we use a <strong>purified set that excludes all handled data</strong>, ensuring a reliable performance evaluation on genuine, trustworthy data.</li>
 </ul>
 </div>
 </div>
@@ -352,8 +354,8 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 </div>
 </div>
 </section></section>
-<section id="thank-you-questions" class="title-slide slide level1 center">
-<h1>Thank you, Questions?</h1>
+<section id="thank-you.-questions" class="title-slide slide level1 center">
+<h1>Thank you. Questions?</h1>
 
 
 </section>
