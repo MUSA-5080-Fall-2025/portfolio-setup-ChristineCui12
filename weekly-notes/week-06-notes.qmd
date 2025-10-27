@@ -4,30 +4,70 @@ date: "2025-10-13"
 ---
 
 ## Key Concepts Learned
-- Converting to Spatial Data
-  - Step 1: Make your data spatial
-    - library(sf）
-      # Convert boston data to sf object
-      boston.sf <- boston %>%
-        st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>%
-        st_transform('ESRI:102286')  # MA State Plane (feet)
-  - Step 2: Spatial Join with Neighborhoods
-    - Categoral variables: NOT continuous numeric data
-- Expanding Your Regression Toolkit
-  - Dummy Variables
-  - Add Dummy (Categorical) Variables to the Model
-    - 当你的自变量是文字而不是数字时（比如社区名称"Back Bay", "Beacon Hill"等），R会自动将它们转换成一系列二进制虚拟变量。
-    - 关键规则：(n-1)原则,如果有n个类别，R只会创建(n-1)个虚拟变量，自动省略一个作为参照组。
-  - Interpreting Neighborhood Dummy Variables
-  - Interaction Effects: When Relationships Depend
+- **Basic Model Built**
+  - Improvement of the limitation
+    - Add spatial features (crime nearby, distance to amenities)
+    - Control for neighborhood (fixed effects)邻域控制（固定效应）
+    - Include interactions (does size matter more in wealthy areas?)互动（在富裕地区规模更重要吗？)
+- **Converting to Spatial Data**
+  - **Step 1: Make your data spatial**
+    - st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>% 设定初始的坐标参考系统 (CRS)。4326 是 WGS 84 的 EPSG 代码，这是一种全球地理坐标系，通常用于 GPS 坐标，单位是度（Degrees）。
+    - st_transform('ESRI:102286')  # MA State Plane (feet) 转换（或重新投影）空间数据的坐标参考系统。ESRI:102286 对应的是 NAD_1983_HARN_StatePlane_Massachusetts_Mainland_FIPS_2001，这是一个适用于马萨诸塞州（波士顿所在地）大陆部分的投影坐标系（Projected CRS），它的单位是英尺 (feet)。
+  - **Step 2: Spatial Join with Neighborhoods**
+    - st_join(nhoods, join = st_intersects) 空间连接函数：这是 sf 包中用于执行空间连接的核心函数。它将两个简单特征对象基于它们的空间关系进行连接。第一个参数 (nhoods)：指定要连接的第二个简单特征对象（包含波士顿各邻域边界的多边形简单特征对象）。st_intersects 表示执行相交连接。具体而言，它将 boston.sf 中的每个房屋点，与 nhoods 中任何与其相交（即包含该点）的邻域多边形进行匹配和连接。
+- **Part 1: Expanding Your Regression Toolkit**
+  - **Categoral variables** 原始数据的类型（定性属性）
+  - **Dummy Variables** 
+    - 对原始分类变量进行数值编码的方法（只有0或1）当你的自变量是文字而不是数字时（比如社区名称"Back Bay","BeaconHill"等），R会自动将它们转换成一系列二进制虚拟变量。
+    - **The (n-1) Rule**:如果有n个类别，R只会创建(n-1)个虚拟变量，自动省略一个作为参照组。如果有k个类别，通常只需要创建k-1个哑变量（为了避免多重共线性问题，即“虚拟变量陷阱”）。
+  - **Add Dummy (Categorical) Variables to the Model**
+    - Objection:是为房价模型添加邻域固定效应（Neighborhood Fixed Effects）。这是一种常用的统计技术，用于控制（或消除）不同邻域之间的平均房价差异对模型的影响。reference category
+    - Interpretation:每个邻域哑变量的系数表示该邻域的房价与参考邻域的房价相比，在控制了居住面积（LivingArea）的影响之后，平均高出或低出多少。
+  - **Interaction Effects: When Relationships Depend**
+    - Mathematical Form: $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \mathbf{\beta_3 (X_1 \cdot X_2)} + \epsilon$$ x1对Y的影响，会随着x2 每增加一个单位而改变 $\beta_3$ 个单位。
     - Theory: Luxury Premium Hypothesis()
-  - Create the Neighborhood Categories
-    - Model 1: No Interaction (Parallel Slopes)
-    - Model 2: With Interaction (Different Slopes)
+    - Create the Neighborhood Categories
+      - Model 1: No Interaction (Parallel Slopes)
+      - Model 2: With Interaction (Different Slopes)
     - Interpreting the Interaction Coefficients()
+    - Breaking Down the Coefficients
     - Compare Model Performance
     - When Not To Use Interactions
-    - 
+      - Small samples: Need sufficient data in each group
+      - Overfitting: Too many interactions make models unstable
+  - **Polynomial Terms: Non-Linear Relationships**多项式项：非线性关系
+    - Signs of Non-Linearity
+      - Curved residual plots  
+      - U-shaped or inverted-U patterns
+      - Diminishing returns/Accelerating effects??????
+    - Theory: The U-Shaped Age Effect
+    - Model Build
+      - Create Age Variable(Visualisation:ggplot)
+      - First: Linear Model (Baseline)
+      - Add Polynomial Term: Age Squared COMMAND: model_age_quad <- lm(SalePrice ~ Age + I(Age^2) + LivingArea, data = boston.sf) 注意：1. 要用I() 2. 有Age又有Age^2
+      - Interpreting Polynomial Coefficients(无法直接解释系数！)
+      - Compare Model Performance
+      - Check Residual Plot?????????
+- **Part 2: Creating Spatial Features**
+  - Three Approaches to Spatial Features
+    - Buffer Aggregation缓冲区聚合(对定义距离内的事件进行计数或求和)
+    - k-Nearest Neighbors(kNN)k-最近邻(到 k 个最近事件的平均距离)
+    - Distance to Specific Points(到重要地点的直线距离)
+  - Example
+    - Load and Prepare Crime Data
+    - Approach 1: Buffer Aggregation(660ft,500ft?????)
+    - Approach 2: k-Nearest Neighborhoods Method到 k 个最近事件的平均距离(相关性最强的 kNN 特征告诉我们犯罪感知的相关“影响区”！)????????
+    - Approach 3: Distance to Downtown
+    - All spatial features together
+    - Model Comparison: Adding Spatial Features
+- **Part 3: Fixed Effects**(FE)
+  - What Are Fixed Effects?: Fixed Effects = Categorical variables that capture all unmeasured characteristics of a group捕获组的所有未测量特征的分类变量
+  - How Fixed Effects Work: Each coefficient = price premium/discount for that neighborhood (holding all else constant)
+  - Why Use Fixed Effects?
+- **Part 5: Cross-Validation (with Categorical Variables)**
+  - The Problem: Sparse Categories(Rule of Thumb: Categories with n < 10 will likely cause CV problems)
+  - Solution: Group Small Neighborhoods(Trade-off: Lose granularity for small neighborhoods, but avoid CV crashes)
+  - Alternative: Drop Sparse Categories
         
 ## Coding Techniques
 - [New R functions or approaches]
@@ -35,7 +75,7 @@ date: "2025-10-13"
 
 ## Questions & Challenges
 - What I didn't fully understand
-  - **left out?????**
+  - **left out???0??**
 - Areas needing more practice
   - 1
 

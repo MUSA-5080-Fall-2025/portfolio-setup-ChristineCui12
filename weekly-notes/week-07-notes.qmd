@@ -1,0 +1,58 @@
+---
+title: "Week 7 Notes - Model Diagnostics & Spatial Autocorrelation"
+date: "2025-10-20"
+---
+
+## Key Concepts Learned
+- **Part 1: Where We Are**
+  - Review
+    - Weeks 1-3: Data foundations
+      - Census data, tidycensus, spatial data basics
+      - Visualization and exploratory analysis
+    - Week 5: Linear regression fundamentals
+      - Y = f(X) + ε framework
+      - Train/test splits, cross-validation
+      - Checking assumptions
+    - Week 6: Expanding the toolkit
+      - Categorical variables and interactions
+      - Spatial features (buffers, kNN, distance)
+      - Neighborhood fixed effects
+  - **The Regression Workflow**
+    - Building the model:
+      - Visualize relationships
+      - Engineer features
+      - Fit the model
+      - Evaluate performance (RMSE, R²)
+      - Check assumptions
+    - Spatial diagnostics:
+      - Are errors random or clustered?
+      - Do we predict better in some areas?
+      - Is there remaining spatial structure?
+    - If errors cluster spatially, it suggests:
+      - Missing spatial variables
+      - Misspecified relationships
+      - Non-stationarity (relationships vary across space) 非平稳性
+- **Part 2: Understanding Spatial Patterns in Errors**
+  - Visualizing Error Patterns（误差有聚集，不随机，不好）→怎么改进：fixed
+- **Part 3: Moran’s I**
+  - Moran’s I measures spatial autocorrelation
+  - Range: -1(Perfect negative correlation (dispersion)) to +1(Perfect positive correlation (clustering)),0 = Random spatial pattern
+  -  wij = spatial weight between locations i and j (0 or 1)
+    
+
+## Coding Techniques
+- [New R functions or approaches]
+- [Quarto features learned]
+
+## Questions & Challenges
+- What I didn't fully understand
+  - the basic workflow: pull-commit-push
+- Areas needing more practice
+  - remember the essential dplyr functions
+
+## Connections to Policy
+- [How this week's content applies to real policy work]
+
+## Reflection
+- [What was most interesting]
+- [How I'll apply this knowledge]

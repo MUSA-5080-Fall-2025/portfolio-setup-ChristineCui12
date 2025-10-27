@@ -1,0 +1,182 @@
+---
+title: "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation"
+subtitle: "Lumberjack Consultancy"
+author: "Jinyang Xu, Xinyuan(Christine) Cui, Yuqing(Demi) Yang"
+date: "October 27, 2025"
+format: 
+  revealjs:
+    theme: simple
+    slide-number: true
+    chalkboard: true
+    code-line-numbers: true
+    incremental: false
+    smaller: true
+    scrollable: true
+---
+
+# Chapter 1. The Challenge: Rethinking How Philadelphia Values Its Homes
+
+## The Problem
+
+Every year, thousands of Philadelphians buy or sell homes, and every transaction tells a story about how people value location, convenience, and opportunity.  
+Yet the city’s current Automated Valuation Model doesn’t always capture these stories. Some neighborhoods are undervalued, while others bear unfairly high assessments.
+
+::: {.callout-tip}
+## What we are trying to explore?
+
+1. **Price Gap:** Why do two homes with similar size and design sell for very different prices in Philadelphia?
+2. **Spatial Drivers:** Which neighborhood, accessibility, and socioeconomic factors drive these differences?
+3. **Fair Valuation:** How can understanding them help the city create a fairer, smarter system for property tax assessment?
+
+:::
+
+---
+
+## Data Sources
+
+::: {.columns}
+::: {.column width="50%"}
+### 🏠Property sales
+(n = 34,559 2023-2024)
+
+- Livable Area
+- Bedrooms Counts
+- Bathrooms Counts
+- House Age
+- Interior Condition
+- Quality Grade
+- Fireplaces
+- Garage Spaces
+- Central Air
+- Market Value
+- **Sale Price**
+:::
+
+::: {.column width="50%"}
+### 🔢Census ACS
+(n = 2023)
+
+- Median Income
+- Education Level
+- Unemployment Rate
+
+### 🏛OpenDataPhilly
+
+- Transit
+- Parks and Recreation center
+- Hospitals
+- Crime(2023)
+- Point of Interest
+:::
+:::
+
+# Chapter 2. The Approach: From Simple Models to Smarter Predictions
+
+## Where Are Expensive Homes?
+::: {.columns}
+::: {.column width="62%"}
+
+```{r}
+#| eval: true
+#| echo: false
+# price distribution
+
+```
+:::
+
+::: {.columns}
+::: {.column width="38%"}
+
+- 特征描述1
+- 特征描述2
+
+```{r}
+#| eval: true
+#| echo: false
+# price histogram
+
+```
+:::
+:::
+
+## Why Are They Expensive/Cheap?
+```{r}
+
+```
+
+## Highlight
+![Our adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).](highlight.png)
+```{r}
+
+```
+
+- **Principle**：Retain all information that the data tells us (including outliers) rather than deleting it.
+- **Objective**：Ensure equity.
+- **Relationship Formula**: Sale Price = -9189.29 + 1.03*Market value
+- **Approach**: Unreliable(Predicted) sale price（low weight）~ Reliable sale price(high weight)
+
+
+## Model Building
+1. Structural features only
+
+2. +Census variable
+
+3. +Spatial features
+
+4. +Interaction and fixed effects
+
+```{r}
+# Model Performance Improves with Each Layer
+# 汇总表格
+
+```
+
+## Reliability__Model Validation
+
+```{r}
+#Summary model_4
+
+```
+
+::: {.callout-important}
+## Important
+- For K-fold cross-validation, we use the entire dataset with replaced outliers for training to maintain consistency with the model derivation process. For the final test, however, we use a purified set that excludes all handled data, ensuring a reliable performance evaluation on genuine, trustworthy data.
+:::
+
+# Chapter 3. The Insight: Interpretation and Reality
+
+## Key Factors
+
+```{r}
+# partial R2
+
+```
+
+**Interpretation**
+
+1. **livable area**
+2. **Comparable Sales**
+3. interior condition
+4. zip code
+
+
+## 公平性问题——哪些社区最难预测
+```{r}
+# residual distribution
+
+```
+**Interpretation**
+
+1. 哪里高估哪里低估（列出zipcode）
+2. 详细说可能的成因
+
+## 公平性问题——数据偏见
+
+1. xxx
+2. xxx
+
+## Recommendations and Limitations
+
+
+# Questions?
+
