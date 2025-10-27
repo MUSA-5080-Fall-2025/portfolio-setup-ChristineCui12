@@ -235,14 +235,45 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 <li><strong>Relationship Formula</strong>: Sale Price = -9189.29 + 1.03*Market value</li>
 <li><strong>Approach</strong>: Unreliable sale price(low weight)~ Reliable sale price(high weight)</li>
 </ul>
-</section><section id="model-building" class="slide level2 scrollable">
+</section><section id="model-building" class="slide level2">
 <h2>Model Building</h2>
-<ol type="1">
-<li><p>Structural features only</p></li>
-<li><p>+Census variable</p></li>
-<li><p>+Spatial features</p></li>
-<li><p>+Interaction and fixed effects</p></li>
-</ol>
+<p><strong>Model Performance Improves with Each Layer</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>CV RMSE (log)</th>
+<th>R²</th>
+<th>RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Structural Only</td>
+<td>0.5497</td>
+<td>0.5235</td>
+<td>221675.8</td>
+</tr>
+<tr class="even">
+<td>+ Census</td>
+<td>0.4519</td>
+<td>0.6779</td>
+<td>178383.4</td>
+</tr>
+<tr class="odd">
+<td>+ Spatial</td>
+<td>0.3994</td>
+<td>0.7486</td>
+<td>132547.4</td>
+</tr>
+<tr class="even">
+<td>+ Interactions/FE</td>
+<td>0.389</td>
+<td>0.7611</td>
+<td>124417.4</td>
+</tr>
+</tbody>
+</table>
 </section><section id="reliability__model-validation" class="slide level2">
 <h2>Reliability__Model Validation</h2>
 <div class="callout callout-important callout-titled callout-style-default">

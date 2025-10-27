@@ -99,13 +99,13 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 :::
 :::
 
-::: {.slide}
+
 ## Why Are They Expensive?
 ```{r}
 # 历史周边房子售价
 
 ```
-:::
+
 
 ## Highlight
 ![Our adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).](highlight.png)
@@ -120,19 +120,16 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 
 
 ## Model Building
-1. Structural features only
 
-2. +Census variable
+**Model Performance Improves with Each Layer**
 
-3. +Spatial features
+| Model | CV RMSE (log) | R² | RMSE |
+|-------|---------------|----|------|
+| Structural Only | 0.5497 | 0.5235 | 221675.8 |
+| + Census | 0.4519 | 0.6779 | 178383.4 |
+| + Spatial | 0.3994 | 0.7486 | 132547.4 |
+| + Interactions/FE | 0.389 | 0.7611 | 124417.4|
 
-4. +Interaction and fixed effects
-
-```{r}
-# Model Performance Improves with Each Layer
-# 汇总表格
-
-```
 
 ## Reliability__Model Validation
 
