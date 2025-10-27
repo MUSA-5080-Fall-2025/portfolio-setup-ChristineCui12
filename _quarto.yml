@@ -34,6 +34,8 @@ website:
             text: "Lab 1: Census Data Exploration"
           - href: labs/lab_2/assignment2_template.qmd
             text: "Lab 2: Spatial Analysis and Visualization"
+          - href: labs/lab_3/Presentation_slides_final.qmd
+            text: "Lab 3: Midterm"
 format:
   html:
     theme: cosmo
