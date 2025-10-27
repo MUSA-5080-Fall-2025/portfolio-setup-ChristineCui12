@@ -42,7 +42,7 @@ options(tigris_progress = FALSE)
 
 - 1.1.1 Load data
 ```{r}
-opa <- read_csv("opa_properties_public1.csv")
+opa <- read_csv("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/midterm/opa_properties_public1.csv")
 ```
 
 - 1.1.2 Filter to residential properties, 2023-2024 sales
