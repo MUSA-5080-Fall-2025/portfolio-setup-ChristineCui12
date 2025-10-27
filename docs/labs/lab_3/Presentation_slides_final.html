@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="Presentation_slides_final_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Presentation_slides_final_files/libs/quarto-html/tabby.min.js"></script>
-<script src="Presentation_slides_final_files/libs/quarto-html/popper.min.js"></script>
-<script src="Presentation_slides_final_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="Presentation_slides_final_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Presentation_slides_final_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="Presentation_slides_final_files/libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.23">
 
   <meta name="author" content="Jinyang Xu, Xinyuan(Christine) Cui, Yuqing(Demi) Yang">
   <meta name="dcterms.date" content="2025-10-27">
-  <title>The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation</title>
+  <title>Christine Cui - MUSA 5080 Portfolio – The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="Presentation_slides_final_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="Presentation_slides_final_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -30,13 +30,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="Presentation_slides_final_files/libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
-  <link href="Presentation_slides_final_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="Presentation_slides_final_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="Presentation_slides_final_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="Presentation_slides_final_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="Presentation_slides_final_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="Presentation_slides_final_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -221,11 +219,13 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 </div><div class="columns">
 <div class="column" style="width:38%;">
 <ul>
-<li>特征描述1</li>
-<li>特征描述2</li>
+<li>Residential sale prices exhibited clear signs of <strong>spatial clustering</strong>.</li>
+<li><strong>highest-priced properties</strong>: Center City core, University City.</li>
+<li><strong>Middle &amp; Lower-Price tiers</strong> : North Philadelphia, West Philadelphia (outside the university sphere), and South Philadelphia.</li>
+<li>Account for the specific <strong>“micro-market”</strong> in which a property is situated.</li>
 </ul>
-</div></div><section id="why-are-they-expensivecheap" class="slide level2">
-<h2>Why Are They Expensive/Cheap?</h2>
+</div></div><section id="why-are-they-expensive" class="slide level2">
+<h2>Why Are They Expensive?</h2>
 </section><section id="highlight" class="slide level2">
 <h2>Highlight</h2>
 
@@ -233,7 +233,7 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 <li><strong>Principle</strong>：Retain all information that the data tells us (including outliers) rather than deleting it.</li>
 <li><strong>Objective</strong>：Ensure equity.</li>
 <li><strong>Relationship Formula</strong>: Sale Price = -9189.29 + 1.03*Market value</li>
-<li><strong>Approach</strong>: Unreliable(Predicted) sale price（low weight）~ Reliable sale price(high weight)</li>
+<li><strong>Approach</strong>: Unreliable sale price(low weight)~ Reliable sale price(high weight)</li>
 </ul>
 </section><section id="model-building" class="slide level2 scrollable">
 <h2>Model Building</h2>
@@ -266,34 +266,47 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 </section>
 <section id="key-factors" class="slide level2 scrollable">
 <h2>Key Factors</h2>
-<p><strong>Interpretation</strong></p>
 <ol type="1">
-<li><strong>livable area</strong></li>
+<li><strong>Livable Area</strong></li>
 <li><strong>Comparable Sales</strong></li>
-<li>interior condition</li>
-<li>zip code</li>
+<li><strong>Interior Condition</strong></li>
+<li><strong>Zip Code</strong></li>
 </ol>
 </section>
-<section id="公平性问题哪些社区最难预测" class="slide level2 scrollable">
-<h2>公平性问题——哪些社区最难预测</h2>
+<section id="identifying-the-hardest-to-predict-neighborhoods" class="slide level2 scrollable">
+<h2>Identifying the Hardest-to-Predict Neighborhoods</h2>
 <p><strong>Interpretation</strong></p>
 <ol type="1">
-<li>哪里高估哪里低估（列出zipcode）</li>
-<li>详细说可能的成因</li>
+<li>哪里高估哪里低估（列出zipcode）–删</li>
+<li>详细说可能的成因–删</li>
 </ol>
 </section>
-<section id="公平性问题数据偏见" class="slide level2 scrollable">
-<h2>公平性问题——数据偏见</h2>
-<ol type="1">
-<li>xxx</li>
-<li>xxx</li>
-</ol>
-</section>
-<section id="recommendations-and-limitations" class="slide level2">
+<section id="recommendations-and-limitations" class="slide level2 scrollable">
 <h2>Recommendations and Limitations</h2>
+<ol type="1">
+<li>Correct the assessed values in <strong>low-income communities</strong> that have been <strong>systematically overestimated</strong>.</li>
+<li>Routinely incorporate the effective <strong>spatial features</strong>—particularly surrounding transaction prices and neighborhood fixed effects.</li>
+</ol>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Limitations: Algorithmic Fairness</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Spatial Coverage Bias and Data Quality Bias</li>
+<li>Feature Omission Bias and Spatial Dependence Bias</li>
+</ul>
+</div>
+</div>
+</div>
 </section>
-<section id="questions" class="title-slide slide level1 center">
-<h1>Questions?</h1>
+<section id="thank-you-questions" class="title-slide slide level1 center">
+<h1>Thank you, Questions?</h1>
+
 
 </section>
 
@@ -307,20 +320,19 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="Presentation_slides_final_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="Presentation_slides_final_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -335,8 +347,7 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': true,
  
         // Display controls in the bottom right corner
@@ -507,7 +518,7 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,

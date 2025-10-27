@@ -7,9 +7,6 @@ format:
   revealjs:
     theme: simple
     slide-number: true
-    chalkboard: true
-    code-line-numbers: true
-    incremental: false
     smaller: true
     scrollable: true
 ---
@@ -72,6 +69,7 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 
 # Chapter 2. The Approach: From Simple Models to Smarter Predictions
 
+
 ## Where Are Expensive Homes?
 ::: {.columns}
 ::: {.column width="62%"}
@@ -87,8 +85,10 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 ::: {.columns}
 ::: {.column width="38%"}
 
-- 特征描述1
-- 特征描述2
+- Residential sale prices exhibited clear signs of **spatial clustering**.
+-  **highest-priced properties**: Center City core, University City.
+-  **Middle & Lower-Price tiers** : North Philadelphia, West Philadelphia (outside the university sphere), and South Philadelphia.
+- Account for the specific **"micro-market"** in which a property is situated.
 
 ```{r}
 #| eval: true
@@ -99,10 +99,13 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 :::
 :::
 
-## Why Are They Expensive/Cheap?
+::: {.slide}
+## Why Are They Expensive?
 ```{r}
+# 历史周边房子售价
 
 ```
+:::
 
 ## Highlight
 ![Our adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).](highlight.png)
@@ -113,7 +116,7 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 - **Principle**：Retain all information that the data tells us (including outliers) rather than deleting it.
 - **Objective**：Ensure equity.
 - **Relationship Formula**: Sale Price = -9189.29 + 1.03*Market value
-- **Approach**: Unreliable(Predicted) sale price（low weight）~ Reliable sale price(high weight)
+- **Approach**: Unreliable sale price(low weight)~ Reliable sale price(high weight)
 
 
 ## Model Building
@@ -152,31 +155,34 @@ Yet the city’s current Automated Valuation Model doesn’t always capture thes
 
 ```
 
-**Interpretation**
-
-1. **livable area**
+1. **Livable Area**
 2. **Comparable Sales**
-3. interior condition
-4. zip code
+3. **Interior Condition**
+4. **Zip Code**
 
 
-## 公平性问题——哪些社区最难预测
+## Identifying the Hardest-to-Predict Neighborhoods
 ```{r}
 # residual distribution
 
 ```
 **Interpretation**
 
-1. 哪里高估哪里低估（列出zipcode）
-2. 详细说可能的成因
+1. 哪里高估哪里低估（列出zipcode）--删
+2. 详细说可能的成因--删
 
-## 公平性问题——数据偏见
-
-1. xxx
-2. xxx
 
 ## Recommendations and Limitations
 
+1. Correct the assessed values in **low-income communities** that have been **systematically overestimated**.
+2. Routinely incorporate the effective **spatial features**—particularly surrounding transaction prices and neighborhood fixed effects.
 
-# Questions?
+::: {.callout-important}
+## Limitations: Algorithmic Fairness
+- Spatial Coverage Bias and Data Quality Bias
+- Feature Omission Bias and Spatial Dependence Bias
+:::
+
+
+# Thank you, Questions?
 
