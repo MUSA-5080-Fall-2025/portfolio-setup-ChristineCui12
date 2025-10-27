@@ -767,7 +767,7 @@
     "href": "labs/lab_3/Presentation_slides_final.html#where-are-expensive-homes",
     "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
     "section": "Where Are Expensive Homes?",
-    "text": "Where Are Expensive Homes?\n\n\n\n\n\n\nResidential sale prices exhibited clear signs of spatial clustering.\nhighest-priced properties: Center City core, University City.\nMiddle & Lower-Price tiers : North Philadelphia, West Philadelphia (outside the university sphere), and South Philadelphia.\nAccount for the specific “micro-market” in which a property is situated.\n\n\nWhy Are They Expensive?\n\nHighlight\n\nOur adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).\nPrinciple：Retain all information that the data tells us (including outliers) rather than deleting it.\nObjective：Ensure equity.\nRelationship Formula: Sale Price = -9189.29 + 1.03*Market value\nApproach: Unreliable sale price(low weight)~ Reliable sale price(high weight)\n\n\nModel Building\nModel Performance Improves with Each Layer\n\n\n\nModel\nCV RMSE (log)\nR²\nRMSE\n\n\n\n\nStructural Only\n0.5497\n0.5235\n221675.8\n\n\n+ Census\n0.4519\n0.6779\n178383.4\n\n\n+ Spatial\n0.3994\n0.7486\n132547.4\n\n\n+ Interactions/FE\n0.389\n0.7611\n124417.4\n\n\n\n\nReliability__Model Validation\n\n\n\n\n\n\nImportant\n\n\n\nFor K-fold cross-validation, we use the entire dataset with replaced outliers for training to maintain consistency with the model derivation process. For the final test, however, we use a purified set that excludes all handled data, ensuring a reliable performance evaluation on genuine, trustworthy data.\n\n\n\n\n\nChapter 3. The Insight: Interpretation and Reality\n\n\n\nKey Factors\n\nLivable Area\nComparable Sales\nInterior Condition\nZip Code\n\n\n\nIdentifying the Hardest-to-Predict Neighborhoods\nInterpretation\n\n哪里高估哪里低估（列出zipcode）–删\n详细说可能的成因–删\n\n\n\nRecommendations and Limitations\n\nCorrect the assessed values in low-income communities that have been systematically overestimated.\nRoutinely incorporate the effective spatial features—particularly surrounding transaction prices and neighborhood fixed effects.\n\n\n\n\n\n\n\nLimitations: Algorithmic Fairness\n\n\n\nSpatial Coverage Bias and Data Quality Bias\nFeature Omission Bias and Spatial Dependence Bias\n\n\n\n\n\n\nThank you, Questions?"
+    "text": "Where Are Expensive Homes?\n\n\n\n\n\n\nResidential sale prices exhibited clear signs of spatial clustering.\nhighest-priced properties: Center City core, University City.\nMiddle & Lower-Price tiers : North Philadelphia, West Philadelphia (outside the university sphere), and South Philadelphia.\nAccount for the specific “micro-market” in which a property is situated."
   },
   {
     "objectID": "labs/lab_3/Presentation_slides_final.html#why-are-they-expensivecheap",
@@ -781,7 +781,7 @@
     "href": "labs/lab_3/Presentation_slides_final.html#highlight",
     "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
     "section": "Highlight",
-    "text": "Highlight\n\nOur adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).\nPrinciple：Retain all information that the data tells us (including outliers) rather than deleting it.\nObjective：Ensure equity.\nRelationship Formula: Sale Price = -9189.29 + 1.03*Market value\nApproach: Unreliable sale price(low weight)~ Reliable sale price(high weight)"
+    "text": "Highlight\n - Principle：Retain all information that the data tells us (including outliers) rather than deleting it.\n\nObjective：Ensure equity.\nRelationship Formula: Sale Price = -9189.29 + 1.03*Market value\nApproach: Unreliable sale price(low weight)~ Reliable sale price(high weight)"
   },
   {
     "objectID": "labs/lab_3/Presentation_slides_final.html#model-building",
@@ -837,7 +837,7 @@
     "href": "labs/lab_3/Presentation_slides_final.html#identifying-the-hardest-to-predict-neighborhoods",
     "title": "The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation",
     "section": "Identifying the Hardest-to-Predict Neighborhoods",
-    "text": "Identifying the Hardest-to-Predict Neighborhoods\nInterpretation\n\n哪里高估哪里低估（列出zipcode）–删\n详细说可能的成因–删"
+    "text": "Identifying the Hardest-to-Predict Neighborhoods\n\n\n\n\n\nInterpretation\n\nUnderestimate zip code: 19130, 19123, 19104, 19144…\nOverestimate zip code: 19102, 19107, 19116, 19154…\nMarket is moving faster than the city’s valuation system can keep up."
   },
   {
     "objectID": "labs/lab_3/Presentation_slides_final.html#algorithmic-fairness",
