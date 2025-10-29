@@ -6,9 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-22">
+<meta name="author" content="Jinyang Xu, Xinyuan(Christine) Cui, Yuqing(Demi) Yang">
+<meta name="dcterms.date" content="2025-10-27">
 
-<title>Week 3 Notes - Data Visualization &amp; Exploratory Analysis – Christine Cui - MUSA 5080 Portfolio</title>
+<title>The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation – Christine Cui - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,24 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,6 +71,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -80,9 +110,9 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     </a>
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Christine Cui - MUSA 5080 Portfolio</span>
     </a>
   </div>
@@ -93,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -102,35 +132,35 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-weekly-notes">    
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-01-notes.html">
+    <a class="dropdown-item" href="../../weekly-notes/week-01-notes.html">
  <span class="dropdown-text">Week 1: Course Introduction</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-02-notes.html">
+    <a class="dropdown-item" href="../../weekly-notes/week-02-notes.html">
  <span class="dropdown-text">Week 2: Algorithmic Decision Making &amp; Census Data</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-03-notes.html">
+    <a class="dropdown-item" href="../../weekly-notes/week-03-notes.html">
  <span class="dropdown-text">Week 3: Data Visualization &amp; Exploratory Analysis</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-03/week3_lab_exercise.html">
+    <a class="dropdown-item" href="../../weekly-notes/week-03/week3_lab_exercise.html">
  <span class="dropdown-text">In-Class Lab 3: Data Visualization and EDA</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-04-notes.html">
+    <a class="dropdown-item" href="../../weekly-notes/week-04-notes.html">
  <span class="dropdown-text">Week 4: Spatial Data &amp; GIS Operations in R</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-04/scripts/week4_inclass_practice.html">
+    <a class="dropdown-item" href="../../weekly-notes/week-04/scripts/week4_inclass_practice.html">
  <span class="dropdown-text">In-Class Lab 4: Spatial Operations with Pennsylvania Data</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-05-notes.html">
+    <a class="dropdown-item" href="../../weekly-notes/week-05-notes.html">
  <span class="dropdown-text">Week 5: Introduction to Linear Regression</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../weekly-notes/week-06-notes.html">
+    <a class="dropdown-item" href="../../weekly-notes/week-06-notes.html">
  <span class="dropdown-text">Week 6: Spatial Machine Learning &amp; Advanced Regression</span></a>
   </li>  
     </ul>
@@ -141,15 +171,15 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-labs">    
         <li>
-    <a class="dropdown-item" href="../labs/lab_0/lab0.qmd">
+    <a class="dropdown-item" href="../../labs/lab_0/lab0.qmd">
  <span class="dropdown-text">Lab 0: Dplyr Basics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../labs/lab_1/assignment1_template.html">
+    <a class="dropdown-item" href="../../labs/lab_1/assignment1_template.html">
  <span class="dropdown-text">Lab 1: Census Data Exploration</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../labs/lab_2/assignment2_template.html">
+    <a class="dropdown-item" href="../../labs/lab_2/assignment2_template.html">
  <span class="dropdown-text">Lab 2: Spatial Analysis and Visualization</span></a>
   </li>  
     </ul>
@@ -160,11 +190,11 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-midterm-project">    
         <li>
-    <a class="dropdown-item" href="../midterm/CuiXinyuan_Presentation.qmd">
+    <a class="dropdown-item" href="../../midterm/CuiXinyuan_Presentation.qmd">
  <span class="dropdown-text">Midterm Slides</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../midterm/CuiXinyuan_Appendix.qmd">
+    <a class="dropdown-item" href="../../midterm/CuiXinyuan_Appendix.qmd">
  <span class="dropdown-text">Midterm Appendix</span></a>
   </li>  
     </ul>
@@ -185,31 +215,52 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#key-concepts-learned" id="toc-key-concepts-learned" class="nav-link active" data-scroll-target="#key-concepts-learned">Key Concepts Learned</a></li>
-  <li><a href="#coding-techniques" id="toc-coding-techniques" class="nav-link" data-scroll-target="#coding-techniques">Coding Techniques</a></li>
-  <li><a href="#questions-challenges" id="toc-questions-challenges" class="nav-link" data-scroll-target="#questions-challenges">Questions &amp; Challenges</a></li>
-  <li><a href="#connections-to-policy" id="toc-connections-to-policy" class="nav-link" data-scroll-target="#connections-to-policy">Connections to Policy</a></li>
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#chapter-1.-the-challenge-rethinking-how-philadelphia-values-its-homes" id="toc-chapter-1.-the-challenge-rethinking-how-philadelphia-values-its-homes" class="nav-link active" data-scroll-target="#chapter-1.-the-challenge-rethinking-how-philadelphia-values-its-homes">Chapter 1. The Challenge: Rethinking How Philadelphia Values Its Homes</a>
+  <ul class="collapse">
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The Problem</a></li>
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources">Data Sources</a></li>
+  </ul></li>
+  <li><a href="#chapter-2.-the-approach-from-simple-models-to-smarter-predictions" id="toc-chapter-2.-the-approach-from-simple-models-to-smarter-predictions" class="nav-link" data-scroll-target="#chapter-2.-the-approach-from-simple-models-to-smarter-predictions">Chapter 2. The Approach: From Simple Models to Smarter Predictions</a>
+  <ul class="collapse">
+  <li><a href="#where-are-expensive-homes" id="toc-where-are-expensive-homes" class="nav-link" data-scroll-target="#where-are-expensive-homes">Where Are Expensive Homes?</a></li>
+  <li><a href="#why-are-they-expensive" id="toc-why-are-they-expensive" class="nav-link" data-scroll-target="#why-are-they-expensive">Why Are They Expensive?</a></li>
+  <li><a href="#highlight" id="toc-highlight" class="nav-link" data-scroll-target="#highlight">Highlight</a></li>
+  <li><a href="#model-building-and-validation" id="toc-model-building-and-validation" class="nav-link" data-scroll-target="#model-building-and-validation">Model Building and Validation</a></li>
+  </ul></li>
+  <li><a href="#chapter-3.-the-insight-interpretation-and-reality" id="toc-chapter-3.-the-insight-interpretation-and-reality" class="nav-link" data-scroll-target="#chapter-3.-the-insight-interpretation-and-reality">Chapter 3. The Insight: Interpretation and Reality</a>
+  <ul class="collapse">
+  <li><a href="#key-factors" id="toc-key-factors" class="nav-link" data-scroll-target="#key-factors">Key Factors</a></li>
+  <li><a href="#identifying-the-hardest-to-predict-neighborhoods" id="toc-identifying-the-hardest-to-predict-neighborhoods" class="nav-link" data-scroll-target="#identifying-the-hardest-to-predict-neighborhoods">Identifying the Hardest-to-Predict Neighborhoods</a></li>
+  <li><a href="#recommendations-and-limitations" id="toc-recommendations-and-limitations" class="nav-link" data-scroll-target="#recommendations-and-limitations">Recommendations and Limitations</a></li>
+  </ul></li>
+  <li><a href="#thank-you.-questions" id="toc-thank-you.-questions" class="nav-link" data-scroll-target="#thank-you.-questions">Thank you. Questions?</a></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="CuiXinyuan_Presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 3 Notes - Data Visualization &amp; Exploratory Analysis</h1>
+<h1 class="title">The Path to Parity: Optimizing Residential Sale Price Prediction for Fair Taxation</h1>
+<p class="subtitle lead">Lumberjack Consultancy</p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jinyang Xu, Xinyuan(Christine) Cui, Yuqing(Demi) Yang </p>
+          </div>
+  </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 22, 2025</p>
+      <p class="date">October 27, 2025</p>
     </div>
   </div>
   
@@ -221,59 +272,231 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="key-concepts-learned" class="level2">
-<h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
+<section id="chapter-1.-the-challenge-rethinking-how-philadelphia-values-its-homes" class="level1">
+<h1>Chapter 1. The Challenge: Rethinking How Philadelphia Values Its Homes</h1>
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<p>Every year, thousands of Philadelphians buy or sell homes, and every transaction tells a story about how people value location, convenience, and opportunity.<br>
+Yet the city’s current Automated Valuation Model doesn’t always capture these stories. Some neighborhoods are undervalued, while others bear unfairly high assessments.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>What we are trying to explore?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Price Gap:</strong> Why do two homes with similar size and design sell for very different prices in Philadelphia?</li>
+<li><strong>Spatial Drivers:</strong> Which neighborhood, accessibility, and socioeconomic factors drive these differences?</li>
+<li><strong>Fair Valuation:</strong> How can understanding them help the city create a fairer, smarter system for property tax assessment?</li>
+</ol>
+</div>
+</div>
+<hr>
+</section>
+<section id="data-sources" class="level2">
+<h2 class="anchored" data-anchor-id="data-sources">Data Sources</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<section id="property-sales" class="level3">
+<h3 class="anchored" data-anchor-id="property-sales">🏠Property sales</h3>
+<p>(n = 34,559 2023-2024)</p>
 <ul>
-<li>Why Visualization Matters
-<ul>
-<li>the smaller the sample, the bigger the MoE</li>
-</ul></li>
-<li>Grammar of Graphics(<strong>GG</strong>)
-<ul>
-<li>The ggplot2 Philosophy</li>
-</ul></li>
+<li>Livable Area</li>
+<li>Bedrooms Counts</li>
+<li>Bathrooms Counts</li>
+<li>House Age</li>
+<li>Interior Condition</li>
+<li>Quality Grade</li>
+<li>Fireplaces</li>
+<li>Garage Spaces</li>
+<li>Central Air</li>
+<li>Market Value</li>
+<li><strong>Sale Price</strong></li>
 </ul>
 </section>
-<section id="coding-techniques" class="level2">
-<h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
+</div><div class="column" style="width:50%;">
+<section id="census-acs" class="level3">
+<h3 class="anchored" data-anchor-id="census-acs">🔢Census ACS</h3>
+<p>(n = 2023)</p>
 <ul>
-<li>Basic ggplot2 Structure
-<ul>
-<li>make a plot
-<ul>
-<li>ggplot(data = your_data) + aes(x = variable1, y = variable2) + geom_something() + additional_layers()</li>
-<li>g ← ggplot(data=acs_data) aes(x=Income, y=%bach, <strong>color=blue</strong>) geom_Points(decorate..colors, size..)</li>
-</ul></li>
-</ul></li>
-<li>[Quarto features learned]</li>
+<li>Median Income</li>
+<li>Education Level</li>
+<li>Unemployment Rate</li>
 </ul>
 </section>
-<section id="questions-challenges" class="level2">
-<h2 class="anchored" data-anchor-id="questions-challenges">Questions &amp; Challenges</h2>
+<section id="opendataphilly" class="level3">
+<h3 class="anchored" data-anchor-id="opendataphilly">🏛OpenDataPhilly</h3>
 <ul>
-<li>What I didn’t fully understand
-<ul>
-<li>long &amp; wide’</li>
-<li>Left_Join &amp; Right_Join &amp; Full_Join(result shows all the content) &amp; Inner_Join(result shows the same content)</li>
-</ul></li>
-<li>Areas needing more practice
-<ul>
-<li>add a new chunk</li>
-</ul></li>
+<li>Transit</li>
+<li>Parks and Recreation center</li>
+<li>Hospitals</li>
+<li>Crime(2023)</li>
+<li>Point of Interest</li>
 </ul>
 </section>
-<section id="connections-to-policy" class="level2">
-<h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
+</div>
+</div>
+</section>
+</section>
+<section id="chapter-2.-the-approach-from-simple-models-to-smarter-predictions" class="level1">
+<h1>Chapter 2. The Approach: From Simple Models to Smarter Predictions</h1>
+<section id="where-are-expensive-homes" class="level2">
+<h2 class="anchored" data-anchor-id="where-are-expensive-homes">Where Are Expensive Homes?</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<p><img src="Housing Sales in Philadelphia.png" class="img-fluid"></p>
+</div><div class="columns">
+<div class="column" style="width:38%;">
 <ul>
-<li>[How this week’s content applies to real policy work]</li>
+<li>Residential sale prices exhibited clear signs of <strong>spatial clustering</strong>.</li>
+<li><strong>highest-priced properties</strong>: Center City core, University City.</li>
+<li><strong>Middle &amp; Lower-Price tiers</strong> : North Philadelphia, West Philadelphia (outside the university sphere), and South Philadelphia.</li>
+<li>Account for the specific <strong>“micro-market”</strong> in which a property is situated.</li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="why-are-they-expensive" class="level2">
+<h2 class="anchored" data-anchor-id="why-are-they-expensive">Why Are They Expensive?</h2>
+<p><img src="Buffered Area Mean Sold Price of 2022.png" class="img-fluid"></p>
+<hr>
+</section>
+<section id="highlight" class="level2">
+<h2 class="anchored" data-anchor-id="highlight">Highlight</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="highlight.png" class="img-fluid figure-img"></p>
+<figcaption>Our adjustment follows established mass appraisal practices, where implausible sale prices are identified and adjusted based on their ratio to assessed market value (Deaf Smith CAD, Mass Appraisal and Ratio Study Manual, 2023).</figcaption>
+</figure>
+</div>
+<ul>
+<li><p><strong>Principle</strong>：Retain all information that the data tells us (including outliers) rather than deleting it.</p></li>
+<li><p><strong>Objective</strong>：Ensure equity.</p></li>
+<li><p><strong>Relationship Formula</strong>: <code>Sale Price = -9189.29 + 1.03*Market value</code></p></li>
+<li><p><strong>Approach</strong>: Unreliable sale price(<strong>low</strong> weight)~ Reliable sale price(<strong>high</strong> weight)</p></li>
 </ul>
 </section>
-<section id="reflection" class="level2">
-<h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
+<section id="model-building-and-validation" class="level2">
+<h2 class="anchored" data-anchor-id="model-building-and-validation">Model Building and Validation</h2>
+<p><strong>Model Performance Improves with Each Layer</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>CV RMSE (log)</th>
+<th>R²</th>
+<th>RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Structural Only</td>
+<td>0.5497</td>
+<td>0.5235</td>
+<td>221675.8</td>
+</tr>
+<tr class="even">
+<td>+ Census</td>
+<td>0.4519</td>
+<td>0.6779</td>
+<td>178383.4</td>
+</tr>
+<tr class="odd">
+<td>+ Spatial</td>
+<td>0.3994</td>
+<td>0.7486</td>
+<td>132547.4</td>
+</tr>
+<tr class="even">
+<td>+ Interactions/FE</td>
+<td>0.389</td>
+<td>0.7611</td>
+<td>124417.4</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>[What was most interesting]</li>
-<li>[How I’ll apply this knowledge]</li>
+<li>R² = 0.76 =&gt; The model explains <strong>76%</strong> of the variation in residential sale prices.</li>
+<li>RMSE = 124,417.4 =&gt; The average error between the model’s predicted sale price and the actual sale price is approximately <span class="math inline">\(\$124,417.4\)</span>.</li>
 </ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>For K-fold cross-validation, we use the <strong>entire dataset with replaced outliers for training</strong> to maintain consistency with the model derivation process. For the final test, however, we use a <strong>purified set that excludes all handled data</strong>, ensuring a reliable performance evaluation on genuine, trustworthy data.</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="chapter-3.-the-insight-interpretation-and-reality" class="level1">
+<h1>Chapter 3. The Insight: Interpretation and Reality</h1>
+<section id="key-factors" class="level2">
+<h2 class="anchored" data-anchor-id="key-factors">Key Factors</h2>
+<ol type="1">
+<li><strong>Livable Area</strong></li>
+<li><strong>Comparable Sales</strong></li>
+<li><strong>Interior Condition</strong></li>
+<li><strong>Zip Code</strong></li>
+</ol>
+</section>
+<section id="identifying-the-hardest-to-predict-neighborhoods" class="level2">
+<h2 class="anchored" data-anchor-id="identifying-the-hardest-to-predict-neighborhoods">Identifying the Hardest-to-Predict Neighborhoods</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<p><img src="Hardest to Predict Neighborhoods in Philadelphia.png" class="img-fluid"></p>
+</div><div class="columns">
+<div class="column" style="width:38%;">
+<p><strong>Interpretation</strong></p>
+<ol type="1">
+<li><strong>Underestimate zip code:</strong> 19130, 19123, 19104, 19144…<br>
+<strong>Overestimate zip code:</strong> 19102, 19107, 19116, 19154…</li>
+<li>Market is moving faster than the city’s valuation system can keep up.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="recommendations-and-limitations" class="level2">
+<h2 class="anchored" data-anchor-id="recommendations-and-limitations">Recommendations and Limitations</h2>
+<ol type="1">
+<li>Correct the assessed values in <strong>low-income communities</strong> that have been <strong>systematically overestimated</strong>.</li>
+<li>Routinely incorporate the effective <strong>spatial features</strong>—particularly surrounding transaction prices and neighborhood fixed effects.</li>
+<li><strong>Extreme high values</strong> almost exclusively stem from corporate transactions and require manual review for outliers.</li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Limitations: Algorithmic Fairness
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Spatial Coverage Bias and Data Quality Bias</li>
+<li>Feature Omission Bias and Spatial Dependence Bias</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="thank-you.-questions" class="level1">
+<h1>Thank you. Questions?</h1>
 
 
 </section>
