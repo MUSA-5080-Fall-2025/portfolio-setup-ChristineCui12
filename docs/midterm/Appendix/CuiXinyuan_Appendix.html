@@ -224,11 +224,11 @@ window.Quarto = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-midterm-project">    
         <li>
-    <a class="dropdown-item" href="../../midterm/CuiXinyuan_Presentation.qmd">
+    <a class="dropdown-item" href="../../midterm/Slides/CuiXinyuan_Presentation.html">
  <span class="dropdown-text">Midterm Slides</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../midterm/CuiXinyuan_Appendix.qmd">
+    <a class="dropdown-item" href="../../midterm/Appendix/CuiXinyuan_Appendix.html">
  <span class="dropdown-text">Midterm Appendix</span></a>
   </li>  
     </ul>
@@ -269,9 +269,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#fold-cross-validation" id="toc-fold-cross-validation" class="nav-link" data-scroll-target="#fold-cross-validation">10-fold cross-validation</a></li>
   </ul></li>
-  <li><a href="#create-predicted-vs.-actual-plot" id="toc-create-predicted-vs.-actual-plot" class="nav-link" data-scroll-target="#create-predicted-vs.-actual-plot">Create predicted vs.&nbsp;actual plot</a></li>
-  <li><a href="#report-and-compare-rmse-mae-r²" id="toc-report-and-compare-rmse-mae-r²" class="nav-link" data-scroll-target="#report-and-compare-rmse-mae-r²">Report and Compare RMSE, MAE, R²</a>
-  <ul class="collapse">
   <li><a href="#phase-6-model-diagnostics" id="toc-phase-6-model-diagnostics" class="nav-link" data-scroll-target="#phase-6-model-diagnostics">Phase 6: Model Diagnostics</a>
   <ul class="collapse">
   <li><a href="#check-assumptions-for-best-model" id="toc-check-assumptions-for-best-model" class="nav-link" data-scroll-target="#check-assumptions-for-best-model">Check assumptions for best model:</a></li>
@@ -280,7 +277,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion:</a></li>
   <li><a href="#recommendations" id="toc-recommendations" class="nav-link" data-scroll-target="#recommendations">Recommendations:</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -352,7 +348,8 @@ window.Quarto = {
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>opa <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"opa_properties_public1.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>opa <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"opa_properties_public1.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <ul>
@@ -497,11 +494,26 @@ window.Quarto = {
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p><strong>Interpretation</strong>: - The goal of this model is to predict typical, market-driven sale prices. The provided scatter plot of Market Value (Predicted) vs.&nbsp;Sale Price (Actual) is an essential diagnostic tool for assessing data quality. - The red line on the plot represents a perfect 1-to-1 relationship (Y=X), where the property’s actual sale price is exactly equal to its predicted market value. While most data points cluster tightly around this line—indicating the “Market Value” is a strong predictor—the plot clearly reveals two distinct types of extreme outliers that do not represent typical market transactions. 1. Removing Non-Market Sales (The Sale Price &lt; 0.05 * Market Value Rule) - There is a dense cluster of points stacked vertically along the y-axis, where Sale Price (X) is near zero, but Market Value (Y) is high (e.g., $1M, $2M, even $4M). These points represent transactions where a property was “sold” for a price that is a tiny fraction of its assessed worth (e.g., a $2,000,000 house sold for $50,000). - These are non-arm’s-length transactions, not true market sales. Examples include sales between family members, inheritance transfers, or other legal transactions where the price does not reflect the market. 2. Removing Anomalous High Sales (The Sale Price &gt; 5 * Market Value Rule) - There are several data points scattered far to the right and bottom of the plot, far below the red Y=X line. These points represent properties where the Sale Price (X) was massively higher than its Market Value (Y). For example, a property with an assessed value of $500,000 (Y) selling for $4,000,000 (X). - These are also not typical sales. They could represent (a) data entry errors, (b) sales where the “Market Value” figure is obsolete (e.g., a run-down property sold for land value/development potential), or (c) properties that underwent major renovations not yet captured in the assessed value. - Retaining these two groups of outliers would severely skew the model’s coefficients and reduce its predictive accuracy for the vast majority of normal, market-based transactions. This filtering rule is a necessary step to clean the data, ensure the model learns from valid transactions, and improve its overall reliability.</p>
+<p><strong>Interpretation</strong>:</p>
 <ul>
-<li>1.1.6 enhance the sales data</li>
+<li><p>The goal of this model is to predict typical, market-driven sale prices. The provided scatter plot of Market Value (Predicted) vs.&nbsp;Sale Price (Actual) is an essential diagnostic tool for assessing data quality.</p></li>
+<li><p>The red line on the plot represents a perfect 1-to-1 relationship (Y=X), where the property’s actual sale price is exactly equal to its predicted market value. While most data points cluster tightly around this line—indicating the “Market Value” is a strong predictor—the plot clearly reveals two distinct types of extreme outliers that do not represent typical market transactions.</p></li>
 </ul>
-<p>We have 8000+ non market transactions, that is 1/4 of the total sales data! That’s too big to let go, The model that we want to generate will become much more stable if we can make use of them.</p>
+<p><strong><em>1. Removing Non-Market Sales (The Sale Price &lt; 0.05 × Market Value Rule)</em></strong></p>
+<ul>
+<li><p>There is a dense cluster of points stacked vertically along the y-axis, where Sale Price (X) is near zero, but Market Value (Y) is high (e.g., $1M, $2M, even $4M). These points represent transactions where a property was “sold” for a price that is a tiny fraction of its assessed worth (e.g., a $2,000,000 house sold for $50,000).</p></li>
+<li><p>These are non-arm’s-length transactions, not true market sales. Examples include sales between family members, inheritance transfers, or other legal transactions where the price does not reflect the market.</p></li>
+</ul>
+<p><strong><em>2. Removing Anomalous High Sales (The Sale Price &gt; 5 </em> Market Value Rule)</strong>*</p>
+<ul>
+<li><p>There are several data points scattered far to the right and bottom of the plot, far below the red Y=X line. These points represent properties where the Sale Price (X) was massively higher than its Market Value (Y). For example, a property with an assessed value of $500,000 (Y) selling for $4,000,000 (X).</p></li>
+<li><p>These are also not typical sales. They could represent (a) data entry errors, (b) sales where the “Market Value” figure is obsolete (e.g., a run-down property sold for land value/development potential), or (c) properties that underwent major renovations not yet captured in the assessed value.</p></li>
+<li><p>Retaining these two groups of outliers would severely skew the model’s coefficients and reduce its predictive accuracy for the vast majority of normal, market-based transactions. This filtering rule is a necessary step to clean the data, ensure the model learns from valid transactions, and improve its overall reliability.</p></li>
+<li><p>1.1.6 enhance the sales data</p>
+<ul>
+<li>We have 8000+ non market transactions, that is 1/4 of the total sales data! That’s too big to let go, The model that we want to generate will become much more stable if we can make use of them.</li>
+</ul></li>
+</ul>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -587,7 +599,13 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 <pre><code>[1] 86311.29</code></pre>
 </div>
 </div>
-<p>The results demonstrate a very strong linear relationship between sale_price and market_value. The market_value variable in the dataset effectively predicts the sale_price. Therefore, we can leverage this relationship to estimate the normal market prices for non-market transactions. We record these estimated values as sale_price_predicted. By doing this, we enhance our data!</p>
+<ul>
+<li>The results demonstrate a very strong linear relationship between sale_price and market_value. The market_value variable in the dataset effectively predicts the sale_price.<br>
+</li>
+<li>Therefore, we can leverage this relationship to estimate the normal market prices for non-market transactions.</li>
+<li>We record these estimated values as sale_price_predicted.</li>
+<li>By doing this, we enhance our data!</li>
+</ul>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -774,16 +792,46 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 <li>Transform to spatial format and remove records with missing values.</li>
 </ul></li>
 </ul>
-<p><strong>Interpretation</strong>: The selected variables can be grouped into several meaningful categories that are theoretically and empirically linked to housing prices:<br>
-- Neighborhood Safety: - Crime data: Areas with lower crime rates are generally more desirable, leading to higher property values. Including crime incidents helps capture the effect of public safety on housing prices. - Accessibility and Transportation: - Transit points: Proximity to public transportation (e.g., bus stops, subway stations) increases accessibility and convenience, which is often capitalized into higher home values. - Points of Interest (POIs): Nearby amenities such as shops, restaurants, and parks improve quality of life and can positively influence housing prices. - Healthcare Access: - Hospitals: Easy access to healthcare facilities is a valued neighborhood characteristic, especially for families and older residents, and can contribute to higher property values. - Socioeconomic and Demographic Context (from Census data): - Total population: Indicates population density, which can affect demand for housing. - Educational attainment (e.g., % with BA degree): Higher education levels are often correlated with higher income and neighborhood desirability. - Median income: Directly influences purchasing power and demand for housing in an area. - Employment status (labor force and unemployment): Reflects economic stability and local job market health, which affect housing demand. - Housing market conditions (total and vacant housing): Vacancy rates can signal neighborhood decline or oversupply, both of which impact prices. - Together, these variables provide a multidimensional view of a neighborhood’s appeal, safety, convenience, and economic health—all key determinants of housing prices.</p>
+<p><strong>Interpretation</strong>: The selected variables can be grouped into several meaningful categories that are theoretically and empirically linked to housing prices:</p>
+<ul>
+<li>Neighborhood Safety:
+<ul>
+<li>Crime data: Areas with lower crime rates are generally more desirable, leading to higher property values. Including crime incidents helps capture the effect of public safety on housing prices.<br>
+</li>
+</ul></li>
+<li>Accessibility and Transportation:
+<ul>
+<li>Transit points: Proximity to public transportation (e.g., bus stops, subway stations) increases accessibility and convenience, which is often capitalized into higher home values.<br>
+</li>
+<li>Points of Interest (POIs): Nearby amenities such as shops, restaurants, and parks improve quality of life and can positively influence housing prices.</li>
+</ul></li>
+<li>Healthcare Access:
+<ul>
+<li>Hospitals: Easy access to healthcare facilities is a valued neighborhood characteristic, especially for families and older residents, and can contribute to higher property values.<br>
+</li>
+</ul></li>
+<li>Socioeconomic and Demographic Context (from Census data):
+<ul>
+<li>Total population: Indicates population density, which can affect demand for housing.<br>
+</li>
+<li>Educational attainment (e.g., % with BA degree): Higher education levels are often correlated with higher income and neighborhood desirability.<br>
+</li>
+<li>Median income: Directly influences purchasing power and demand for housing in an area.<br>
+</li>
+<li>Employment status (labor force and unemployment): Reflects economic stability and local job market health, which affect housing demand.<br>
+</li>
+<li>Housing market conditions (total and vacant housing): Vacancy rates can signal neighborhood decline or oversupply, both of which impact prices.</li>
+</ul></li>
+<li>Together, these variables provide a multidimensional view of a neighborhood’s appeal, safety, convenience, and economic health—all key determinants of housing prices.</li>
+</ul>
 <hr>
 </section>
 </section>
 <section id="phase-2-feature-engineering" class="level2">
 <h2 class="anchored" data-anchor-id="phase-2-feature-engineering">Phase 2: Feature Engineering</h2>
-<p><strong>2.1 Buffer-based features</strong>:</p>
+<p><strong>2.1 Buffer-based features: </strong></p>
 <ul>
-<li>2.1.1 neighborhood avg sale price in the past year</li>
+<li>2.1.1 Neighborhood avg sale price in the past year</li>
 </ul>
 <div class="cell">
 <details open="" class="code-fold">
@@ -848,7 +896,7 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 </details>
 </div>
 <ul>
-<li>2.1.2 crime numbers</li>
+<li>2.1.2 Crime numbers</li>
 </ul>
 <div class="cell">
 <details open="" class="code-fold">
@@ -859,7 +907,7 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 </details>
 </div>
 <ul>
-<li>2.1.3 POI numbers</li>
+<li>2.1.3 POI Numbers</li>
 </ul>
 <div class="cell">
 <details open="" class="code-fold">
@@ -883,7 +931,7 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 </details>
 </div>
 <ul>
-<li>2.1.4 Transit numbers</li>
+<li>2.1.4 Transit Numbers</li>
 </ul>
 <div class="cell">
 <details open="" class="code-fold">
@@ -905,7 +953,7 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 <span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(transit_summary, <span class="at">by =</span> <span class="st">"sale_id"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p><strong>2.2 k-Nearest Neighbor features</strong>:</p>
+<p><strong>2.2 k-Nearest Neighbor features: </strong></p>
 <ul>
 <li>2.2.1 Hospitals (KNN-3)</li>
 </ul>
@@ -922,7 +970,7 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>opa_census<span class="sc">$</span>nearest_hospital_knn3 <span class="ot">&lt;-</span> <span class="fu">sapply</span>(nearest_hospital_index<span class="sc">$</span>dist, mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p><strong>2.3 Weights</strong>:</p>
+<p><strong>2.3 Weights: </strong></p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -942,7 +990,7 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">weight_mix =</span> <span class="fu">ifelse</span>(non_market <span class="sc">==</span> <span class="dv">1</span>, non_market_share, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p><strong>2.4 Transformation</strong>:</p>
+<p><strong>2.4 Transformation: </strong></p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -976,10 +1024,10 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(opa_census_all, <span class="fu">aes</span>(<span class="at">x =</span> sale_price_predicted)) <span class="sc">+</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bins =</span> <span class="dv">50</span>,                 <span class="co"># 调整分箱数量</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#6A1B9A"</span>,          <span class="co"># 柱子颜色</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,           <span class="co"># 边框颜色</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.8</span>                <span class="co"># 透明度</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bins =</span> <span class="dv">50</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#6A1B9A"</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.8</span>  </span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">dollar_format</span>()) <span class="sc">+</span></span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
@@ -1002,10 +1050,10 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(opa_census_all, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(sale_price_predicted))) <span class="sc">+</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bins =</span> <span class="dv">50</span>,                 <span class="co"># 调整分箱数量</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#6A1B9A"</span>,          <span class="co"># 柱子颜色</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,           <span class="co"># 边框颜色</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.8</span>                <span class="co"># 透明度</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bins =</span> <span class="dv">50</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#6A1B9A"</span>,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.8</span></span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>() <span class="sc">+</span></span>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
@@ -1023,9 +1071,12 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 </div>
 </div>
 </div>
-<p><strong>Key Findings:</strong> - <strong>Highly Right-Skewed:</strong> The bulk of the distribution is concentrated on the left side (low price range), while the right tail is very long, extending towards higher prices. This means that the majority of houses have lower prices, and very expensive houses are very few in number.<br>
-- <strong>Concentration and Outliers:</strong> The count of houses in each bin drops rapidly as the price increases. The number of houses above $2,500,000 is very small, indicating the presence of extreme high-price outliers.<br>
-- <strong>Preprocessing Requirement:</strong> This distribution strongly suggests that before building a house price prediction model, the Sale Price variable will need a transformation, most commonly a log transformation, to make the distribution more closely resemble a normal distribution.</p>
+<p><strong>Key Findings:</strong></p>
+<ul>
+<li><p><strong>Highly Right-Skewed:</strong> The bulk of the distribution is concentrated on the left side (low price range), while the right tail is very long, extending towards higher prices. This means that the majority of houses have lower prices, and very expensive houses are very few in number.</p></li>
+<li><p><strong>Concentration and Outliers:</strong> The count of houses in each bin drops rapidly as the price increases. The number of houses above $2,500,000 is very small, indicating the presence of extreme high-price outliers.</p></li>
+<li><p><strong>Preprocessing Requirement:</strong> This distribution strongly suggests that before building a house price prediction model, the Sale Price variable will need a transformation, most commonly a log transformation, to make the distribution more closely resemble a normal distribution.</p></li>
+</ul>
 </section>
 <section id="spatial-distribution-of-sale-prices-map" class="level3">
 <h3 class="anchored" data-anchor-id="spatial-distribution-of-sale-prices-map">3.2 Spatial distribution of sale prices (map)</h3>
@@ -1058,9 +1109,12 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 </div>
 </div>
 </div>
-<p><strong>Key Findings:</strong><br>
-- <strong>Spatial Concentration of Housing Prices:</strong> Highest Prices are clearly concentrated in the Center City/Downtown area of Philadelphia and its immediate surroundings, which indicates that the most expensive property transactions occur in the high-value areas of and around the city center.<br>
-- <strong>Discontinuous Price Transitions:</strong> Housing prices do not exhibit smooth gradients across the city; instead, they show abrupt changes between different price quartiles, forming distinct spatial clusters. This suggests that price variations are influenced by fixed boundaries such as neighborhoods, infrastructure, or socio-economic factors, rather than continuous spatial diffusion. - <strong>Peripheral Price Patterns:</strong> Lower-price quartiles (0%-25% and 25%-50%) are predominantly located in the outer regions of the city, particularly in the northern and southern peripheries, indicating a clear core-periphery divide in housing values.</p>
+<p><strong>Key Findings:</strong></p>
+<ul>
+<li><p><strong>Spatial Concentration of Housing Prices:</strong> Highest Prices are clearly concentrated in the Center City/Downtown area of Philadelphia and its immediate surroundings, which indicates that the most expensive property transactions occur in the high-value areas of and around the city center.</p></li>
+<li><p><strong>Discontinuous Price Transitions:</strong> Housing prices do not exhibit smooth gradients across the city; instead, they show abrupt changes between different price quartiles, forming distinct spatial clusters. This suggests that price variations are influenced by fixed boundaries such as neighborhoods, infrastructure, or socio-economic factors, rather than continuous spatial diffusion.</p></li>
+<li><p><strong>Peripheral Price Patterns:</strong> Lower-price quartiles (0%-25% and 25%-50%) are predominantly located in the outer regions of the city, particularly in the northern and southern peripheries, indicating a clear core-periphery divide in housing values.</p></li>
+</ul>
 </section>
 <section id="price-vs.-structural-features-scatter-plots" class="level3">
 <h3 class="anchored" data-anchor-id="price-vs.-structural-features-scatter-plots">3.3 Price vs.&nbsp;structural features (scatter plots)</h3>
@@ -1124,8 +1178,12 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 </div>
 </div>
 </div>
-<p>quarto check <strong>Key Findings:</strong><br>
-- <strong>Strong Positive Correlation with Size and Bathrooms:</strong> There is a clear positive linear relationship between the log of sale price and both the log of total livable area and the number of bathrooms. This indicates that larger properties and those with more bathrooms command significantly higher market prices. - <strong>Non-Linear Relationship with Interior Condition:</strong> While a general positive trend exists, the relationship between log sale price and interior condition rating is not perfectly linear. The data dispersion suggests that the effect of interior condition on price may be subject to diminishing marginal returns or other non-linear dynamics. - <strong>Negative Correlation with House Age Squared:</strong> A significant negative relationship is observed between log sale price and the squared term of house age. This indicates that property values depreciate as homes get older, and this depreciation effect may accelerate over time, reflecting a non-linear aging effect on housing value.</p>
+<p><strong>Key Findings:</strong></p>
+<ul>
+<li><p><strong>Strong Positive Correlation with Size and Bathrooms:</strong> There is a clear positive linear relationship between the log of sale price and both the log of total livable area and the number of bathrooms. This indicates that larger properties and those with more bathrooms command significantly higher market prices.</p></li>
+<li><p><strong>Non-Linear Relationship with Interior Condition:</strong> While a general positive trend exists, the relationship between log sale price and interior condition rating is not perfectly linear. The data dispersion suggests that the effect of interior condition on price may be subject to diminishing marginal returns or other non-linear dynamics.</p></li>
+<li><p><strong>Negative Correlation with House Age Squared:</strong> A significant negative relationship is observed between log sale price and the squared term of house age. This indicates that property values depreciate as homes get older, and this depreciation effect may accelerate over time, reflecting a non-linear aging effect on housing value.</p></li>
+</ul>
 </section>
 <section id="price-vs.-spatial-social-features-scatter-plots" class="level3">
 <h3 class="anchored" data-anchor-id="price-vs.-spatial-social-features-scatter-plots">3.4 Price vs.&nbsp;spatial &amp; Social features (scatter plots)</h3>
@@ -1193,8 +1251,12 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 </div>
 </div>
 </div>
-<p><strong>Key Findings:</strong><br>
-- <strong>Strong Socioeconomic Influence:</strong> Housing prices show clear positive correlations with key socioeconomic indicators. Both bachelor’s degree rate and median household income exhibit strong positive relationships with sale prices, indicating that neighborhoods with higher educational attainment and income levels command substantially higher property values. - <strong>Negative Impact of Crime and Unemployment:</strong> There are evident negative relationships between housing prices and both crime levels (measured by square root of crime count) and unemployment rates. This demonstrates that public safety and local economic vitality are significant determinants of property values in Philadelphia. - <strong>Positive Effects of Historical Prices and Transit Access:</strong> Sale prices maintain a positive relationship with both historical price density and accessibility to public transportation. This suggests that areas with established high-value characteristics and better transit infrastructure maintain their premium in the housing market, reflecting path dependence in neighborhood valuation and the value of transportation accessibility.</p>
+<p><strong>Key Findings:</strong></p>
+<ul>
+<li><p><strong>Strong Socioeconomic Influence:</strong> Housing prices show clear positive correlations with key socioeconomic indicators. Both bachelor’s degree rate and median household income exhibit strong positive relationships with sale prices, indicating that neighborhoods with higher educational attainment and income levels command substantially higher property values.</p></li>
+<li><p><strong>Negative Impact of Crime and Unemployment:</strong> There are evident negative relationships between housing prices and both crime levels (measured by square root of crime count) and unemployment rates. This demonstrates that public safety and local economic vitality are significant determinants of property values in Philadelphia.</p></li>
+<li><p><strong>Positive Effects of Historical Prices and Transit Access:</strong> Sale prices maintain a positive relationship with both historical price density and accessibility to public transportation. This suggests that areas with established high-value characteristics and better transit infrastructure maintain their premium in the housing market, reflecting path dependence in neighborhood valuation and the value of transportation accessibility.</p></li>
+</ul>
 </section>
 <section id="other-visualization" class="level3">
 <h3 class="anchored" data-anchor-id="other-visualization">Other visualization</h3>
@@ -1252,7 +1314,7 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 <span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tract_map, <span class="fu">aes</span>(<span class="at">fill =</span> mean_interior_condition), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"#6A1B9A"</span>, <span class="at">high =</span> <span class="st">"white"</span>,      <span class="co"># 浅橙→深红，更直观表现高低</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"#6A1B9A"</span>, <span class="at">high =</span> <span class="st">"white"</span>,</span>
 <span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Avg Interior Condition"</span>,</span>
 <span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">na.value =</span> <span class="st">"grey60"</span></span>
 <span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
@@ -1313,8 +1375,12 @@ F-statistic: 3.36e+05 on 1 and 40927 DF,  p-value: &lt; 0.00000000000000022</cod
 </div>
 </div>
 </div>
-<p><strong>Key Findings:</strong><br>
-- <strong>Spatial Variation in Property Values:</strong> The average sale price per square foot shows significant geographic clustering across census tracts, with distinct high-value areas concentrated in specific neighborhoods. This indicates strong spatial autocorrelation in housing prices, where adjacent tracts tend to have similar price levels. - <strong>Correlation Between Property Condition and Location:</strong> Better average interior conditions are systematically concentrated in particular geographic areas, suggesting that housing maintenance and quality are not randomly distributed but follow spatial patterns that may correlate with neighborhood characteristics and property values. - <strong>Heterogeneous Distribution of Housing Size:</strong> The average livable area varies substantially across census tracts, with larger properties clustered in specific regions. This spatial patterning of housing size complements the price distribution, indicating that both property characteristics and location factors contribute to the overall housing market structure in Philadelphia.</p>
+<p><strong>Key Findings:</strong></p>
+<ul>
+<li><p><strong>Spatial Variation in Property Values:</strong> The average sale price per square foot shows significant geographic clustering across census tracts, with distinct high-value areas concentrated in specific neighborhoods. This indicates strong spatial autocorrelation in housing prices, where adjacent tracts tend to have similar price levels.</p></li>
+<li><p><strong>Correlation Between Property Condition and Location:</strong> Better average interior conditions are systematically concentrated in particular geographic areas, suggesting that housing maintenance and quality are not randomly distributed but follow spatial patterns that may correlate with neighborhood characteristics and property values.</p></li>
+<li><p><strong>Heterogeneous Distribution of Housing Size:</strong> The average livable area varies substantially across census tracts, with larger properties clustered in specific regions. This spatial patterning of housing size complements the price distribution, indicating that both property characteristics and location factors contribute to the overall housing market structure in Philadelphia.</p></li>
+</ul>
 <hr>
 </section>
 </section>
@@ -1388,8 +1454,20 @@ Multiple R-squared:  0.5212,    Adjusted R-squared:  0.521
 F-statistic:  3439 on 10 and 31602 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 </div>
 </div>
-<p><strong>Coefficient Interpretation</strong>:<br>
-- log(total_livable_area) (0.752): An elasticity coefficient. A 1% increase in livable area is associated with a 0.752% increase in price. This is a strong positive driver. - number_of_bathrooms (0.046): Each additional bathroom is associated with a 4.6% increase in price. - house_age_c (-0.00001): The linear term for house age is statistically insignificant (p=0.929). - house_age_c2 (0.000047): The squared term for age is positive and significant. Combined with the insignificant linear term, this suggests a slight U-shaped relationship, where new homes and very old homes (perhaps with historical value) command a premium over middle-aged homes. - interior_condition (-0.114): Assuming a higher value means worse condition, each one-unit worsening in condition is associated with an 11.4% decrease in price. - quality_grade_num (0.070): Each one-unit increase in the quality grade is associated with a 7.0% increase in price. - fireplaces (0.117): Each additional fireplace is associated with a 11.7% increase in price. - garage_spaces (0.143): Each additional garage space is associated with a 14.3% increase in price. - central_air_dummy (0.458): Homes with central air are estimated to be 45.8% more expensive than the baseline (e.g., no AC). This is a very significant amenity premium. - central_air_missing (-0.230): Homes where central air data is missing are 23.0% cheaper than the baseline.</p>
+<p><strong>Coefficient Interpretation: </strong></p>
+<ul>
+<li><p><code>log(total_livable_area) (0.752)</code>: An elasticity coefficient. A 1% increase in livable area is associated with a 0.752% increase in price. This is a strong positive driver.</p></li>
+<li><p><code>number_of_bathrooms (0.046)</code>: Each additional bathroom is associated with a 4.6% increase in price.</p></li>
+<li><p><code>house_age_c (-0.00001)</code>: The linear term for house age is statistically insignificant (p=0.929).</p></li>
+<li><p><code>house_age_c2 (0.000047)</code>: The squared term for age is positive and significant. Combined with the insignificant linear term, this suggests a slight U-shaped relationship, where new homes and very old homes (perhaps with historical value) command a premium over middle-aged homes.</p></li>
+<li><p><code>interior_condition (-0.114)</code>: Assuming a higher value means worse condition, each one-unit worsening in condition is associated with an 11.4% decrease in price.<br>
+</p></li>
+<li><p><code>quality_grade_num (0.070)</code>: Each one-unit increase in the quality grade is associated with a 7.0% increase in price.</p></li>
+<li><p><code>fireplaces (0.117)</code>: Each additional fireplace is associated with a 11.7% increase in price.</p></li>
+<li><p><code>garage_spaces (0.143)</code>: Each additional garage space is associated with a 14.3% increase in price.</p></li>
+<li><p><code>central_air_dummy (0.458)</code>: Homes with central air are estimated to be 45.8% more expensive than the baseline (e.g., no AC). This is a very significant amenity premium.</p></li>
+<li><p><code>central_air_missing (-0.230)</code>: Homes where central air data is missing are 23.0% cheaper than the baseline.</p></li>
+</ul>
 <p><strong>4.2 Census variables:</strong></p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -1467,8 +1545,21 @@ Multiple R-squared:  0.6796,    Adjusted R-squared:  0.6794
 F-statistic:  5155 on 13 and 31599 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 </div>
 </div>
-<p><strong>Coefficient Interpretation</strong>:<br>
-- Coefficient Evolution (vs.&nbsp;Model 1): - log(total_livable_area) (0.710 vs 0.752): The elasticity of area decreased. This suggests Model 1 overestimated the impact of area. Why? Because larger homes are often located in wealthier neighborhoods. Model 1 incorrectly attributed some of the “wealthy neighborhood” premium to “large area.” - quality_grade_num (0.0015 vs 0.070): The coefficient for quality grade became statistically insignificant (p=0.520). This is a key finding: home quality is highly correlated with neighborhood income. Once we directly control for income (income_scaled), the independent effect of quality grade disappears. - central_air_dummy (0.219 vs 0.458): The premium for central air was halved. This also indicates that central air is more common in affluent areas, and Model 1 suffered from significant Omitted Variable Bias (OVB). - New Variable (Census) Interpretation: - income_scaled (0.455): A one-unit increase in standardized census tract income is associated with a 45.5% increase in price. A very strong positive effect. - ba_rate (0.0129): A 1 percentage point increase in the neighborhood’s bachelor’s degree attainment rate is associated with a 1.3% price increase. - unemployment_rate (-0.0066): A 1 percentage point increase in the unemployment rate is associated with a 0.66% decrease in price.</p>
+<p><strong>Coefficient Interpretation: </strong></p>
+<ul>
+<li><p>Coefficient Evolution (vs.&nbsp;Model 1):</p>
+<ul>
+<li><p><code>log(total_livable_area) (0.710 vs 0.752)</code>: The elasticity of area decreased. This suggests Model 1 overestimated the impact of area. Why? Because larger homes are often located in wealthier neighborhoods. Model 1 incorrectly attributed some of the “wealthy neighborhood” premium to “large area.”</p></li>
+<li><p><code>quality_grade_num (0.0015 vs 0.070)</code>: The coefficient for quality grade became statistically insignificant (p=0.520). This is a key finding: home quality is highly correlated with neighborhood income. Once we directly control for income (income_scaled), the independent effect of quality grade disappears.</p></li>
+<li><p><code>central_air_dummy (0.219 vs 0.458)</code>: The premium for central air was halved. This also indicates that central air is more common in affluent areas, and Model 1 suffered from significant Omitted Variable Bias (OVB).</p></li>
+</ul></li>
+<li><p>New Variable (Census) Interpretation:</p>
+<ul>
+<li><p><code>income_scaled (0.455)</code>: A one-unit increase in standardized census tract income is associated with a 45.5% increase in price. A very strong positive effect.</p></li>
+<li><p><code>ba_rate (0.0129)</code>: A 1 percentage point increase in the neighborhood’s bachelor’s degree attainment rate is associated with a 1.3% price increase.</p></li>
+<li><p><code>unemployment_rate (-0.0066)</code>: A 1 percentage point increase in the unemployment rate is associated with a 0.66% decrease in price.</p></li>
+</ul></li>
+</ul>
 <p><strong>4.3 Spatial features:</strong></p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -1561,8 +1652,22 @@ Multiple R-squared:  0.7505,    Adjusted R-squared:  0.7504
 F-statistic:  5571 on 17 and 31481 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 </div>
 </div>
-<p><strong>Coefficient Interpretation</strong>:<br>
-- Coefficient Evolution (vs.&nbsp;Model 2): - income_scaled (0.146 vs 0.455): The effect of income dropped sharply (by ~2/3). This again reveals OVB in Model 2. The large “income” effect in Model 2 was confounded with “spatial amenities”—high-income individuals tend to live in low-crime, accessible areas. - ba_rate (0.0027 vs 0.0129): The education premium also dropped significantly for the same reason. - garage_spaces (0.095 vs 0.170): The garage premium decreased, likely because spatial variables (like density or transit access) have captured related information. - New Variable (Spatial) Interpretation: - transit_count (0.00029): Each additional nearby public transit stop is associated with a 0.029% increase in price. - avg_past_price_density (0.0032): As a proxy for local market heat or locational value, each unit increase is associated with a 0.32% price increase. - sqrt(crime_count) (-0.040): A one-unit increase in the square root of the crime count is associated with a 4.0% decrease in price. - log(nearest_hospital_knn3) (0.087): A 1% increase in the distance from the nearest hospital is associated with a 0.087% increase in price. This suggests people prefer to live further away from hospitals (perhaps to avoid noise, traffic, or sirens), not closer.</p>
+<p><strong>Coefficient Interpretation: </strong></p>
+<ul>
+<li><p>Coefficient Evolution (vs.&nbsp;Model 2):</p>
+<ul>
+<li><p><code>income_scaled (0.146 vs 0.455)</code>: The effect of income dropped sharply (by ~2/3). This again reveals OVB in Model 2. The large “income” effect in Model 2 was confounded with “spatial amenities”—high-income individuals tend to live in low-crime, accessible areas.</p></li>
+<li><p><code>ba_rate (0.0027 vs 0.0129)</code>: The education premium also dropped significantly for the same reason.</p></li>
+<li><p><code>garage_spaces (0.095 vs 0.170)</code>: The garage premium decreased, likely because spatial variables (like density or transit access) have captured related information.</p></li>
+</ul></li>
+<li><p>New Variable (Spatial) Interpretation:</p>
+<ul>
+<li><p><code>transit_count (0.00029)</code>: Each additional nearby public transit stop is associated with a 0.029% increase in price.</p></li>
+<li><p><code>avg_past_price_density (0.0032)</code>: As a proxy for local market heat or locational value, each unit increase is associated with a 0.32% price increase.</p></li>
+<li><p><code>sqrt(crime_count) (-0.040)</code>: A one-unit increase in the square root of the crime count is associated with a 4.0% decrease in price.</p></li>
+<li><p><code>log(nearest_hospital_knn3) (0.087)</code>: A 1% increase in the distance from the nearest hospital is associated with a 0.087% increase in price. This suggests people prefer to live further away from hospitals (perhaps to avoid noise, traffic, or sirens), not closer.</p></li>
+</ul></li>
+</ul>
 <p><strong>4.4 Interactions and fixed effects:</strong></p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -1779,8 +1884,21 @@ factor(zip_code)                 565.126609 45        1.072950
 interior_condition:income_scaled  20.090358  1        4.482227</code></pre>
 </div>
 </div>
-<p><strong>Coefficient Interpretation</strong>:<br>
-- Fixed Effects Interpretation: - These coefficients represent the price difference for each zip code relative to the “reference zip code” (which is omitted from the list, e.g., 19102). - Example: factor(zip_code)19106 (-0.107): A home in zip code 19106 is, on average, 10.7% less expensive than a home in the reference zip code, holding all other variables constant. - Example: factor(zip_code)19149 (0.183): A home in zip code 19149 is, on average, 18.3% more expensive. - interior_condition:income_scaled (0.117) (Interaction Term): - This is one of the most interesting findings. It shows that the impact of interior_condition depends on income_scaled. - The total marginal effect of interior_condition is:<span class="math display">\[= -0.1695 + 0.1165 \times \text{income\_scaled}\]</span> - At the baseline income level (income_scaled = 0), each one-unit worsening in condition is associated with a 17.0% price decrease (-0.1695). However, this penalty is mitigated (lessened) in higher-income areas. For each one-unit increase in income_scaled, the negative penalty of poor condition is reduced by 11.7 percentage points. This may imply that in high-income neighborhoods, “fixer-uppers” (homes in poor condition) are seen as investment opportunities with high renovation potential. Therefore, the market penalty for “poor condition” is smaller.</p>
+<p><strong>Coefficient Interpretation: </strong></p>
+<ul>
+<li><p>Fixed Effects Interpretation:</p>
+<ul>
+<li><p>These coefficients represent the price difference for each zip code relative to the “reference zip code” (which is omitted from the list, e.g.&nbsp;19102).</p></li>
+<li><p>Example: <code>factor(zip_code)19106 (-0.107)</code>: A home in zip code 19106 is, on average, 10.7% less expensive than a home in the reference zip code, holding all other variables constant.</p></li>
+<li><p>Example: <code>factor(zip_code)19149 (0.183)</code>: A home in zip code 19149 is, on average, 18.3% more expensive.</p></li>
+</ul></li>
+<li><p>interior_condition: <code>income_scaled (0.117)</code> (Interaction Term):</p>
+<ul>
+<li><p>This is one of the most interesting findings. It shows that the impact of interior_condition depends on income_scaled.</p></li>
+<li><p>The total marginal effect of interior_condition is:<span class="math display">\[= -0.1695 + 0.1165 \times \text{income\_scaled}\]</span></p></li>
+<li><p>At the baseline income level (income_scaled = 0), each one-unit worsening in condition is associated with a 17.0% price decrease (-0.1695). However, this penalty is mitigated (lessened) in higher-income areas. For each one-unit increase in income_scaled, the negative penalty of poor condition is reduced by 11.7 percentage points. This may imply that in high-income neighborhoods, “fixer-uppers” (homes in poor condition) are seen as investment opportunities with high renovation potential. Therefore, the market penalty for “poor condition” is smaller.</p></li>
+</ul></li>
+</ul>
 </section>
 </section>
 <section id="phase-5-model-validation" class="level2">
@@ -1788,10 +1906,9 @@ interior_condition:income_scaled  20.090358  1        4.482227</code></pre>
 <section id="fold-cross-validation" class="level3">
 <h3 class="anchored" data-anchor-id="fold-cross-validation">10-fold cross-validation</h3>
 <p><strong>5.1 Compare all 4 models:</strong></p>
-</section>
-</section>
-<section id="create-predicted-vs.-actual-plot" class="level1">
-<h1>Create predicted vs.&nbsp;actual plot</h1>
+<ul>
+<li>5.1.1 Create predicted vs.&nbsp;actual plot</li>
+</ul>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -1951,9 +2068,9 @@ Normalized RMSE: 0.4282
 </div>
 </div>
 </div>
-</section>
-<section id="report-and-compare-rmse-mae-r²" class="level1">
-<h1>Report and Compare RMSE, MAE, R²</h1>
+<ul>
+<li>5.1.2 Report and Compare RMSE, MAE, R²</li>
+</ul>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -2438,11 +2555,21 @@ Normalized RMSE: 0.4282
 10   10 0.38 132252.04 0.7824 67237.96</code></pre>
 </div>
 </div>
-<p><strong>Discussion of the most mattered features</strong>:<br>
-- <strong>Livable Area – The Fundamental Structural Driver:</strong><br>
-Among all traditional structural housing characteristics, the total livable area demonstrates the strongest and most consistent positive relationship with sale price. This finding robustly confirms that the physical scale of a property remains a primary determinant of its market value. A larger livable space directly provides more utility and functionality, which homebuyers are consistently willing to pay a premium for. Its strength as a predictor underscores that, despite the importance of location and market trends, the core structure and size of a house still fundamentally matter. - <strong>Comparable Sales – Capturing Appraiser Logic and Micro-Market Dynamics:</strong><br>
-The historical sale prices of nearby properties (modeled as average past price density) serve as a powerful predictive feature. This variable effectively allows the model to “think like a real appraiser” by incorporating the most relevant and recent market transactions as references. It captures hyperlocal, block-by-block market momentum and the value influence that comparable homes exert on a subject property. By leveraging this spatial and temporal proximity, the feature helps to correct for the inherent time lag in other census-based data and anchors the price prediction in real-time, micro-level market activity. - <strong>Zip Code Fixed Effects – The Ultimate Location Premium:</strong><br>
-The inclusion of Zip Code Fixed Effects proves to be the most consequential “game-changer” in the model. While other variables capture specific, quantifiable aspects of a property, this feature holistically encapsulates the unobserved, intangible value associated with a specific location. It quantifies the true “location value” premium, capturing a wide array of factors that are difficult to measure directly but are capitalized into housing prices, such as school district quality, neighborhood prestige, long-term desirability, and overall “market mood.” Its dominant role confirms that in the Philadelphia housing market, the answer to “Where is it?” often carries more weight than “What is it?”, as the zip code effectively bundles the net effect of all locational advantages and community characteristics.</p>
+<p><strong>Discussion of the most mattered features</strong>:</p>
+<ul>
+<li><strong>Livable Area – The Fundamental Structural Driver:</strong></li>
+</ul>
+<p>Among all traditional structural housing characteristics, the total livable area demonstrates the strongest and most consistent positive relationship with sale price. This finding robustly confirms that the physical scale of a property remains a primary determinant of its market value. A larger livable space directly provides more utility and functionality, which homebuyers are consistently willing to pay a premium for. Its strength as a predictor underscores that, despite the importance of location and market trends, the core structure and size of a house still fundamentally matter.</p>
+<ul>
+<li><strong>Comparable Sales – Capturing Appraiser Logic and Micro-Market Dynamics:</strong></li>
+</ul>
+<p>The historical sale prices of nearby properties (modeled as average past price density) serve as a powerful predictive feature. This variable effectively allows the model to “think like a real appraiser” by incorporating the most relevant and recent market transactions as references. It captures hyperlocal, block-by-block market momentum and the value influence that comparable homes exert on a subject property. By leveraging this spatial and temporal proximity, the feature helps to correct for the inherent time lag in other census-based data and anchors the price prediction in real-time, micro-level market activity.</p>
+<ul>
+<li><strong>Zip Code Fixed Effects – The Ultimate Location Premium:</strong></li>
+</ul>
+<p>The inclusion of Zip Code Fixed Effects proves to be the most consequential “game-changer” in the model. While other variables capture specific, quantifiable aspects of a property, this feature holistically encapsulates the unobserved, intangible value associated with a specific location. It quantifies the true “location value” premium, capturing a wide array of factors that are difficult to measure directly but are capitalized into housing prices, such as school district quality, neighborhood prestige, long-term desirability, and overall “market mood.” Its dominant role confirms that in the Philadelphia housing market, the answer to “Where is it?” often carries more weight than “What is it?”, as the zip code effectively bundles the net effect of all locational advantages and community characteristics.</p>
+</section>
+</section>
 <section id="phase-6-model-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="phase-6-model-diagnostics">Phase 6: Model Diagnostics</h2>
 <section id="check-assumptions-for-best-model" class="level3">
@@ -2532,10 +2659,12 @@ The inclusion of Zip Code Fixed Effects proves to be the most consequential “g
 </div>
 </div>
 </div>
-<p><strong>Interpretation</strong>:<br>
-- <strong>Central Tendency of Residuals:</strong> The residuals are generally centered around the zero line, showing no systematic deviation. This indicates that the model captures the overall linear relationship between predictors and the response variable effectively.<br>
-- <strong>Homoscedasticity:</strong> The residuals show greater variability and dispersion in the lower fitted value range (approximately 10–12), while they appear more stable at higher fitted values. This suggests that the model performs less effectively for observations with lower predicted values.<br>
-- <strong>Model Assumption Assessment:</strong> Overall, the assumptions of linearity and homoscedasticity are largely satisfied, indicating a sound model fit, with only slight deviations to monitor at higher fitted values.</p>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p><strong>Central Tendency of Residuals:</strong> The residuals are generally centered around the zero line, showing no systematic deviation. This indicates that the model captures the overall linear relationship between predictors and the response variable effectively.</p></li>
+<li><p><strong>Homoscedasticity:</strong> The residuals show greater variability and dispersion in the lower fitted value range (approximately 10–12), while they appear more stable at higher fitted values. This suggests that the model performs less effectively for observations with lower predicted values.</p></li>
+<li><p><strong>Model Assumption Assessment:</strong> Overall, the assumptions of linearity and homoscedasticity are largely satisfied, indicating a sound model fit, with only slight deviations to monitor at higher fitted values.</p></li>
+</ul>
 <p><strong>6.2 Q-Q plot:</strong></p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -2566,11 +2695,13 @@ The inclusion of Zip Code Fixed Effects proves to be the most consequential “g
 </div>
 </div>
 </div>
-<p><strong>Interpretation</strong>:<br>
-- <strong>Overall Shape of the Plot:</strong> The residual points generally follow the diagonal line, indicating that the overall distribution of residuals is roughly consistent with a normal distribution.<br>
-- <strong>Good Fit in the Central Range:</strong> In the central range (around -1 to 1 quantiles), the sample quantiles align closely with the theoretical quantiles, suggesting that most residuals conform well to the assumption of normality.<br>
-- <strong>Deviation in the Tails:</strong> At both tails—especially the upper quantiles—the points deviate noticeably from the red dashed line, indicating that the residuals have heavier tails than a normal distribution, suggesting slight non-normality.<br>
-- <strong>Assessment of Normality Assumption:</strong> Although deviations appear in the tails, the overall alignment with the reference line is strong, indicating that the normality assumption largely holds, with only minor deviations for extreme residuals.</p>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p><strong>Overall Shape of the Plot:</strong> The residual points generally follow the diagonal line, indicating that the overall distribution of residuals is roughly consistent with a normal distribution.</p></li>
+<li><p><strong>Good Fit in the Central Range:</strong> In the central range (around -1 to 1 quantiles), the sample quantiles align closely with the theoretical quantiles, suggesting that most residuals conform well to the assumption of normality.</p></li>
+<li><p><strong>Deviation in the Tails:</strong> At both tails—especially the upper quantiles—the points deviate noticeably from the red dashed line, indicating that the residuals have heavier tails than a normal distribution, suggesting slight non-normality.</p></li>
+<li><p><strong>Assessment of Normality Assumption:</strong> Although deviations appear in the tails, the overall alignment with the reference line is strong, indicating that the normality assumption largely holds, with only minor deviations for extreme residuals.</p></li>
+</ul>
 <p><strong>6.3 Cook’s distance:</strong></p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -2609,9 +2740,12 @@ The inclusion of Zip Code Fixed Effects proves to be the most consequential “g
 </div>
 </div>
 </div>
-<p><strong>Interpretation</strong>:<br>
-- <strong>Overall Distribution Pattern:</strong> Most observations have Cook’s Distance values close to zero, indicating that the dataset’s overall influence on the model is balanced, with no widespread undue impact.<br>
-- <strong>Presence of Influential Points:</strong> A few vertical spikes rise noticeably above the rest, indicating the presence of some influential observations that may affect the estimated model coefficients. - <strong>Model Robustness Conclusion:</strong> Overall, the model appears robust, with no single observation exerting excessive influence.</p>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p><strong>Overall Distribution Pattern:</strong> Most observations have Cook’s Distance values close to zero, indicating that the dataset’s overall influence on the model is balanced, with no widespread undue impact.</p></li>
+<li><p><strong>Presence of Influential Points:</strong> A few vertical spikes rise noticeably above the rest, indicating the presence of some influential observations that may affect the estimated model coefficients.</p></li>
+<li><p><strong>Model Robustness Conclusion:</strong> Overall, the model appears robust, with no single observation exerting excessive influence.</p></li>
+</ul>
 <hr>
 </section>
 </section>
@@ -2620,7 +2754,7 @@ The inclusion of Zip Code Fixed Effects proves to be the most consequential “g
 <section id="conclusion" class="level3">
 <h3 class="anchored" data-anchor-id="conclusion">Conclusion:</h3>
 <ul>
-<li>Our final model’s <strong>R² is 0.84</strong>, indicating that the model explains 84% of the variance in log sale prices. The <strong>RMSE is </strong>, showing that the model’s predictions are reasonably close to the observed values.<br>
+<li>Our final model’s <strong>R² is 0.84</strong>, indicating that the model explains 84% of the variance in log sale prices. The <strong>RMSE is 124437.8USD</strong>, showing that the model’s predictions are reasonably close to the observed values.<br>
 </li>
 <li><strong>Livable Area of the House</strong> matters most for Philadelphia prices.</li>
 </ul>
@@ -2633,7 +2767,8 @@ The inclusion of Zip Code Fixed Effects proves to be the most consequential “g
 <li><p><strong>Which neighborhoods are hardest to predict?</strong></p>
 <ul>
 <li>The largest prediction errors occur primarily in <strong>central Philadelphia</strong>, where both overestimation and underestimation coexist within close proximity. This pattern indicates that the model struggles most in areas with high housing heterogeneity- neighborhoods that contain a mix of old row houses, newly renovated apartments, and varying property types within short distances.<br>
-In contrast, outer neighborhoods such as those in the northwest and northeast tend to have more consistent housing characteristics, leading to smaller residuals. The central tracts’ larger residuals suggest that cultural or historical features have introduced variability that the model’s current features (mainly physical characteristics) cannot fully explain.</li>
+</li>
+<li>In contrast, outer neighborhoods such as those in the northwest and northeast tend to have more consistent housing characteristics, leading to smaller residuals. The central tracts’ larger residuals suggest that cultural or historical features have introduced variability that the model’s current features (mainly physical characteristics) cannot fully explain.</li>
 </ul></li>
 <li><p><strong>Any data bias?</strong></p>
 <ul>
@@ -2645,18 +2780,23 @@ In contrast, outer neighborhoods such as those in the northwest and northeast te
 </ul></li>
 </ul></li>
 <li><p><strong>Recommendations to government</strong></p></li>
-</ul>
-<ol type="1">
-<li><p>Immediate System Calibration: We recommend utilizing our model’s findings to immediately adjust property assessments in systematically overvalued low-income communities. This action will ensure a fair distribution of the tax burden and address current inequities.</p></li>
-<li><p>Integrate Advanced Spatial Features: We advise the Office of Property Assessment (OPA) to permanently integrate the effective spatial characteristics identified by our study—specifically Comparable Sales Proxies (surrounding transaction prices) and Neighborhood Fixed Effects—into the next-generation AVM. This will significantly enhance the model’s responsiveness to rapidly changing market dynamics.</p></li>
-<li><p>Extreme high values almost exclusively stem from corporate transactions and require manual review for outliers.</p></li>
-</ol>
-<ul>
-<li><strong>Limitations and nest steps</strong>
+<li><ol type="1">
+<li>Immediate System Calibration: We recommend utilizing our model’s findings to immediately adjust property assessments in systematically overvalued low-income communities. This action will ensure a fair distribution of the tax burden and address current inequities.<br>
+</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>Integrate Advanced Spatial Features: We advise the Office of Property Assessment (OPA) to permanently integrate the effective spatial characteristics identified by our study—specifically Comparable Sales Proxies (surrounding transaction prices) and Neighborhood Fixed Effects—into the next-generation AVM. This will significantly enhance the model’s responsiveness to rapidly changing market dynamics.<br>
+</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>Extreme high values almost exclusively stem from corporate transactions and require manual review for outliers.</li>
+</ol></li>
+<li><p><strong>Limitations and next steps</strong></p>
 <ul>
 <li>Limitations: Inherent Data Biases
 <ul>
-<li>Our predictive accuracy is constrained by inherent data biases which affect equity. We find a dual challenge in data coverage: in affluent areas, high-value, unique properties suffer from data sparsity, making generalization difficult. Conversely, lower-income areas often show data incompleteness, leading to less reliable predictions and higher residual errors. Critically, we observed a price-tier bias: high-priced homes tend to sell below their list price, while low-priced homes transact closer to it. This systemic pattern means the model is prone to over-assessing expensive properties and under-assessing affordable ones, creating a structural risk for vertical inequity in the tax system.</li>
+<li>Our predictive accuracy is constrained by inherent data biases which affect equity. We find a dual challenge in data coverage: in affluent areas, high-value, unique properties suffer from data sparsity, making generalization difficult. Conversely, lower-income areas often show data incompleteness, leading to less reliable predictions and higher residual errors. Critically, we observed a price-tier bias: high-priced homes tend to sell below their list price, while low-priced homes transact closer to it. This systemic pattern means the model is prone to over-assessing expensive properties and under-assessing affordable ones, creating a structural risk for vertical inequity in the tax system.<br>
+</li>
 </ul></li>
 <li>Next Steps: Enhancing Data Quality and Fairness
 <ul>
@@ -2666,7 +2806,6 @@ In contrast, outer neighborhoods such as those in the northwest and northeast te
 </ul>
 
 
-</section>
 </section>
 </section>
 
