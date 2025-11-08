@@ -70,5 +70,23 @@
   },
   "midterm/Slides/CuiXinyuan_Presentation.qmd": {
     "CuiXinyuan_Presentation.html": "0ab76a3a"
+  },
+  "labs/lab_4/Assignment4_Instructions.md": {
+    "Assignment4_Instructions.html": "260255c5"
+  },
+  "weekly-notes/week-09/lab/predictive_policing_exercise.qmd": {
+    "predictive_policing_exercise.html": "4cf56981"
+  },
+  "weekly-notes/week-09/lab/test.qmd": {
+    "test.html": "69dc555a"
+  },
+  "weekly-notes/week-09/lab/week9_test.qmd": {
+    "week9_test.html": "dee270df"
+  },
+  "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.qmd": {
+    "First_spatial_lag_prediction_problem.html": "eba5bbff"
+  },
+  "weekly-notes/week-09/lecture/Week9_slides.qmd": {
+    "Week9_slides.html": "33519d1d"
   }
 }

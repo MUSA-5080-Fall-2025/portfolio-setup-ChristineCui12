@@ -36,9 +36,9 @@ website:
           text: "Lab 2: Spatial Analysis and Visualization"
       - text: "Midterm Project"
         menu:
-        - href: midterm/CuiXinyuan_Presentation.qmd
+        - href: midterm/Slides/CuiXinyuan_Presentation.qmd
           text: "Midterm Slides"
-        - href: midterm/CuiXinyuan_Appendix.qmd
+        - href: midterm/Appendix/CuiXinyuan_Appendix.qmd
           text: "Midterm Appendix"
 format:
   html:
