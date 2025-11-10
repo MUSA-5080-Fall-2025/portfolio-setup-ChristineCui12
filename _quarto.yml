@@ -26,6 +26,12 @@ website:
           text: "Week 5: Introduction to Linear Regression"
         - href: weekly-notes/week-06-notes.qmd
           text: "Week 6: Spatial Machine Learning & Advanced Regression"
+        - href: weekly-notes/week-07-notes.qmd
+          text: "Week 7: Model Diagnostics & Spatial Autocorrelation"
+        - href: weekly-notes/week-09-notes.qmd
+          text: "Week 9: Critical Perspectives on Predictive Policing"
+        - href: weekly-notes/week-09/lab/predictive_policing_exercise.qmd
+          text: "In-Class Lab 9: Predictive Policing - Technical Implementation" 
       - text: "Labs"
         menu:
         - href: labs/lab_0/lab0.qmd
@@ -34,6 +40,8 @@ website:
           text: "Lab 1: Census Data Exploration"
         - href: labs/lab_2/assignment2_template.qmd
           text: "Lab 2: Spatial Analysis and Visualization"
+        - href: labs/lab_4/assignment4.qmd
+          text: "Lab 4: Spatial Predictive Analysis"
       - text: "Midterm Project"
         menu:
         - href: midterm/Slides/CuiXinyuan_Presentation.qmd
