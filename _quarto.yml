@@ -31,7 +31,11 @@ website:
         - href: weekly-notes/week-09-notes.qmd
           text: "Week 9: Critical Perspectives on Predictive Policing"
         - href: weekly-notes/week-09/lab/predictive_policing_exercise.qmd
-          text: "In-Class Lab 9: Predictive Policing - Technical Implementation" 
+          text: "In-Class Lab 9: Predictive Policing - Technical Implementation"
+        - href: weekly-notes/week-10/week-10-notes.qmd
+          text: "Week 10: Logistic Regression for Binary Outcomes: The case of recidivism"
+        - href: weekly-notes/week-10/script/In_Class_Exercise_Instruction.md
+          text: "In-Class Lab 10: Georgia DOC Policy Advisory Challenge"
       - text: "Labs"
         menu:
         - href: labs/lab_0/lab0.qmd

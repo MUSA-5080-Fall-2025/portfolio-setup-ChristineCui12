@@ -509,5 +509,82 @@
     "title": "Predictive Policing - Technical Implementation",
     "section": "Exercise 10.2: Key Findings Summary",
     "text": "Exercise 10.2: Key Findings Summary\nBased on your analysis, complete this summary:\nTechnical Performance:\n\nCross-validation MAE: 2.7\nModel vs. KDE: [Which performed better?]\nMost predictive variable: [Which had largest effect?]\n\nSpatial Patterns:\n\nBurglaries are [evenly distributed / clustered]\nHot spots are located in [describe]\nModel errors show [random / systematic] patterns\n\nModel Limitations:\n\nOverdispersion: [Yes/No]\nSpatial autocorrelation in residuals: [Test this!]\nCells with zero counts: [What % of data?]"
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "",
+    "text": "You are policy analysts hired by the Georgia Department of Corrections. They are considering deploying a recidivism prediction model to inform parole decisions. Your team must analyze the model and make a GO/NO-GO recommendation to the Commissioner.\n\n\n\n\n\n\nRun the provided R script (week10_exercise.R) and note:\n\nWhat’s the model’s AUC?\n\n\n0.732\n\n\nAt threshold 0.50, what’s the sensitivity and specificity?\n\n\nSensitivity: 0.8167219\nSpecificity: 0.4923896\n\n\nWhich racial group has the highest false positive rate?\n\n\nBlack, cos the FPR is 0.562 compared with 0.425 in white racial group.\n\n\nWhich group has the highest false negative rate?\n\n\nWhite, cos the FNR is 0.227 compared with 0.154 in black.\n\n\nWhat happens if we change the threshold to 0.30 or 0.70?\n\n\nThe FPR in both groups fall down dramatically, but the rate in black racial group is still higher than that in white racial group.\nIn reverse, FNR shows different pattern if we change the threshold to 0.30 or 0.70, which is an increase trend. But still, FNR in white racial group is higher than FNR in black group.\n\n\n\n\nAs a table or half table team, discuss your findings and complete the template below. Prepare to present your recommendation.\n\n\n\nPresent your recommendation to the “Commissioner” (instructor)."
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#your-role",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#your-role",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "",
+    "text": "You are policy analysts hired by the Georgia Department of Corrections. They are considering deploying a recidivism prediction model to inform parole decisions. Your team must analyze the model and make a GO/NO-GO recommendation to the Commissioner."
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#instructions",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#instructions",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "",
+    "text": "Run the provided R script (week10_exercise.R) and note:\n\nWhat’s the model’s AUC?\n\n\n0.732\n\n\nAt threshold 0.50, what’s the sensitivity and specificity?\n\n\nSensitivity: 0.8167219\nSpecificity: 0.4923896\n\n\nWhich racial group has the highest false positive rate?\n\n\nBlack, cos the FPR is 0.562 compared with 0.425 in white racial group.\n\n\nWhich group has the highest false negative rate?\n\n\nWhite, cos the FNR is 0.227 compared with 0.154 in black.\n\n\nWhat happens if we change the threshold to 0.30 or 0.70?\n\n\nThe FPR in both groups fall down dramatically, but the rate in black racial group is still higher than that in white racial group.\nIn reverse, FNR shows different pattern if we change the threshold to 0.30 or 0.70, which is an increase trend. But still, FNR in white racial group is higher than FNR in black group.\n\n\n\n\nAs a table or half table team, discuss your findings and complete the template below. Prepare to present your recommendation.\n\n\n\nPresent your recommendation to the “Commissioner” (instructor)."
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#consulting-team-information",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#consulting-team-information",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "Consulting Team Information",
+    "text": "Consulting Team Information\nClever Team Name: _____________\nTeam Members:\n\nChristine_____________________\nDemi_____________________\nJinyang_____________________"
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#technical-assessment",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#technical-assessment",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "1. TECHNICAL ASSESSMENT",
+    "text": "1. TECHNICAL ASSESSMENT\n\nModel Performance Metrics\nAUC (Area Under ROC Curve): 0.732____\nAt threshold = 0.50:\n\nSensitivity (True Positive Rate): 0.817________\nSpecificity (True Negative Rate): 0.492______\nPrecision (Positive Predictive Value): 0.706______\nOverall Accuracy: 0.686______\n\n\n\nTechnical Quality Rating\nSelect one:\n\nExcellent (AUC &gt; 0.90)\nGood (AUC 0.80-0.90)\n☐√ Acceptable (AUC 0.70-0.80)\nPoor (AUC &lt; 0.70)\n\n\n\nBrief Technical Summary (2-3 sentences)\nIs the model accurate enough for high-stakes decision-making?\nThe model demonstrates acceptable but limited discriminatory power (AUC = 0.732). While it has good sensitivity (81.7%), its low specificity (49.2%) results in a high rate of false positives. Therefore, it is not accurate enough for high-stakes decision-making without careful consideration of the costs associated with false alarms.______________________________________________________________________"
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#equity-analysis",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#equity-analysis",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "2. EQUITY ANALYSIS",
+    "text": "2. EQUITY ANALYSIS\n\nFalse Positive Rates by Race (at threshold 0.50)\n\n\n\nRacial Group\nFalse Positive Rate\nSample Size\n\n\n\n\nGroup 1: Black\n0.562\n3931\n\n\nGroup 2: White\n0.425\n2620\n\n\nGroup 3:\n\n\n\n\nGroup 4:\n\n\n\n\n\n\n\nFalse Negative Rates by Race (at threshold 0.50)\n\n\n\nRacial Group\nFalse Negative Rate\nSample Size\n\n\n\n\nGroup 1: Black\n0.154\n3931\n\n\nGroup 2: White\n0.227\n2620\n\n\nGroup 3:\n\n\n\n\nGroup 4:\n\n\n\n\n\n\n\nDisparity Analysis\nLargest disparity identified:\nGroup _____Black________ has 13.7_% higher false positive rate than Group White______\nOR\nGroup ______White_______ has 7.3% higher false negative rate than Group ____Black_________\n\n\nEquity Concerns Summary (3-4 sentences)\nWhat are the implications of these disparities? Who is harmed?\nThe model exhibits significant racial disparity, with the Black population experiencing a 13.7% higher False Positive Rate than the White population. This means that Black individuals are disproportionately harmed by being incorrectly flagged as “high-risk” when they are not. Such a disparity could lead to unjust outcomes, including denied opportunities or increased scrutiny, thereby perpetuating and automating existing biases. The model in its current state raises serious equity concerns and is not suitable for deployment without algorithmic fairness interventions."
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#threshold-recommendation",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#threshold-recommendation",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "3. THRESHOLD RECOMMENDATION",
+    "text": "3. THRESHOLD RECOMMENDATION\n\nIf we deploy this model, we recommend:\nSelect one:\n\nThreshold = 0.30 (Aggressive - prioritize catching recidivists)\nThreshold = 0.50 (Balanced - default)\n☐√ Threshold = 0.70 (Conservative - minimize false accusations)\nOther: ________\n\n\n\nRationale for Threshold Choice (3-4 sentences)\nWhy this threshold? What does it optimize for? What are the trade-offs?\n\nWe recommend the conservative threshold of 0.70 to prioritize minimizing false positives, thereby reducing the risk of unjustly accusing individuals who would not reoffend. This choice is critically informed by the equity analysis, which revealed that false positives disproportionately harm the Black population. The trade-off is a deliberate acceptance of more false negatives, meaning some actual recidivists may be missed, in order to prevent the more severe societal harm of systematic false accusations against a protected group. This approach optimizes for fairness and mitigates the model’s potential to amplify existing biases.\n\n\n\nThis threshold prioritizes:\nSelect one:\n\nHigh Sensitivity - Catch more people who will reoffend (accept more false positives)\n☐√ High Specificity - Avoid false accusations (accept more false negatives)\nBalance - Try to minimize both types of errors"
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#deployment-recommendation",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#deployment-recommendation",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "4. DEPLOYMENT RECOMMENDATION",
+    "text": "4. DEPLOYMENT RECOMMENDATION\n\nOur recommendation to Georgia DOC:\nSelect one:\n\nDEPLOY - Use this model to inform parole decisions\nDO NOT DEPLOY - Do not use this model\n☐√ CONDITIONAL DEPLOY - Deploy only with specific safeguards in place\n\n\n\nKey Reasons for Our Recommendation\nProvide 3-5 bullet points supporting your decision:\n\n\n\n\n\n\n\n\n\nWhat about the equity concerns?\nHow do you justify your recommendation given the disparate impact you identified?"
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#safeguards-or-alternatives",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#safeguards-or-alternatives",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "5. SAFEGUARDS OR ALTERNATIVES",
+    "text": "5. SAFEGUARDS OR ALTERNATIVES\n\nIf DEPLOY - Required Safeguards\nWhat protections must be in place before deployment?\n\n\n\n\n\n\nOR\n\n\nIf DO NOT DEPLOY - Alternative Approaches\nWhat should Georgia DOC do instead?"
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#limitations-uncertainties",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#limitations-uncertainties",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "6. LIMITATIONS & UNCERTAINTIES",
+    "text": "6. LIMITATIONS & UNCERTAINTIES\n\nWhat we don’t know (but wish we did)\nWhat additional information would strengthen your recommendation?\n\n\n\n\n\nWeaknesses in our recommendation\nWhat’s the strongest argument AGAINST your recommendation?"
+  },
+  {
+    "objectID": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#bottom-line",
+    "href": "weekly-notes/week-10/script/In_Class_Exercise_Instruction.html#bottom-line",
+    "title": "Georgia DOC Policy Advisory Challenge",
+    "section": "7. BOTTOM LINE",
+    "text": "7. BOTTOM LINE\n\nOne-Sentence Recommendation\nIf the Commissioner only reads one thing, what should it be?"
   }
 ]
