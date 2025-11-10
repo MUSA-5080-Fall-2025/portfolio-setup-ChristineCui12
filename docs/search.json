@@ -152,5 +152,222 @@
     "title": "Philadelphia Housing Model - Technical Appendix",
     "section": "Phase 7: Conclusions & Recommendations",
     "text": "Phase 7: Conclusions & Recommendations\n\nConclusion:\n\nOur final model’s R² is 0.84, indicating that the model explains 84% of the variance in log sale prices. The RMSE is 124437.8USD, showing that the model’s predictions are reasonably close to the observed values.\n\nLivable Area of the House matters most for Philadelphia prices.\n\n\n\nRecommendations:\n\nEquity concerns\n\nWhich neighborhoods are hardest to predict?\n\nThe largest prediction errors occur primarily in central Philadelphia, where both overestimation and underestimation coexist within close proximity. This pattern indicates that the model struggles most in areas with high housing heterogeneity- neighborhoods that contain a mix of old row houses, newly renovated apartments, and varying property types within short distances.\n\nIn contrast, outer neighborhoods such as those in the northwest and northeast tend to have more consistent housing characteristics, leading to smaller residuals. The central tracts’ larger residuals suggest that cultural or historical features have introduced variability that the model’s current features (mainly physical characteristics) cannot fully explain.\n\nAny data bias?\n\nThe observed spatial pattern of prediction errors reflects inherent data bias. The dataset likely overrepresents mid-range housing conditions and underrepresents both luxury and low-income housing. As shown in the livable area and interior condition maps, data coverage in wealthier areas (especially the northwest) is limited, and these tracts often contain more unique, high-value properties that the model cannot generalize well.\n\nWealthier tracts are more likely to be well-documented, while poorer areas lack records, creating spatial imbalance in model performance.\n\nHigh-priced homes typically have larger negotiation margins, meaning their final sale prices are often lower than the listed prices. In contrast, low-priced homes sell closer to their listing prices. As a result, model tends to overestimate expensive homes and underestimate affordable ones, introducing systematic bias.\n\n\nRecommendations to government\n\nImmediate System Calibration: We recommend utilizing our model’s findings to immediately adjust property assessments in systematically overvalued low-income communities. This action will ensure a fair distribution of the tax burden and address current inequities.\n\n\n\nIntegrate Advanced Spatial Features: We advise the Office of Property Assessment (OPA) to permanently integrate the effective spatial characteristics identified by our study—specifically Comparable Sales Proxies (surrounding transaction prices) and Neighborhood Fixed Effects—into the next-generation AVM. This will significantly enhance the model’s responsiveness to rapidly changing market dynamics.\n\n\n\nExtreme high values almost exclusively stem from corporate transactions and require manual review for outliers.\n\nLimitations and next steps\n\nLimitations: Inherent Data Biases\n\nOur predictive accuracy is constrained by inherent data biases which affect equity. We find a dual challenge in data coverage: in affluent areas, high-value, unique properties suffer from data sparsity, making generalization difficult. Conversely, lower-income areas often show data incompleteness, leading to less reliable predictions and higher residual errors. Critically, we observed a price-tier bias: high-priced homes tend to sell below their list price, while low-priced homes transact closer to it. This systemic pattern means the model is prone to over-assessing expensive properties and under-assessing affordable ones, creating a structural risk for vertical inequity in the tax system.\n\n\nNext Steps: Enhancing Data Quality and Fairness\n\nTo address these limitations, our next steps focus on data enrichment and equitable optimization. The City should partner with us to integrate non-public data, such as detailed appraisal records and permit data, which can account for unobserved renovation quality and close the data gap. Furthermore, to combat the systematic price-tier bias, we recommend integrating fairness metrics directly into the AVM’s optimization process. This will shift the model’s objective beyond simple average accuracy (RMSE) to ensure that prediction errors are uniformly low across all price tiers and all Philadelphia neighborhoods, securing both accuracy and equity."
+  },
+  {
+    "objectID": "weekly-notes/week-09-notes.html",
+    "href": "weekly-notes/week-09-notes.html",
+    "title": "Week 9 Notes - Critical Perspectives on Predictive Policing",
+    "section": "",
+    "text": "Part 1: Where We Are\n\nReview\n\nWeeks 1-3: Data foundations\n\nCensus data, tidycensus, spatial data basics\nVisualization and exploratory analysis\n\nWeek 5: Linear regression fundamentals\n\nY = f(X) + ε framework\nTrain/test splits, cross-validation\nChecking assumptions\n\nWeek 6: Expanding the toolkit\n\nCategorical variables and interactions\nSpatial features (buffers, kNN, distance)\nNeighborhood fixed effects\n\n\nThe Regression Workflow\n\nBuilding the model:\n\nVisualize relationships\nEngineer features\nFit the model\nEvaluate performance (RMSE, R²)\nCheck assumptions\n\nSpatial diagnostics:\n\nAre errors random or clustered?\nDo we predict better in some areas?\nIs there remaining spatial structure?\n\nIf errors cluster spatially, it suggests:\n\nMissing spatial variables\nMisspecified relationships\nNon-stationarity (relationships vary across space) 非平稳性\n\n\n\nPart 2: Understanding Spatial Patterns in Errors\n\nVisualizing Error Patterns（误差有聚集，不随机，不好）→怎么改进：fixed\n\nPart 3: Moran’s I\n\nMoran’s I measures spatial autocorrelation\nRange: -1(Perfect negative correlation (dispersion)) to +1(Perfect positive correlation (clustering)),0 = Random spatial pattern\nwij = spatial weight between locations i and j (0 or 1)"
+  },
+  {
+    "objectID": "weekly-notes/week-09-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-09-notes.html#key-concepts-learned",
+    "title": "Week 9 Notes - Critical Perspectives on Predictive Policing",
+    "section": "",
+    "text": "Part 1: Where We Are\n\nReview\n\nWeeks 1-3: Data foundations\n\nCensus data, tidycensus, spatial data basics\nVisualization and exploratory analysis\n\nWeek 5: Linear regression fundamentals\n\nY = f(X) + ε framework\nTrain/test splits, cross-validation\nChecking assumptions\n\nWeek 6: Expanding the toolkit\n\nCategorical variables and interactions\nSpatial features (buffers, kNN, distance)\nNeighborhood fixed effects\n\n\nThe Regression Workflow\n\nBuilding the model:\n\nVisualize relationships\nEngineer features\nFit the model\nEvaluate performance (RMSE, R²)\nCheck assumptions\n\nSpatial diagnostics:\n\nAre errors random or clustered?\nDo we predict better in some areas?\nIs there remaining spatial structure?\n\nIf errors cluster spatially, it suggests:\n\nMissing spatial variables\nMisspecified relationships\nNon-stationarity (relationships vary across space) 非平稳性\n\n\n\nPart 2: Understanding Spatial Patterns in Errors\n\nVisualizing Error Patterns（误差有聚集，不随机，不好）→怎么改进：fixed\n\nPart 3: Moran’s I\n\nMoran’s I measures spatial autocorrelation\nRange: -1(Perfect negative correlation (dispersion)) to +1(Perfect positive correlation (clustering)),0 = Random spatial pattern\nwij = spatial weight between locations i and j (0 or 1)"
+  },
+  {
+    "objectID": "weekly-notes/week-09-notes.html#coding-techniques",
+    "href": "weekly-notes/week-09-notes.html#coding-techniques",
+    "title": "Week 9 Notes - Critical Perspectives on Predictive Policing",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n\n[New R functions or approaches]\n[Quarto features learned]"
+  },
+  {
+    "objectID": "weekly-notes/week-09-notes.html#questions-challenges",
+    "href": "weekly-notes/week-09-notes.html#questions-challenges",
+    "title": "Week 9 Notes - Critical Perspectives on Predictive Policing",
+    "section": "Questions & Challenges",
+    "text": "Questions & Challenges\n\nWhat I didn’t fully understand\n\nthe basic workflow: pull-commit-push\n\nAreas needing more practice\n\nremember the essential dplyr functions"
+  },
+  {
+    "objectID": "weekly-notes/week-09-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-09-notes.html#connections-to-policy",
+    "title": "Week 9 Notes - Critical Perspectives on Predictive Policing",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\n\n[How this week’s content applies to real policy work]"
+  },
+  {
+    "objectID": "weekly-notes/week-09-notes.html#reflection",
+    "href": "weekly-notes/week-09-notes.html#reflection",
+    "title": "Week 9 Notes - Critical Perspectives on Predictive Policing",
+    "section": "Reflection",
+    "text": "Reflection\n\n[What was most interesting]\n[How I’ll apply this knowledge]"
+  },
+  {
+    "objectID": "weekly-notes/week-07-notes.html",
+    "href": "weekly-notes/week-07-notes.html",
+    "title": "Week 7 Notes - Model Diagnostics & Spatial Autocorrelation",
+    "section": "",
+    "text": "Part 1: Where We Are\n\nReview\n\nWeeks 1-3: Data foundations\n\nCensus data, tidycensus, spatial data basics\nVisualization and exploratory analysis\n\nWeek 5: Linear regression fundamentals\n\nY = f(X) + ε framework\nTrain/test splits, cross-validation\nChecking assumptions\n\nWeek 6: Expanding the toolkit\n\nCategorical variables and interactions\nSpatial features (buffers, kNN, distance)\nNeighborhood fixed effects\n\n\nThe Regression Workflow\n\nBuilding the model:\n\nVisualize relationships\nEngineer features\nFit the model\nEvaluate performance (RMSE, R²)\nCheck assumptions\n\nSpatial diagnostics:\n\nAre errors random or clustered?\nDo we predict better in some areas?\nIs there remaining spatial structure?\n\nIf errors cluster spatially, it suggests:\n\nMissing spatial variables\nMisspecified relationships\nNon-stationarity (relationships vary across space) 非平稳性\n\n\n\nPart 2: Understanding Spatial Patterns in Errors\n\nVisualizing Error Patterns（误差有聚集，不随机，不好）→怎么改进：fixed\n\nPart 3: Moran’s I\n\nMoran’s I measures spatial autocorrelation\nRange: -1(Perfect negative correlation (dispersion)) to +1(Perfect positive correlation (clustering)),0 = Random spatial pattern\nwij = spatial weight between locations i and j (0 or 1)"
+  },
+  {
+    "objectID": "weekly-notes/week-07-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-07-notes.html#key-concepts-learned",
+    "title": "Week 7 Notes - Model Diagnostics & Spatial Autocorrelation",
+    "section": "",
+    "text": "Part 1: Where We Are\n\nReview\n\nWeeks 1-3: Data foundations\n\nCensus data, tidycensus, spatial data basics\nVisualization and exploratory analysis\n\nWeek 5: Linear regression fundamentals\n\nY = f(X) + ε framework\nTrain/test splits, cross-validation\nChecking assumptions\n\nWeek 6: Expanding the toolkit\n\nCategorical variables and interactions\nSpatial features (buffers, kNN, distance)\nNeighborhood fixed effects\n\n\nThe Regression Workflow\n\nBuilding the model:\n\nVisualize relationships\nEngineer features\nFit the model\nEvaluate performance (RMSE, R²)\nCheck assumptions\n\nSpatial diagnostics:\n\nAre errors random or clustered?\nDo we predict better in some areas?\nIs there remaining spatial structure?\n\nIf errors cluster spatially, it suggests:\n\nMissing spatial variables\nMisspecified relationships\nNon-stationarity (relationships vary across space) 非平稳性\n\n\n\nPart 2: Understanding Spatial Patterns in Errors\n\nVisualizing Error Patterns（误差有聚集，不随机，不好）→怎么改进：fixed\n\nPart 3: Moran’s I\n\nMoran’s I measures spatial autocorrelation\nRange: -1(Perfect negative correlation (dispersion)) to +1(Perfect positive correlation (clustering)),0 = Random spatial pattern\nwij = spatial weight between locations i and j (0 or 1)"
+  },
+  {
+    "objectID": "weekly-notes/week-07-notes.html#coding-techniques",
+    "href": "weekly-notes/week-07-notes.html#coding-techniques",
+    "title": "Week 7 Notes - Model Diagnostics & Spatial Autocorrelation",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n\n[New R functions or approaches]\n[Quarto features learned]"
+  },
+  {
+    "objectID": "weekly-notes/week-07-notes.html#questions-challenges",
+    "href": "weekly-notes/week-07-notes.html#questions-challenges",
+    "title": "Week 7 Notes - Model Diagnostics & Spatial Autocorrelation",
+    "section": "Questions & Challenges",
+    "text": "Questions & Challenges\n\nWhat I didn’t fully understand\n\nthe basic workflow: pull-commit-push\n\nAreas needing more practice\n\nremember the essential dplyr functions"
+  },
+  {
+    "objectID": "weekly-notes/week-07-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-07-notes.html#connections-to-policy",
+    "title": "Week 7 Notes - Model Diagnostics & Spatial Autocorrelation",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\n\n[How this week’s content applies to real policy work]"
+  },
+  {
+    "objectID": "weekly-notes/week-07-notes.html#reflection",
+    "href": "weekly-notes/week-07-notes.html#reflection",
+    "title": "Week 7 Notes - Model Diagnostics & Spatial Autocorrelation",
+    "section": "Reflection",
+    "text": "Reflection\n\n[What was most interesting]\n[How I’ll apply this knowledge]"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#quick-clarification",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#quick-clarification",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Quick Clarification",
+    "text": "Quick Clarification\nSome midterm teams suggested:\n\n“To improve predictions, implement a spatial lag model (SAR) or spatial error model (SEM)”\n\nLet’s revisit why this doesn’t work for prediction\n\n(And what you should recommend instead)"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#first-what-is-a-spatial-lag-model",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#first-what-is-a-spatial-lag-model",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "First: What IS a Spatial Lag Model?",
+    "text": "First: What IS a Spatial Lag Model?\nStandard regression: \\[\\text{Price}_i = \\beta_0 + \\beta_1(\\text{Sqft}) + \\beta_2(\\text{Beds}) + \\varepsilon\\]\nSpatial lag regression: \\[\\text{Price}_i = \\beta_0 + \\rho \\times \\color{red}{\\text{Avg(Neighbor Prices)}} + \\beta_1(\\text{Sqft}) + \\beta_2(\\text{Beds}) + \\varepsilon\\]\n\nKey difference: Your price depends on your neighbors’ actual prices\nQuestion: “Do nearby house prices affect each other?” (spillover effects)\nUsed for: Understanding spatial processes, causal inference about neighborhood effects"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#the-problem-for-prediction",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#the-problem-for-prediction",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "The Problem for Prediction",
+    "text": "The Problem for Prediction\nLet’s work through two concrete scenarios where this breaks down:\n\nTemporal: Training on 2024, predicting 2025\nTransfer: Philadelphia model → Orlando"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#step-1-estimate-model-on-2024-data",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#step-1-estimate-model-on-2024-data",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Step 1: Estimate Model on 2024 Data",
+    "text": "Step 1: Estimate Model on 2024 Data\nYou fit this spatial lag model on 2024 Philadelphia sales:\n# Your estimated model from 2024\nmodel_2024 &lt;- spatialreg::lagsarlm(\n  log(price) ~ sqft + bedrooms + bathrooms,\n  data = sales_2024,\n  listw = neighbors_weights\n)\nResults:\nSpatial lag coefficient (ρ) = 0.65\nβ_sqft = 0.00015\nβ_beds = 0.12\n\nInterpretation: A 1% increase in neighbors’ prices → 0.65% increase in my price\nThis works for 2024 because all prices are known!"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#step-2-three-houses-list-in-january-2025",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#step-2-three-houses-list-in-january-2025",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Step 2: Three Houses List in January 2025",
+    "text": "Step 2: Three Houses List in January 2025\nYour prediction task:\n\n\n\nHouse\nSqft\nBeds\nBaths\n5 Nearest Neighbors\n\n\n\n\nA\n1,500\n3\n2\nB, C, D, E, F\n\n\nB\n1,800\n3\n2\nA, C, G, H, I\n\n\nC\n2,000\n4\n3\nA, B, J, K, L\n\n\n\n\nWhat you know:\n\n✓ Sqft, beds, baths for A, B, C\n✓ Locations of A, B, C\n✗ What A, B, C will actually sell for"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#step-3-try-to-predict-house-a",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#step-3-try-to-predict-house-a",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Step 3: Try to Predict House A",
+    "text": "Step 3: Try to Predict House A\nYour model equation: \\[\\text{Price}_A = \\beta_0 + 0.65 \\times \\color{red}{\\text{Avg}(\\text{Price}_B, \\text{Price}_C, ...)} + 0.00015 \\times 1500 + 0.12 \\times 3\\]\n\nProblem: You need PriceB and PriceC to predict PriceA\n\n\nBut wait… PriceB and PriceC haven’t happened yet! They’re listed, not sold."
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#step-4-realize-the-circular-dependency",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#step-4-realize-the-circular-dependency",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Step 4: Realize the Circular Dependency",
+    "text": "Step 4: Realize the Circular Dependency\nTry to predict House B: \\[\\text{Price}_B = \\beta_0 + 0.65 \\times \\color{red}{\\text{Avg}(\\text{Price}_A, \\text{Price}_C, ...)} + ...\\]\nTry to predict House C: \\[\\text{Price}_C = \\beta_0 + 0.65 \\times \\color{red}{\\text{Avg}(\\text{Price}_A, \\text{Price}_B, ...)} + ...\\]\n\nPrice_A needs Price_B and Price_C\nPrice_B needs Price_A and Price_C  \nPrice_C needs Price_A and Price_B\nYou’re stuck in a circular dependency!"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#visual-the-circular-dependency",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#visual-the-circular-dependency",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Visual: The Circular Dependency",
+    "text": "Visual: The Circular Dependency\n\n\n\n\n\ngraph TD\n    A[House A&lt;br/&gt;Need to predict] --&gt;|needs price of| B[House B&lt;br/&gt;Need to predict]\n    B --&gt;|needs price of| C[House C&lt;br/&gt;Need to predict]\n    C --&gt;|needs price of| A\n    \n    style A fill:#e74c3c,stroke:#c0392b,color:#fff\n    style B fill:#e74c3c,stroke:#c0392b,color:#fff\n    style C fill:#e74c3c,stroke:#c0392b,color:#fff\n\n\n\n\n\n\nAll the unknowns depend on each other!"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#but-cant-i-use-recent-sales",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#but-cant-i-use-recent-sales",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "“But Can’t I Use Recent Sales?”",
+    "text": "“But Can’t I Use Recent Sales?”\nYou might think: “I’ll use recent sales from December 2024 as the spatial lag”\n\nProblem 1: House A’s neighbors (B, C) haven’t sold - they’re ALSO new listings\nProblem 2: If you use OLD sales (from months ago), you’re predicting based on stale prices in a changing market\nProblem 3: What if it’s a new development? No recent sales exist nearby\nProblem 4: Your spatial lag coefficient (ρ = 0.65) was estimated assuming SIMULTANEOUS prices, not lagged prices\n\n\nBottom line: Spatial lag models assume all observations exist simultaneously. Prediction is inherently sequential."
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#your-sales-pitch-to-orlando",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#your-sales-pitch-to-orlando",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Your Sales Pitch to Orlando",
+    "text": "Your Sales Pitch to Orlando\nYou: “We built an amazing spatial lag model for Philadelphia! R² = 0.85!”\nOrlando Chief Data Officer: “Great! We have 5,000 active listings. Can you predict their prices?”\n\nYou: “Sure! Just send me the data…”\n(You open the file)\norlando_listings &lt;- read_csv(\"orlando_new_listings.csv\")\n# Variables: address, sqft, beds, baths, lat, lon\n# Missing: SALE_PRICE (that's what we're predicting!)\n\n\nYou realize: “Wait… I need neighbors’ prices to predict each price…”\nOrlando: “That’s why we hired you - these HAVEN’T sold yet!”"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#the-parameter-transfer-problem",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#the-parameter-transfer-problem",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "The Parameter Transfer Problem",
+    "text": "The Parameter Transfer Problem\nEven if you had some recent Orlando sales to use:\nYour Philadelphia model: \\[\\text{Price}_i = \\beta_0 + \\color{red}{0.65} \\times \\text{Avg}(\\text{Neighbor Prices}) + \\beta_1(\\text{Sqft}) + ...\\]\n\nQuestions:\n\nWas ρ = 0.65 estimated on Philadelphia’s price distribution (avg $350k)\nOrlando’s average is $280k - different scale\nOrlando is sprawling suburbs vs. Philadelphia’s dense rowhouses\nDoes ρ = 0.65 even mean the same thing in Orlando?\n\n\n\nAnswer: No! You’d have to re-estimate the entire model on Orlando data.\nSo your “model” isn’t actually transferable."
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#contrast-spatial-features-transfer",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#contrast-spatial-features-transfer",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Contrast: Spatial Features Transfer",
+    "text": "Contrast: Spatial Features Transfer\nIf you had built with spatial FEATURES:\n# Philadelphia model\nmodel &lt;- lm(log(price) ~ sqft + bedrooms + \n              dist_to_transit + parks_500ft + \n              median_income_tract,\n            data = philly)\n\nTo use in Orlando:\n# Get Orlando's spatial context (all observable!)\norlando$dist_to_transit &lt;- get_transit_distance(orlando)\norlando$parks_500ft &lt;- count_parks_buffer(orlando, 500)\norlando$median_income_tract &lt;- get_census_data(orlando)\n\n# Apply Philadelphia coefficients\norlando$predicted_price &lt;- predict(model, newdata = orlando)\nThis works because features are CONTEXT, not outcomes!"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#visual-comparison",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#visual-comparison",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Visual Comparison",
+    "text": "Visual Comparison\n\n\nSpatial Lag (Fails)\n\n\n\n\n\ngraph TD\n    A[Predict&lt;br/&gt;House A] --&gt;|needs| B[Price of B&lt;br/&gt;UNKNOWN]\n    A --&gt;|needs| C[Price of C&lt;br/&gt;UNKNOWN]\n    \n    style A fill:#e74c3c\n    style B fill:#e74c3c\n    style C fill:#e74c3c\n\n\n\n\n\n\nCircular dependency\n\nSpatial Features (Works)\n\n\n\n\n\ngraph TD\n    T[Transit: 0.3mi&lt;br/&gt;KNOWN] --&gt; A[Predict&lt;br/&gt;House A]\n    P[Parks: 2&lt;br/&gt;KNOWN] --&gt; A\n    I[Income: 65k&lt;br/&gt;KNOWN] --&gt; A\n    \n    style A fill:#27ae60\n    style T fill:#3498db\n    style P fill:#3498db\n    style I fill:#3498db\n\n\n\n\n\n\nAll inputs observable"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#so-when-are-spatial-lag-models-useful",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#so-when-are-spatial-lag-models-useful",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "So When ARE Spatial Lag Models Useful?",
+    "text": "So When ARE Spatial Lag Models Useful?\nSpatial lag models are GREAT for:\n\nUnderstanding spillover effects: “Does gentrification in one neighborhood cause price increases in adjacent neighborhoods?”\nCausal inference: “Do nearby foreclosures depress my home value?”\nPolicy simulation: “If we build a park here, how will it affect the surrounding area?”\nCross-sectional analysis: Looking at ONE point in time where all prices exist\n\n\nBut NOT for:\n\nPredicting future sales\nTransferring models between cities\nReal-time valuation systems\nOut-of-sample forecasting"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#what-high-morans-i-actually-tells-you",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#what-high-morans-i-actually-tells-you",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "What High Moran’s I Actually Tells You",
+    "text": "What High Moran’s I Actually Tells You\nIf your model errors have Moran’s I = 0.58 (high spatial clustering):\n\n❌ Wrong response: “Switch to spatial lag model”\n✓ Right response: “Add better spatial features!”"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#instead-of-implement-a-spatial-lag-model",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#instead-of-implement-a-spatial-lag-model",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Instead of:** “Implement a spatial lag model”",
+    "text": "Instead of:** “Implement a spatial lag model”\nSay this:\n\n“The high Moran’s I (0.58) indicates spatial clustering in errors, suggesting our model is missing important location-based predictors. Recommendations:\n\nVary buffer distances - Currently using 500ft; try 250ft, 1000ft, 1500ft\nAdd more amenities - Coffee shops, grocery stores, restaurants, crime incidents\nRicher census data - Use block group instead of tract; add commute time variables\nNeighborhood interactions - sqft × neighborhood, age × distance_downtown\nTime-varying features - Recent building permits, development activity\nMore granular fixed effects - Census block group FE instead of neighborhood FE”"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#the-key-distinction",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#the-key-distinction",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "The Key Distinction",
+    "text": "The Key Distinction\n\n\nSPATIAL FEATURES (What you observe about a location)\n\nDistance to transit\nParks within buffer\nMedian income\nCrime rate\nSchool quality\nWalkability score\n\nFor prediction: ✓ Always observable\n\nSPATIAL LAG (What neighbors’ outcomes are)\n\nAverage neighbor price\nNeighbor sale date\nNeighbor appreciation rate\n\nFor prediction: ✗ Creates circular dependency\n\n\nFix spatial autocorrelation by improving FEATURES, not by changing model structure"
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#machine-learning-doesnt-fix-this",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#machine-learning-doesnt-fix-this",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Machine Learning Doesn’t Fix This",
+    "text": "Machine Learning Doesn’t Fix This\nSome might think: “I’ll use a Random Forest with neighbors’ prices as a feature!”\n\n# This STILL doesn't work for prediction\nrf_model &lt;- randomForest(\n  price ~ sqft + bedrooms + avg_neighbor_price, # ⚠️ \n  data = train_2024\n)\n\n# Try to predict 2025\npredictions_2025 &lt;- predict(rf_model, newdata = new_listings)\n#                                      ↑\n#                               avg_neighbor_price is MISSING!\n\n\nThe problem isn’t the model TYPE, it’s the LOGIC:\nIf a feature requires knowing other predictions first, it’s not a valid predictor."
+  },
+  {
+    "objectID": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#final-thought",
+    "href": "weekly-notes/week-09/lecture/First_spatial_lag_prediction_problem.html#final-thought",
+    "title": "Why Spatial Lag Models Don’t Work for Prediction",
+    "section": "Final Thought",
+    "text": "Final Thought\nAlways understand what a method is designed for before recommending it."
   }
 ]
