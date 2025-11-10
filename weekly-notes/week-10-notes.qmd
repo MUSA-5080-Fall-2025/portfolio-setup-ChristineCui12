@@ -1,0 +1,26 @@
+---
+title: "Week 10 Notes - Logistic Regression for Binary Outcomes: The case of recidivism"
+date: "2025-11-10"
+---
+
+## Key Concepts Learned
+- **Part 1: Introduction to Logistic Regression**
+  - 
+
+
+## Coding Techniques
+- [New R functions or approaches]
+- [Quarto features learned]
+
+## Questions & Challenges
+- What I didn't fully understand
+  - the basic workflow: pull-commit-push
+- Areas needing more practice
+  - remember the essential dplyr functions
+
+## Connections to Policy
+- [How this week's content applies to real policy work]
+
+## Reflection
+- [What was most interesting]
+- [How I'll apply this knowledge]

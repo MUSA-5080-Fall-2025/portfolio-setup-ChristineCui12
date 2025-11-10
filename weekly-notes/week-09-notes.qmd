@@ -4,41 +4,50 @@ date: "2025-11-03"
 ---
 
 ## Key Concepts Learned
-- **Part 1: Where We Are**
-  - Review
-    - Weeks 1-3: Data foundations
-      - Census data, tidycensus, spatial data basics
-      - Visualization and exploratory analysis
-    - Week 5: Linear regression fundamentals
-      - Y = f(X) + ε framework
-      - Train/test splits, cross-validation
-      - Checking assumptions
-    - Week 6: Expanding the toolkit
-      - Categorical variables and interactions
-      - Spatial features (buffers, kNN, distance)
-      - Neighborhood fixed effects
-  - **The Regression Workflow**
-    - Building the model:
-      - Visualize relationships
-      - Engineer features
-      - Fit the model
-      - Evaluate performance (RMSE, R²)
-      - Check assumptions
-    - Spatial diagnostics:
-      - Are errors random or clustered?
-      - Do we predict better in some areas?
-      - Is there remaining spatial structure?
-    - If errors cluster spatially, it suggests:
-      - Missing spatial variables
-      - Misspecified relationships
-      - Non-stationarity (relationships vary across space) 非平稳性
-- **Part 2: Understanding Spatial Patterns in Errors**
-  - Visualizing Error Patterns（误差有聚集，不随机，不好）→怎么改进：fixed
-- **Part 3: Moran’s I**
-  - Moran’s I measures spatial autocorrelation
-  - Range: -1(Perfect negative correlation (dispersion)) to +1(Perfect positive correlation (clustering)),0 = Random spatial pattern
-  -  wij = spatial weight between locations i and j (0 or 1)
-    
+- **Part 1: The Seductive Promise of Predictive Policing**
+- **Part 2: The Dirty Data Problem**
+  - Definition
+    - Traditional definition (data mining): Missing data, Incorrect data, Non-standardized formats
+    - Extended definition: “Data derived from or influenced by **corrupt, biased, and unlawful practices**, including data that has been intentionally manipulated or ‘juked,’ as well as data that is distorted by individual and societal biases.”
+  - Forms of Dirty Data
+    - Fabricated/Manipulated Data
+    - Systematically Biased Data
+    - Missing/Incomplete Data
+    - Proxy Problems
+- **Part 3: Technical Fixes Can’t Solve Social Problems**
+- **Part 4: Consequences and Harms**
+- **Part 5: Can Reform Work?**
+  - Consent Decrees
+    - Training on constitutional policing
+    - Early intervention systems for problem officers
+    - Revised use-of-force policies
+    - Community oversight
+    - Data collection improvements
+- **Part 6: A Framework for Critical Evaluation**
+  - Questions to Ask About Any Predictive Policing System
+    - 1. Data Provenance
+    - 2. Variable Selection
+    - 3. Validation
+    - 4. Deployment
+    - 5. Transparency & Accountability
+    - 6. Alternatives
+- **Technical Foundations**
+  - **Modeling Workflow** highly important
+  - The Core Logic: “Broken Windows Theory”
+  - a. Local Spatial Autocorrelation
+  - b. Count Regression Fundamentals
+    - Problems for counts: negative values are impossible for counts, counts often have variance ≠ mean, counts are discrete (not continuous), count data is skewed (not normal errors) **Overdispersion common!!**
+    - **The Poisson Distribution**-Appropriate for count data
+      - **Key property: Mean = Variance = λ**
+    - **Poisson Regression Model**
+      - Log link: Ensures λi>0 (counts can’t be negative)
+      - Linear relationship on log scale
+    - **Interpreting Poisson Coefficients**
+      - On log scale: β1  = change in log(expected count) per unit increase in X1
+      - On count scale (exponentiate指数): exp(β1)  = multiplicative effect on expected count (exp(β1)-1)是变化
+    - **Check for overdispersion**: Dispersion=Residual Deviance/Degrees of Freedom (If ≈ 1: Poisson is fine, If > 1: Overdispersion, If > 2-3: Serious overdispersion → Use Negative Binomial)
+    - **Negative Binomial Regression**
+      - 
 
 ## Coding Techniques
 - [New R functions or approaches]
