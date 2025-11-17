@@ -213,8 +213,6 @@ cat("  - Cell area:", round(st_area(fishnet[1,])), "square meters\n")
 
 ## 2.2: Aggregate Burglaries to Grid
 
-（改写）
-
 ```{r aggregate-burglaries}
 # Spatial join: which cell contains each burglary?
 burglaries_fishnet <- st_join(burglaries, fishnet, join = st_within) %>%
@@ -298,15 +296,15 @@ ggplot() +
   theme_crime()
 ```
 
-**Question 4.1:** Do you see a visual relationship between abandoned cars and burglaries? What does this suggest?
+When we map alley light outage reports onto the same grid system, we observe distinct spatial concentrations that visually correspond with burglary hotspots (to some extent), particularly in western and southern sectors of the city. This spatial correlation between infrastructure deficiencies and crime patterns provides preliminary support for environmental criminology theories, suggesting that inadequate lighting may create environmental conditions conducive to criminal activity by reducing natural surveillance and increasing perceived opportunities for offenders. The consistent spatial framework enables us to systematically explore these relationships in subsequent modeling phases.
 
 # Part 3: Create **Spatial Features**
 
-(改)This section engineers spatial predictors from the vacancy surface and adds contextual controls. It measures proximity to vacant structures, detects statistically significant clusters, converts those clusters into a distance-to-hotspot feature, and enriches the grid with police districts and ACS demographics for use in modeling burglary counts.
+This section develops advanced spatial predictors to characterize the environmental context of lighting infrastructure and its potential relationship to crime patterns. The analysis progresses from measuring local lighting conditions through nearest-neighbor distances to identifying statistically significant spatial clusters of illumination deficiencies. These clusters are then operationalized as distance-based features, capturing proximity to areas of concentrated infrastructure problems. Finally, the framework is enriched with administrative boundaries, vacant buildings and demographic characteristics, creating a comprehensive feature set for subsequent burglary prediction modeling.
 
 ## 3.1: **K-**Nearest Neighbor Features
 
-Count in a cell is one measure. Distance to the nearest 3 abandoned cars captures local context.
+This step calculates the average distance from each grid cell centroid to its three nearest alley light outage reports. We first extract the centroid coordinates of all fishnet grid cells and the geographic coordinates of all light outage incidents, then use k-nearest neighbor algorithm (k=3) to compute the mean distance for each cell.
 
 ```{r nn-feature}
 #| message: false
@@ -331,9 +329,9 @@ cat("✓ Calculated nearest neighbor distances\n")
 summary(fishnet$lights_out.nn)
 ```
 
-**Question 4.2:** What does a low value of `abandoned_cars.nn` mean? A high value? Why might this be informative?
+This spatial feature captures the local environmental context of lighting infrastructure conditions beyond simple count-based measures. This is crucial because concentrated lighting deficiencies may create extended dark corridors that facilitate criminal activity, whereas isolated outages might have less impact on overall neighborhood safety perception.
 
-*Your answer here:*
+The distance statistics reveal substantial spatial variation in lighting infrastructure problems across Chicago. With distances ranging from 4.6 meters to over 2.3 kilometers, and a median distance of 172.7 meters, we observe that some areas experience very dense concentrations of lighting issues (low distance values) while others have relatively sparse problems (high distance values). The right-skewed distribution (mean of 295.5 meters exceeding the median) suggests that while many cells have relatively accessible lighting infrastructure, there are significant areas where residents must travel considerable distances to encounter multiple lighting problems, potentially indicating **systematic infrastructure neglect** in certain neighborhoods.
 
 ## 3.2: Local Moran's I analysis
 
@@ -439,7 +437,7 @@ if (nrow(hotspots) > 0) {
 
 *Your answer here:*
 
-## 3.4: Join **Additional Contextual Data**
+## 3.5: Join **Additional Contextual Data**
 
 （改）The code assigns each grid cell to a police district, then downloads 2017 ACS tract data for Cook County, computes demographic and socioeconomic percentages and median income, and joins these attributes to the grid where cells intersect tracts. These controls (race or ethnicity shares, poverty, renter share, vacancy, age structure, and income) provide broader structural context for explaining burglary patterns beyond vacancy alone.
 
