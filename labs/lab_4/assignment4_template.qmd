@@ -24,7 +24,7 @@ In this exercise, I will build a spatial predictive model for burglaries using c
 
 # Setup
 
-```{r setup, include=FALSE}
+```{r setup}
 #| message: false
 #| warning: false
 
@@ -67,9 +67,6 @@ theme_crime <- function(base_size = 11) {
 
 # Set as default
 theme_set(theme_crime())
-
-cat("✓ All packages loaded successfully!\n")
-cat("✓ Working directory:", getwd(), "\n")
 ```
 
 # Part 1: **Data Loading & Exploration**
@@ -97,10 +94,6 @@ policeBeats <-
 chicagoBoundary <- 
   st_read("https://raw.githubusercontent.com/urbanSpatial/Public-Policy-Analytics-Landing/master/DATA/Chapter5/chicagoBoundary.geojson") %>%
   st_transform('ESRI:102271')
-
-cat("✓ Loaded spatial boundaries\n")
-cat("  - Police districts:", nrow(policeDistricts), "\n")
-cat("  - Police beats:", nrow(policeBeats), "\n")
 ```
 
 ## 1.2: Load Burglary Data
@@ -111,13 +104,6 @@ cat("  - Police beats:", nrow(policeBeats), "\n")
 # Load from provided data file (downloaded from Chicago open data portal)
 burglaries <- st_read("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/labs/lab_4/data/burglaries.shp") %>% 
   st_transform('ESRI:102271')
-
-# Check the data
-cat("\n✓ Loaded burglary data\n")
-cat("  - Number of burglaries:", nrow(burglaries), "\n")
-cat("  - CRS:", st_crs(burglaries)$input, "\n")
-cat("  - Date range:", min(burglaries$Date, na.rm = TRUE), "to", 
-    max(burglaries$Date, na.rm = TRUE), "\n")
 ```
 
 ## 1.3: Load 311 Street Lights Out Calls
@@ -130,9 +116,6 @@ lights_out <- read_csv("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/labs/lab_4
   filter(!is.na(Latitude), !is.na(Longitude), year(date_received) == 2017) %>%
   st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>%
   st_transform('ESRI:102271')
-
-cat("✓ Loaded lights out calls\n")
-cat("  - Number of calls:", nrow(lights_out), "\n")
 ```
 
 The selection of "Alley Lights Out" service requests as our predictor variable is grounded in both theoretical foundations and practical analytical considerations. From an environmental criminology perspective, inadequate alley illumination directly impacts crime opportunities by reducing natural surveillance and creating concealment spaces, aligning with CPTED principles. This violation type differs significantly from the classroom example of abandoned vehicles, representing a distinct category of infrastructure issues with unique spatial characteristics. Furthermore, alley lighting problems typically exhibit temporal stability due to municipal maintenance cycles, providing reliable spatial patterns for predictive modeling.
@@ -203,12 +186,6 @@ fishnet <- st_make_grid(
 
 # Keep only cells that intersect Chicago
 fishnet <- fishnet[chicagoBoundary, ]
-
-# View basic info
-cat("✓ Created fishnet grid\n")
-cat("  - Number of cells:", nrow(fishnet), "\n")
-cat("  - Cell size:", 500, "x", 500, "meters\n")
-cat("  - Cell area:", round(st_area(fishnet[1,])), "square meters\n")
 ```
 
 ## 2.2: Aggregate Burglaries to Grid
@@ -226,7 +203,6 @@ fishnet <- fishnet %>%
   mutate(countBurglaries = replace_na(countBurglaries, 0))
 
 # Summary statistics
-cat("\nBurglary count distribution:\n")
 summary(fishnet$countBurglaries)
 cat("\nCells with zero burglaries:", 
     sum(fishnet$countBurglaries == 0), 
@@ -271,7 +247,6 @@ fishnet <- fishnet %>%
   left_join(lightsout_fishnet, by = "uniqueID") %>%
   mutate(lights_out = replace_na(lights_out, 0))
 
-cat("Abandoned car distribution:\n")
 summary(fishnet$lights_out)
 ```
 
@@ -325,7 +300,6 @@ fishnet <- fishnet %>%
     lights_out.nn = rowMeans(nn_result$nn.dist)
   )
 
-cat("✓ Calculated nearest neighbor distances\n")
 summary(fishnet$lights_out.nn)
 ```
 
@@ -335,7 +309,7 @@ The distance statistics reveal substantial spatial variation in lighting infrast
 
 ## 3.2: Local Moran's I analysis
 
-（改）The code creates a k-nearest neighbor weights matrix on grid centroids (k = 5), runs Local Moran’s I on the abandoned_houses counts, and generates a categorical label (High-High, Low-Low, High-Low, Low-High, or Not Significant). This identifies locations where there are hotspots, coldspots, or outliers. This is useful in substantivbe interpretations to discover whether vacnact or abandoned households are in-step or spatially clustered with neighboring households. It actually supports our initial theory that house abandonment (foreclosure) is likely to occur in generally similar neighborhoods.
+This step implements spatial autocorrelation analysis using Local Moran's I to identify statistically significant clustering patterns of alley light outages across the grid system. The method constructs a spatial weights matrix based on k-nearest neighbors (k=5) from grid centroids, computes local spatial autocorrelation statistics, and classifies each grid cell into distinct spatial patterns including hotspots (High-High), coldspots (Low-Low), and spatial outliers (High-Low, Low-High).
 
 ```{r local-morans-abandoned}
 # Function to calculate Local Moran's I
@@ -403,11 +377,11 @@ ggplot() +
   theme_crime()
 ```
 
-（改）The LISA map shows vacancy hot spots concentrated on the South and Southeast sides, with additional pockets on the Southwest and a few small clusters on the West Side. Most cells are “Not Significant,” which means their vacancy levels are either average or lack strong similarity with neighbors at the k = 5 neighborhood scale. The few “Low-High” cells appear along the fringes of hot areas and indicate local dips embedded within otherwise high-vacancy neighborhoods, consistent with edge effects at cluster boundaries. Overall, the pattern reinforces our earlier findings: vacancy is highly clustered rather than uniform, with multi-cell cores in the south that are likely to be influential in burglary risk modeling and useful for distance-to-hotspot features.
+The visualization reveals several key spatial patterns. High-High clusters (hotspots) form contiguous zones primarily in the west and south sides of Chicago, indicating neighborhoods where lighting problems are widespread and mutually reinforcing across multiple adjacent grid cells. These hotspots represent areas of systematic infrastructure neglect that likely require comprehensive intervention strategies. The scattered Low-High outliers suggest isolated pockets of lighting problems within otherwise well-maintained areas, possibly indicating specific properties or blocks needing targeted repairs. The extensive gray areas (non-significant) demonstrate that many parts of the city, particularly in the central and northern regions, do not exhibit statistically significant clustering of lighting issues. This clear spatial differentiation provides valuable evidence for resource allocation decisions and confirms that lighting infrastructure disparities follow broader urban inequality patterns.
 
 ## 3.4: Distance to Hot Spots
 
-（改）The code extracts centroids of cells labeled High-High, unions them into a single geometry, and computes the distance from each grid centroid to the nearest hotspot. The resulting dist_to_hotspot feature captures how far a location is from the nearest vacancy hot area and defaults to zero when no significant hotspots are found.
+This step quantifies the spatial proximity of each grid cell to identified lighting infrastructure hotspots by calculating the minimum distance from each cell's centroid to the nearest High-High cluster centroid. The process involves extracting the central points of all statistically significant hotspot cells, combining them into a unified spatial object, and computing the shortest distance from every grid cell to this collective hotspot geometry.
 
 ```{r distance-to-hotspots}
 # Get centroids of "High-High" cells (hot spots)
@@ -433,13 +407,11 @@ if (nrow(hotspots) > 0) {
 }
 ```
 
-**Question 4.3:** Why might distance to a cluster of abandoned cars be more informative than distance to a single abandoned car? What does Local Moran's I tell us?
-
-*Your answer here:*
+The implementation successfully identified 193 hotspot cells and calculated distance values for all grid cells. The resulting distance metric creates a spatial gradient that decreases as we move toward the core of identified problem areas and increases in peripheral and well-maintained regions. This feature will enable us to test whether burglary risk exhibits distance-decay relationships relative to lighting infrastructure hotspots, potentially revealing how the spatial influence of problematic areas extends beyond their immediate boundaries.
 
 ## 3.5: Join **Additional Contextual Data**
 
-（改）The code assigns each grid cell to a police district, then downloads 2017 ACS tract data for Cook County, computes demographic and socioeconomic percentages and median income, and joins these attributes to the grid where cells intersect tracts. These controls (race or ethnicity shares, poverty, renter share, vacancy, age structure, and income) provide broader structural context for explaining burglary patterns beyond vacancy alone.
+The code below integrates police district information, which allows for analyzing jurisdictional variations in service delivery and law enforcement practices. Then, we obtain demographic and socioeconomic data from the American Community Survey (ACS), including total population, median income, and the population aged 65 and over, and use this to calculate the proportion of elderly population. Next, we load vacant building data and aggregate it into the grid. These steps aim to enrich each grid cell with comprehensive background variables, allowing for better control of additional influencing factors in subsequent modeling.
 
 ```{r join-districts}
 # Join district information to fishnet
@@ -451,7 +423,6 @@ fishnet <- st_join(
 ) %>%
   filter(!is.na(District))  # Remove cells outside districts
 
-cat("✓ Joined police districts\n")
 cat("  - Districts:", length(unique(fishnet$District)), "\n")
 cat("  - Cells:", nrow(fishnet), "\n")
 ```
@@ -483,9 +454,11 @@ tracts_all <- get_acs(
   variables = acs_vars,
   output = "wide",
   year = 2017, 
-  geometry = TRUE 
+  geometry = TRUE,
 ) 
-  # Calculate the combined 65+ population and rename variables
+```
+
+```{r}
 
 tracts_chi <- tracts_all %>%
   st_transform(st_crs(chicagoBoundary)) %>%
@@ -526,7 +499,7 @@ fishnet <- fishnet %>%
 
 ## 4.1: Poisson Regression
 
-（改）The code builds fishnet_model by dropping geometry, selecting the outcome burglaries, adding vacancy predictors (abandoned_houses, nearest vacancy distance, distance to vacancy hotspots), and including demographic and socioeconomic controls. Percentage variables are rescaled to proportions and median income is log transformed to reduce skew. A Poisson GLM with log link is then estimated, and a summary is printed to inspect coefficients and standard errors.
+We begin with a Poisson regression, which serves as the baseline model for count data analysis. The model incorporates key predictors including alley light outage counts, nearest neighbor distances to light problems, distance to lighting hotspots, and control variables for income, elderly population proportion, and vacant buildings.
 
 ```{r prepare-data}
 # Create clean modeling dataset
@@ -563,13 +536,11 @@ model_poisson <- glm(
 summary(model_poisson)
 ```
 
-**Question:** Interpret the coefficients. Which variables are significant? What do the signs (positive/negative) tell you?
-
-（改）Burglary counts increase with more vacant houses in a cell and with closer proximity to vacancy. Each additional vacant house is associated with about 4.5% higher expected burglaries (IRR ≈ exp(0.0439) = 1.045). Greater distance to the nearest vacant house lowers risk: a 100 m increase corresponds to ≈ 6.7% lower expected burglaries (IRR ≈ exp(−0.0006906×100) = 0.933). Being farther from vacancy hotspots also reduces risk slightly: 1 km farther gives ≈ 2.7% lower rates (IRR ≈ exp(−0.0000279×1000) = 0.973). Neighborhood structure matters: higher renter share is strongly positive (a 10 percentage-point increase → IRR ≈ exp(0.1×1.640) = 1.18, or +18%), higher log income is positive (IRR ≈ exp(0.394) = 1.48 per one-log increase), and percent Black is positive (10 percentage-points → \~2% higher, IRR ≈ 1.02). Percent Hispanic and ages 45–64 are not significant. Percent in poverty is negative and significant (10 percentage-points → \~10% lower, IRR ≈ exp(−0.1056) = 0.90), likely reflecting overlap with renter share and income. Percent 65+ is negative and significant (10 percentage-points → \~13% lower, IRR ≈ exp(−0.1473) = 0.86).
+Based on the Poisson regression results, all predictor variables demonstrate statistically significant relationships with burglary counts (p \< 0.001), though their directional influences vary notably. Contrary to theoretical expectations, increased street light outages (lights_out) show a slight negative association with burglaries, while greater distances from lighting problem clusters (dist_to_hotspot) and individual outages (lights_out.nn) both correlate with reduced crime rates. More consistent with conventional criminological theory, higher median income (med_income) and larger elderly population proportions (pct_65_over) both exhibit protective effects against burglaries. Conversely, the coefficient for count_vacant is 0.001445. The positive value indicates that a higher number of vacant buildings is associated with a higher expected log count of burglaries. The IRR (Incidence Rate Ratio) is exp(0.001445) ≈ 1.00145, meaning that for each additional vacant building, the expected number of burglaries is multiplied by 1.00145, representing a 0.145% increase. These findings suggest that while physical disorder indicators like vacancy align with theoretical predictions, the relationships between lighting infrastructure issues and crime patterns appear more complex than initially hypothesized, potentially reflecting spatial interdependencies or countervailing mechanisms in the urban environment.
 
 ## 4.2: Check for Overdispersion
 
-Poisson regression assumes mean = variance. Real count data often violates this (overdispersion).
+Poisson regression assumes mean = variance. Real count data often violates this (overdispersion). Diagnostic checks reveal significant overdispersion in the Poisson model (dispersion parameter ≈ 3.12), violating the fundamental assumption of equal mean and variance. This leads us to employ a Negative Binomial regression, which introduces an additional parameter to accommodate extra-Poisson variation.
 
 ```{r check-overdispersion}
 # Calculate dispersion parameter
@@ -588,10 +559,6 @@ if (dispersion > 1.5) {
 
 ## 4.3: Negative Binomial Regression
 
-(改)Overdispersion was substantial (dispersion ≈ 2.79), so moving to a Negative Binomial was appropriate
-
-If overdispersed, we use **Negative Binomial regression** (more flexible).
-
 ```{r fit-negbin}
 # Fit Negative Binomial model
 model_nb <- glm.nb(
@@ -609,19 +576,13 @@ cat("Poisson AIC:", round(AIC(model_poisson), 1), "\n")
 cat("Negative Binomial AIC:", round(AIC(model_nb), 1), "\n")
 ```
 
-（改）it fits much better (AIC 19,659; residual deviance 4,837 on 4,193 df) and estimates an overdispersion parameter θ ≈ 2.21. Vacancy intensity and proximity both raise burglary risk; tenure structure (more renters) is a strong correlate; older population share is associated with lower risk. The Negative Binomial specification handles variance better than Poisson and is the recommended model for inference and prediction.
+The comparison of AIC values clearly demonstrates the superiority of the Negative Binomial specification, with a substantial reduction in AIC from approximately 23,224.7 to a lower value 19,782.2. This improvement reflects better handling of overdispersion (θ = 1.9727). Notably, lights_out shows a positive coefficient (0.0035) in the NB model, aligning with theoretical expectations that lighting failures increase burglary risk. All predictors remain highly significant (p \< 0.001), with consistent protective effects for income and elderly population, and risk-increasing effects for vacancy. The NB model provides more reliable estimates for spatial crime analysis.
 
-## 4.4: Model fit(AIC) Comparison
-
-**Question 6.2:** Which model fits better (lower AIC)? What does this tell you about the data?
-
-*Your answer here:*
-
-# Part 6: Spatial Cross-Validation
+# Part 5: Spatial Cross-Validation
 
 （改）This section evaluates out-of-sample performance with Leave-One-Group-Out cross-validation where each police district is held out in turn. For every fold, the Negative Binomial model is trained on all other districts and then used to predict burglary counts in the held-out district. We then summarize prediction errors to assess how well the model generalizes across space.
 
-## 6.1: Create a Kernel Density Baseline
+## 5.1: Create a Kernel Density Baseline
 
 ```{r kde-baseline}
 #| message: false
@@ -688,11 +649,9 @@ Before building complex models, let's create a simple baseline using **Kernel De
 The KDE represents our **null hypothesis**: burglaries happen where they happened before, with no other information.
 
 **Your complex model must outperform this simple baseline to justify its complexity.**
-
-We'll compare back to this at the end!
 :::
 
-## 6.2: **Leave-One-Group-Out (LOGO) Cross-Validation**
+## 5.2: **Leave-One-Group-Out (LOGO) Cross-Validation**
 
 ```{r spatial-cv}
 # Get unique districts
@@ -748,7 +707,7 @@ cat("Mean MAE:", round(mean(cv_results$mae), 2), "\n")
 cat("Mean RMSE:", round(mean(cv_results$rmse), 2), "\n")
 ```
 
-## 6.3: **Error metrics calculation and report**
+## 5.3: **Error metrics calculation and report**
 
 ```{r cv-results-table}
 # Show results
@@ -765,9 +724,9 @@ cv_results %>%
 
 *Your answer here:*
 
-# Part 7: Model **Evaluation**
+# Part 6: Model **Evaluation**
 
-## 7.1: Generate Final Predictions
+## 6.1: Generate Final Predictions
 
 ```{r final-predictions}
 # Fit final model on all data
@@ -792,7 +751,7 @@ fishnet <- fishnet %>%
   )
 ```
 
-## 7.2: Compare Model vs. KDE Baseline
+## 6.2: Compare Model vs. KDE Baseline
 
 ```{r compare-models}
 #| fig-width: 15
@@ -851,7 +810,7 @@ comparison %>%
 
 *Your answer here:*
 
-## 7.3: Where Does the Model Work Well?
+## 6.3: Where Does the Model Work Well?
 
 ```{r prediction-errors}
 #| fig-width: 10
@@ -891,9 +850,9 @@ p1 + p2
 
 *Your answer here:*
 
-# Part 8: Summary Statistics and Tables
+# Part 7: Summary Statistics and Tables
 
-## 8.1: Model Summary Table
+## 7.1: Model Summary Table
 
 ```{r model-summary-table}
 # Create nice summary table
@@ -913,7 +872,7 @@ model_summary %>%
   )
 ```
 
-## 8.2: Key Findings Summary
+## 7.2: Key Findings Summary
 
 Based on your analysis, complete this summary:
 
