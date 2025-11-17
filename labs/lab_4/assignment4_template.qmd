@@ -845,7 +845,7 @@ p1 + p2
 
 The error maps reveal distinct spatial patterns in model performance. The directional error map shows systematic overprediction (red areas) primarily in higher-risk neighborhoods, where the model likely overestimates burglary risk due to unaccounted protective factors. Meanwhile, underprediction (blue areas) concentrates in lower-crime western sectors, suggesting the model misses certain risk amplifiers in these regions. The absolute error map confirms that prediction inaccuracies are most pronounced in areas with extreme crime counts - both very high and very low - indicating the model struggles with accurately predicting both crime hotspots and exceptionally safe areas.
 
-# Part 7: Summary Statistics and Tables
+# Part 7: Conclusion and Discussion
 
 ## 7.1: Model Summary Table
 
