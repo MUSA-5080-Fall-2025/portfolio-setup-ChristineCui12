@@ -454,12 +454,11 @@ tracts_all <- get_acs(
   variables = acs_vars,
   output = "wide",
   year = 2017, 
-  geometry = TRUE,
+  geometry = TRUE
 ) 
 ```
 
 ```{r}
-
 tracts_chi <- tracts_all %>%
   st_transform(st_crs(chicagoBoundary)) %>%
   st_filter(chicagoBoundary, .predicate = st_intersects) %>%
@@ -495,7 +494,7 @@ fishnet <- fishnet %>%
 
 # Part 4: Model Fitting
 
-（改）This section prepares the modeling frame, fits a Poisson and a Negative Binomial count model for burglaries using vacancy features and ACS controls, checks for overdispersion, and selects the preferred specification based on AIC for downstream prediction and validation.
+This section establishes the modeling framework by systematically evaluating alternative regression specifications for burglary count prediction. The process involves preparing the analytical dataset, implementing a baseline Poisson model, diagnosing its limitations through dispersion testing, and then proceeding to a more flexible Negative Binomial formulation to address identified statistical issues.
 
 ## 4.1: Poisson Regression
 
@@ -518,7 +517,6 @@ fishnet_model <- fishnet %>%
   ) %>%
   na.omit()  # Remove any remaining NAs
 
-cat("✓ Prepared modeling data\n")
 cat("  - Observations:", nrow(fishnet_model), "\n")
 cat("  - Variables:", ncol(fishnet_model), "\n")
 ```
@@ -580,9 +578,11 @@ The comparison of AIC values clearly demonstrates the superiority of the Negativ
 
 # Part 5: Spatial Cross-Validation
 
-（改）This section evaluates out-of-sample performance with Leave-One-Group-Out cross-validation where each police district is held out in turn. For every fold, the Negative Binomial model is trained on all other districts and then used to predict burglary counts in the held-out district. We then summarize prediction errors to assess how well the model generalizes across space.
+This section establishes a baseline for model evaluation by creating a kernel density estimate of burglary patterns, then implements leave-one-group-out cross-validation using police districts to assess the model's spatial generalizability. The process compares our complex regression model against a simple spatial smoothing approach and quantifies prediction errors across different geographic areas.
 
 ## 5.1: Create a Kernel Density Baseline
+
+This step creates a baseline prediction model using Kernel Density Estimation (KDE) to analyze the spatial concentration patterns of burglary incidents. The process involves converting burglary point locations into a continuous probability surface using a 1km bandwidth kernel, then extracting the resulting density values to each fishnet grid cell. This creates a smoothed representation of burglary risk based solely on historical crime locations.
 
 ```{r kde-baseline}
 #| message: false
@@ -613,9 +613,9 @@ fishnet <- fishnet %>%
       na.rm = TRUE
     )[, 2]  # Extract just the values column
   )
-
-cat("✓ Calculated KDE baseline\n")
 ```
+
+Establishing a KDE baseline serves multiple critical purposes. First, it provides a simple but effective benchmark against which to compare our more complex regression models - if our sophisticated models cannot outperform this basic spatial smoothing approach, their added complexity isn't justified. Second, KDE captures the fundamental spatial autocorrelation inherent in crime patterns, representing the "where crime has happened before" hypothesis. Third, it helps us understand the underlying spatial structure of burglary risk before introducing explanatory variables.
 
 ```{r visualize-kde}
 #| fig-width: 8
@@ -635,23 +635,11 @@ ggplot() +
   theme_crime()
 ```
 
-Before building complex models, let's create a simple baseline using **Kernel Density Estimation (KDE)**.
-
-**The KDE baseline asks:** "What if crime just happens where it happened before?" (simple spatial smoothing, no predictors)
-
-**Question 3.1:** How does the KDE map compare to the count map? What does KDE capture well? What does it miss?
-
-*Your answer here:* - Comparison to the count map: - KDE pros and cons:
-
-::: callout-tip
-## Why Start with KDE?
-
-The KDE represents our **null hypothesis**: burglaries happen where they happened before, with no other information.
-
-**Your complex model must outperform this simple baseline to justify its complexity.**
-:::
+The KDE map reveals pronounced spatial heterogeneity in burglary risk, with dense hotspot emerging in southern and northern sectors while middle areas remain relatively safe. The smooth risk gradients demonstrate spatial autocorrelation and distance decay patterns, providing a crucial baseline for evaluating more complex predictive models.
 
 ## 5.2: **Leave-One-Group-Out (LOGO) Cross-Validation**
+
+This step implements Leave-One-Group-Out cross-validation using police districts to assess the model's spatial generalizability. By iteratively training the model on all but one district and testing on the excluded district, we evaluate how well the model transfers to unseen geographic areas. The process reveals whether the relationships learned from most districts can effectively predict burglary patterns in completely new locations.
 
 ```{r spatial-cv}
 # Get unique districts
@@ -707,7 +695,11 @@ cat("Mean MAE:", round(mean(cv_results$mae), 2), "\n")
 cat("Mean RMSE:", round(mean(cv_results$rmse), 2), "\n")
 ```
 
+The results show an average MAE of 2.74 burglaries per grid cell, indicating reasonable predictive accuracy. However, the variation across districts (MAE ranging from 1.69 to 6.21) suggests significant geographic heterogeneity in prediction performance. District 3's high error (6.21) likely reflects unique local factors not captured by our predictors, highlighting areas where the model may require additional contextual variables or specialized approaches.
+
 ## 5.3: **Error metrics calculation and report**
+
+This step systematically analyzes the spatial cross-validation results by organizing prediction errors across all police districts. The table ranks districts by MAE (Mean Absolute Error), providing a clear comparison of model performance across different geographic areas. This organization allows for identifying patterns in prediction accuracy and pinpointing where the model struggles most.
 
 ```{r cv-results-table}
 # Show results
@@ -720,9 +712,7 @@ cv_results %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-**Question 7.1:** Why is spatial CV more appropriate than random CV for this problem? Which districts were hardest to predict?
-
-*Your answer here:*
+The results reveal substantial spatial variation in prediction quality. District 3 shows the highest error (MAE: 6.21), suggesting unique local dynamics not captured by our predictors, while District 17 demonstrates the best performance (MAE: 1.69).
 
 # Part 6: Model **Evaluation**
 
