@@ -5,7 +5,7 @@ author: "Christine"
 date: today
 format:
   html:
-    code-fold: show
+    code-fold: true
     code-tools: true
     toc: true
     toc-depth: 3
@@ -22,21 +22,9 @@ execute:
 
 In this exercise, I will build a spatial predictive model for burglaries using count regression and spatial features.
 
-# Learning Objectives
-
-By the end of this exercise, you will be able to:
-
-1.  Create a fishnet grid for aggregating point-level crime data
-2.  Calculate spatial features including k-nearest neighbors and distance measures
-3.  Diagnose spatial autocorrelation using Local Moran's I
-4.  Fit and interpret Poisson and Negative Binomial regression for count data
-5.  Implement spatial cross-validation (Leave-One-Group-Out)
-6.  Compare model predictions to a Kernel Density Estimation baseline
-7.  Evaluate model performance using appropriate metrics
-
 # Setup
 
-```{r setup}
+```{r setup, include=FALSE}
 #| message: false
 #| warning: false
 
@@ -54,6 +42,7 @@ library(knitr)          # Tables
 library(kableExtra)     # Table formatting
 library(classInt)       # Classification intervals
 library(here)
+library(tidycensus)
 
 # Spatstat split into sub-packages
 library(spatstat.geom)    # Spatial geometries
@@ -85,6 +74,8 @@ cat("✓ Working directory:", getwd(), "\n")
 
 # Part 1: **Data Loading & Exploration**
 
+This initial phase establishes the foundational dataset for our spatial analysis of burglary patterns in Chicago. The process systematically assembles and prepares multiple data sources: administrative boundaries (police districts, beats, and city limits) provide the spatial framework; burglary incidents serve as the primary outcome variable; and street light outage reports function as a key environmental predictor. Each dataset undergoes rigorous processing including coordinate system standardization, temporal filtering to 2017, and geometric validation.
+
 ## 1.1: Load Chicago Spatial Data
 
 ```{r load-boundaries}
@@ -112,16 +103,6 @@ cat("  - Police districts:", nrow(policeDistricts), "\n")
 cat("  - Police beats:", nrow(policeBeats), "\n")
 ```
 
-::: callout-note
-## Coordinate Reference System
-
-We're using `ESRI:102271` (Illinois State Plane East, NAD83, US Feet). This is appropriate for Chicago because:
-
--   It minimizes distortion in this region
--   Uses feet (common in US planning)
--   Allows accurate distance calculations
-:::
-
 ## 1.2: Load Burglary Data
 
 ```{r load-burglaries}
@@ -139,47 +120,45 @@ cat("  - Date range:", min(burglaries$Date, na.rm = TRUE), "to",
     max(burglaries$Date, na.rm = TRUE), "\n")
 ```
 
-**Question 1.1:** How many burglaries are in the dataset? What time period does this cover? Why does the coordinate reference system matter for our spatial analysis?
+## 1.3: Load 311 Street Lights Out Calls
 
-*Your answer here:* - Number of burglaries: 7482 - Time period: 2017.1.1-2018.1.1 - Coordinate reference system: ?????
+```{r load-lights-out}
+#| message: false
 
-::: callout-warning
-## Critical Pause #1: Data Provenance
+lights_out <- read_csv("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/labs/lab_4/data/Alley_Lights_Out_2025.csv")%>%
+  mutate(date_received = mdy(`Creation Date`)) %>%
+  filter(!is.na(Latitude), !is.na(Longitude), year(date_received) == 2017) %>%
+  st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>%
+  st_transform('ESRI:102271')
 
-Before proceeding, consider where this data came from:
+cat("✓ Loaded lights out calls\n")
+cat("  - Number of calls:", nrow(lights_out), "\n")
+```
 
-**Who recorded this data?** Chicago Police Department officers and detectives
+The selection of "Alley Lights Out" service requests as our predictor variable is grounded in both theoretical foundations and practical analytical considerations. From an environmental criminology perspective, inadequate alley illumination directly impacts crime opportunities by reducing natural surveillance and creating concealment spaces, aligning with CPTED principles. This violation type differs significantly from the classroom example of abandoned vehicles, representing a distinct category of infrastructure issues with unique spatial characteristics. Furthermore, alley lighting problems typically exhibit temporal stability due to municipal maintenance cycles, providing reliable spatial patterns for predictive modeling.
 
-**What might be missing?**
+For our analytical framework, this dataset offers several advantages. The persistent nature of lighting infrastructure ensures strong spatial autocorrelation, making it a robust predictor at the grid-cell level. The geographic specificity of alley locations enables precise spatial analysis, while the substantial data volume with quality coordinates supports reliable modeling. Importantly, findings from this analysis can directly inform evidence-based policies for infrastructure maintenance and targeted crime prevention, bridging academic research with practical urban governance applications.
 
--   Unreported burglaries (victims didn't call police)
--   Incidents police chose not to record
--   Downgraded offenses (burglary recorded as trespassing)
--   Spatial bias (more patrol = more recorded crime)
+## 1.4: Visualize the spatial distribution
 
-**Think About** Was there a Department of Justice investigation of CPD during this period? What did they find about data practices?
-:::
-
-## 1.3: Visualize Point Data
-
-```{r visualize-points-1}
-#| fig-width: 10
-#| fig-height: 5
+```{r visualize-points}
+#| fig-width: 15
+#| fig-height: 10
 
 # Simple point map
 p1 <- ggplot() + 
   geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
-  geom_sf(data = burglaries, color = "#d62828", size = 0.1, alpha = 0.4) +
+  geom_sf(data = lights_out, color = "#d62828", size = 0.1, alpha = 0.4) +
   labs(
-    title = "Burglary Locations",
-    subtitle = paste0("Chicago 2017, n = ", nrow(burglaries))
+    title = "Lights out Locations",
+    subtitle = paste0("Chicago 2017, n = ", nrow(lights_out))
   )
 
 # Density surface using modern syntax
 p2 <- ggplot() + 
   geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
   geom_density_2d_filled(
-    data = data.frame(st_coordinates(burglaries)),
+    data = data.frame(st_coordinates(lights_out)),
     aes(X, Y),
     alpha = 0.7,
     bins = 8
@@ -197,26 +176,20 @@ p2 <- ggplot() +
 # Combine plots using patchwork (modern approach)
 p1 + p2 + 
   plot_annotation(
-    title = "Spatial Distribution of Burglaries in Chicago",
+    title = "Spatial Distribution of Lights out in Chicago",
     tag_levels = 'A'
   )
 ```
 
-**Question 1.2:** What spatial patterns do you observe? Are burglaries evenly distributed across Chicago? Where are the highest concentrations? What might explain these patterns?
+From the maps above, it can be found that the spatial distribution of alley light outages in Chicago demonstrates pronounced unevenness across the urban landscape. The visualization reveals distinct concentration patterns, with particularly dense clusters forming continuous corridors in western and southern sectors, while central and northern lakeshore areas remain notably sparse.
 
-*Your answer here:* - Spatial patterns: - Evenly distributed: No, it's dispersed obviously and it's concentrated in 2 parts-north and south. - Highest concentrations: The highest concentration is in the south side. - Explaination:
+The kernel density analysis further validates this spatial disparity, highlighting persistent high-intensity zones in historically underserved neighborhoods. This geographical patterning reflects underlying infrastructure maintenance disparities and suggests potential correlations between illumination deficiencies and neighborhood socioeconomic characteristics. The stark contrast between high-frequency reporting areas and minimally affected regions underscores systemic inequities in public service distribution, while the concentrated nature of these outages may significantly influence local safety conditions and nocturnal activity patterns.
 
-# Part 2: **Fishnet Grid Creation**
+# Part 2: **Fishnet Grid Creation and Distribution**
 
-## 2.1: Understanding the Fishnet
+This section establishes the analytical foundation by transforming raw spatial data into structured, comparable units that enable systematic examination of crime patterns and environmental factors. The process begins with creating a uniform 500m x 500m grid system spanning Chicago's urban landscape, which serves as our standardized spatial framework. This grid-based approach is crucial because it transcends traditional administrative boundaries (unequal sizes), allowing us to analyze urban phenomena in consistent, equally-sized, and no boundary bias units that capture local variations while maintaining city-wide comparability.
 
-A **fishnet grid** converts irregular point data into a regular grid of cells where we can:
-
--   Aggregate counts
--   Calculate spatial features
--   Apply regression models
-
-Think of it as overlaying graph paper on a map.
+## 2.1: Fishnet Creation
 
 ```{r create-fishnet}
 # Create 500m x 500m grid
@@ -238,11 +211,9 @@ cat("  - Cell size:", 500, "x", 500, "meters\n")
 cat("  - Cell area:", round(st_area(fishnet[1,])), "square meters\n")
 ```
 
-**Question 2.1:** Why do we use a regular grid instead of existing boundaries like neighborhoods or census tracts? What are the advantages and disadvantages of this approach?
-
-*Your answer here:* - Reasons for using a regular grid: Existing boundaries like neighborhoods or census tracts尺度不一样，rbitrary, unequal sizes, Modifiable Areal Unit Problem. - Pros and Cons: Fishnet grid has Consistent size, no boundary bias. We use fishnet because: Standard approach in predictive policing, Easier spatial operations, Consistent unit of analysis. But it has Arbitrary, may split “natural” areas.
-
 ## 2.2: Aggregate Burglaries to Grid
+
+（改写）
 
 ```{r aggregate-burglaries}
 # Spatial join: which cell contains each burglary?
@@ -265,7 +236,7 @@ cat("\nCells with zero burglaries:",
     "(", round(100 * sum(fishnet$countBurglaries == 0) / nrow(fishnet), 1), "%)\n")
 ```
 
-```{r visualize-fishnet}
+```{r visualize-fishnet-burglaries}
 #| fig-width: 8
 #| fig-height: 6
 
@@ -286,15 +257,373 @@ ggplot() +
   theme_crime()
 ```
 
-**Question 2.2:** What is the distribution of burglary counts across cells? Why do so many cells have zero burglaries? Is this distribution suitable for count regression? (Hint: look up overdispersion)
+The aggregation of burglary incidents to these grid cells reveals striking spatial disparities in crime distribution. Rather than being evenly dispersed across the city, burglaries concentrate in specific hotspots while large portions of the grid remain crime-free. This clustering pattern underscores the non-random nature of criminal activity and highlights the limitations of traditional Poisson regression for modeling such overdispersed count data, pointing toward the need for more flexible statistical approaches like negative binomial regression.
 
-*Your answer here:* - Distribution of burglary counts: - Reasons for cells have zero burglaries: - Suitability for count regression: No, 有太多0值，代表数据非常分散，方差应该大于平均值。泊松分布cannot handle overdispersion and will underestimated if overdispersed. Poisson assumption: Variance = Mean, but Reality with crime data: Variance \> Mean ,所以不符合泊松分布的假设，所以要用负二向式回归。
+## 2.3: Count of Streets Lights out per Cell
 
-# Part 3: Create a Kernel Density Baseline
+```{r count-lights-out}
+# Aggregate lights out calls to fishnet
+lightsout_fishnet <- st_join(lights_out, fishnet, join = st_within) %>%
+  st_drop_geometry() %>%
+  group_by(uniqueID) %>%
+  summarize(lights_out = n())
 
-Before building complex models, let's create a simple baseline using **Kernel Density Estimation (KDE)**.
+# Join to fishnet
+fishnet <- fishnet %>%
+  left_join(lightsout_fishnet, by = "uniqueID") %>%
+  mutate(lights_out = replace_na(lights_out, 0))
 
-**The KDE baseline asks:** "What if crime just happens where it happened before?" (simple spatial smoothing, no predictors)
+cat("Abandoned car distribution:\n")
+summary(fishnet$lights_out)
+```
+
+```{r visualize-fishnet-lightsout}
+#| fig-width: 8
+#| fig-height: 6
+
+# Visualize aggregated counts
+ggplot() +
+  geom_sf(data = fishnet, aes(fill = lights_out), color = NA) +
+  geom_sf(data = chicagoBoundary, fill = NA, color = "white", linewidth = 1) +
+  scale_fill_viridis_c(
+    name = "Lights Out",
+    option = "plasma",
+    trans = "sqrt",  # Square root for better visualization of skewed data
+    breaks = c(0, 1, 5, 10, 20, 40)
+  ) +
+  labs(
+    title = "Alley Lights Out by Grid Cell",
+    subtitle = "500m x 500m cells, Chicago 2017"
+  ) +
+  theme_crime()
+```
+
+**Question 4.1:** Do you see a visual relationship between abandoned cars and burglaries? What does this suggest?
+
+# Part 3: Create **Spatial Features**
+
+(改)This section engineers spatial predictors from the vacancy surface and adds contextual controls. It measures proximity to vacant structures, detects statistically significant clusters, converts those clusters into a distance-to-hotspot feature, and enriches the grid with police districts and ACS demographics for use in modeling burglary counts.
+
+## 3.1: **K-**Nearest Neighbor Features
+
+Count in a cell is one measure. Distance to the nearest 3 abandoned cars captures local context.
+
+```{r nn-feature}
+#| message: false
+
+# Calculate mean distance to 3 nearest abandoned cars
+# (Do this OUTSIDE of mutate to avoid sf conflicts)
+
+# Get coordinates
+fishnet_coords <- st_coordinates(st_centroid(fishnet))
+lightsout_coords <- st_coordinates(lights_out)
+
+# Calculate k nearest neighbors and distances
+nn_result <- get.knnx(lightsout_coords, fishnet_coords, k = 3)
+
+# Add to fishnet
+fishnet <- fishnet %>%
+  mutate(
+    lights_out.nn = rowMeans(nn_result$nn.dist)
+  )
+
+cat("✓ Calculated nearest neighbor distances\n")
+summary(fishnet$lights_out.nn)
+```
+
+**Question 4.2:** What does a low value of `abandoned_cars.nn` mean? A high value? Why might this be informative?
+
+*Your answer here:*
+
+## 3.2: Local Moran's I analysis
+
+（改）The code creates a k-nearest neighbor weights matrix on grid centroids (k = 5), runs Local Moran’s I on the abandoned_houses counts, and generates a categorical label (High-High, Low-Low, High-Low, Low-High, or Not Significant). This identifies locations where there are hotspots, coldspots, or outliers. This is useful in substantivbe interpretations to discover whether vacnact or abandoned households are in-step or spatially clustered with neighboring households. It actually supports our initial theory that house abandonment (foreclosure) is likely to occur in generally similar neighborhoods.
+
+```{r local-morans-abandoned}
+# Function to calculate Local Moran's I
+calculate_local_morans <- function(data, variable, k = 5) {
+  
+  # Create spatial weights
+  coords <- st_coordinates(st_centroid(data))
+  neighbors <- knn2nb(knearneigh(coords, k = k))
+  weights <- nb2listw(neighbors, style = "W", zero.policy = TRUE)
+  
+  # Calculate Local Moran's I
+  local_moran <- localmoran(data[[variable]], weights)
+  
+  # Classify clusters
+  mean_val <- mean(data[[variable]], na.rm = TRUE)
+  
+  data %>%
+    mutate(
+      local_i = local_moran[, 1],
+      p_value = local_moran[, 5],
+      is_significant = p_value < 0.05,
+      
+      moran_class = case_when(
+        !is_significant ~ "Not Significant",
+        local_i > 0 & .data[[variable]] > mean_val ~ "High-High",
+        local_i > 0 & .data[[variable]] <= mean_val ~ "Low-Low",
+        local_i < 0 & .data[[variable]] > mean_val ~ "High-Low",
+        local_i < 0 & .data[[variable]] <= mean_val ~ "Low-High",
+        TRUE ~ "Not Significant"
+      )
+    )
+}
+
+# Apply to abandoned cars
+fishnet <- calculate_local_morans(fishnet, "lights_out", k = 5)
+```
+
+## 3.3: **Identify Hot Spots and Cold Spots**
+
+```{r visualize-morans}
+#| fig-width: 8
+#| fig-height: 6
+
+# Visualize hot spots
+ggplot() +
+  geom_sf(
+    data = fishnet, 
+    aes(fill = moran_class), 
+    color = NA
+  ) +
+  scale_fill_manual(
+    values = c(
+      "High-High" = "#d7191c",
+      "High-Low" = "#fdae61",
+      "Low-High" = "#abd9e9",
+      "Low-Low" = "#2c7bb6",
+      "Not Significant" = "gray90"
+    ),
+    name = "Cluster Type"
+  ) +
+  labs(
+    title = "Local Moran's I: Lights out Clusters",
+    subtitle = "High-High = Hot spots of disorder"
+  ) +
+  theme_crime()
+```
+
+（改）The LISA map shows vacancy hot spots concentrated on the South and Southeast sides, with additional pockets on the Southwest and a few small clusters on the West Side. Most cells are “Not Significant,” which means their vacancy levels are either average or lack strong similarity with neighbors at the k = 5 neighborhood scale. The few “Low-High” cells appear along the fringes of hot areas and indicate local dips embedded within otherwise high-vacancy neighborhoods, consistent with edge effects at cluster boundaries. Overall, the pattern reinforces our earlier findings: vacancy is highly clustered rather than uniform, with multi-cell cores in the south that are likely to be influential in burglary risk modeling and useful for distance-to-hotspot features.
+
+## 3.4: Distance to Hot Spots
+
+（改）The code extracts centroids of cells labeled High-High, unions them into a single geometry, and computes the distance from each grid centroid to the nearest hotspot. The resulting dist_to_hotspot feature captures how far a location is from the nearest vacancy hot area and defaults to zero when no significant hotspots are found.
+
+```{r distance-to-hotspots}
+# Get centroids of "High-High" cells (hot spots)
+hotspots <- fishnet %>%
+  filter(moran_class == "High-High") %>%
+  st_centroid()
+
+# Calculate distance from each cell to nearest hot spot
+if (nrow(hotspots) > 0) {
+  fishnet <- fishnet %>%
+    mutate(
+      dist_to_hotspot = as.numeric(
+        st_distance(st_centroid(fishnet), hotspots %>% st_union())
+      )
+    )
+  
+  cat("✓ Calculated distance to lights out hot spots\n")
+  cat("  - Number of hot spot cells:", nrow(hotspots), "\n")
+} else {
+  fishnet <- fishnet %>%
+    mutate(dist_to_hotspot = 0)
+  cat("⚠ No significant hot spots found\n")
+}
+```
+
+**Question 4.3:** Why might distance to a cluster of abandoned cars be more informative than distance to a single abandoned car? What does Local Moran's I tell us?
+
+*Your answer here:*
+
+## 3.4: Join **Additional Contextual Data**
+
+（改）The code assigns each grid cell to a police district, then downloads 2017 ACS tract data for Cook County, computes demographic and socioeconomic percentages and median income, and joins these attributes to the grid where cells intersect tracts. These controls (race or ethnicity shares, poverty, renter share, vacancy, age structure, and income) provide broader structural context for explaining burglary patterns beyond vacancy alone.
+
+```{r join-districts}
+# Join district information to fishnet
+fishnet <- st_join(
+  fishnet,
+  policeDistricts,
+  join = st_within,
+  left = TRUE
+) %>%
+  filter(!is.na(District))  # Remove cells outside districts
+
+cat("✓ Joined police districts\n")
+cat("  - Districts:", length(unique(fishnet$District)), "\n")
+cat("  - Cells:", nrow(fishnet), "\n")
+```
+
+```{r}
+acs_vars <- c(
+  total_pop = "B01003_001",
+  med_income = "B19013_001",
+  # Male 65 years and over (sum of 6 categories)
+  male_65_66 = "B01001_020",
+  male_67_69 = "B01001_021",
+  male_70_74 = "B01001_022",
+  male_75_79 = "B01001_023",
+  male_80_84 = "B01001_024",
+  male_85_up = "B01001_025",
+  # Female 65 years and over (sum of 6 categories)
+  female_65_66 = "B01001_044",
+  female_67_69 = "B01001_045",
+  female_70_74 = "B01001_046",
+  female_75_79 = "B01001_047",
+  female_80_84 = "B01001_048",
+  female_85_up = "B01001_049"
+)
+
+tracts_all <- get_acs(
+  geography = "tract",
+  state = "IL",
+  county = "Cook",
+  variables = acs_vars,
+  output = "wide",
+  year = 2017, 
+  geometry = TRUE 
+) 
+  # Calculate the combined 65+ population and rename variables
+
+tracts_chi <- tracts_all %>%
+  st_transform(st_crs(chicagoBoundary)) %>%
+  st_filter(chicagoBoundary, .predicate = st_intersects) %>%
+  dplyr::mutate(
+    pop_65_over = (male_65_66E + male_67_69E + male_70_74E + male_75_79E + male_80_84E + male_85_upE +
+                  female_65_66E + female_67_69E + female_70_74E + female_75_79E + female_80_84E + female_85_upE),
+    pct_65_over = 100 * pop_65_over / pmax(total_popE, 1),
+    total_pop = total_popE,
+    med_income = med_incomeE
+  ) %>%
+  # Select and rename final columns for clarity and consistency
+  dplyr::select(GEOID,total_pop,med_income,pop_65_over,pct_65_over)
+# Join to fishnet
+fishnet <- fishnet %>%
+  st_join(tracts_chi, join = st_intersects, left = TRUE)
+```
+
+```{r}
+# Load vacant buildings data
+vacant <-
+  st_read("data/Vacant_and_Abandoned_Buildings.geojson", quiet = TRUE) %>%
+  st_transform("ESRI:102271")
+# Spatial join.
+vacant_fishnet <- st_join(vacant, fishnet, join = st_within) %>%
+  st_drop_geometry() %>%
+  group_by(uniqueID) %>%
+  summarize(count_vacant = n())
+# Join to fishnet
+fishnet <- fishnet %>%
+  left_join(vacant_fishnet, by = "uniqueID") %>%
+  mutate(count_vacant = replace_na(count_vacant, 0))
+```
+
+# Part 4: Model Fitting
+
+（改）This section prepares the modeling frame, fits a Poisson and a Negative Binomial count model for burglaries using vacancy features and ACS controls, checks for overdispersion, and selects the preferred specification based on AIC for downstream prediction and validation.
+
+## 4.1: Poisson Regression
+
+（改）The code builds fishnet_model by dropping geometry, selecting the outcome burglaries, adding vacancy predictors (abandoned_houses, nearest vacancy distance, distance to vacancy hotspots), and including demographic and socioeconomic controls. Percentage variables are rescaled to proportions and median income is log transformed to reduce skew. A Poisson GLM with log link is then estimated, and a summary is printed to inspect coefficients and standard errors.
+
+```{r prepare-data}
+# Create clean modeling dataset
+fishnet_model <- fishnet %>%
+  st_drop_geometry() %>%
+  dplyr::select(
+    uniqueID,
+    District,
+    countBurglaries,
+    lights_out,
+    lights_out.nn,
+    dist_to_hotspot,
+    med_income,
+    pct_65_over,
+    count_vacant
+  ) %>%
+  na.omit()  # Remove any remaining NAs
+
+cat("✓ Prepared modeling data\n")
+cat("  - Observations:", nrow(fishnet_model), "\n")
+cat("  - Variables:", ncol(fishnet_model), "\n")
+```
+
+```{r fit-poisson}
+# Fit Poisson regression
+model_poisson <- glm(
+  countBurglaries ~ lights_out + lights_out.nn + 
+    dist_to_hotspot + med_income + pct_65_over + count_vacant,
+  data = fishnet_model,
+  family = "poisson"
+)
+
+# Summary
+summary(model_poisson)
+```
+
+**Question:** Interpret the coefficients. Which variables are significant? What do the signs (positive/negative) tell you?
+
+（改）Burglary counts increase with more vacant houses in a cell and with closer proximity to vacancy. Each additional vacant house is associated with about 4.5% higher expected burglaries (IRR ≈ exp(0.0439) = 1.045). Greater distance to the nearest vacant house lowers risk: a 100 m increase corresponds to ≈ 6.7% lower expected burglaries (IRR ≈ exp(−0.0006906×100) = 0.933). Being farther from vacancy hotspots also reduces risk slightly: 1 km farther gives ≈ 2.7% lower rates (IRR ≈ exp(−0.0000279×1000) = 0.973). Neighborhood structure matters: higher renter share is strongly positive (a 10 percentage-point increase → IRR ≈ exp(0.1×1.640) = 1.18, or +18%), higher log income is positive (IRR ≈ exp(0.394) = 1.48 per one-log increase), and percent Black is positive (10 percentage-points → \~2% higher, IRR ≈ 1.02). Percent Hispanic and ages 45–64 are not significant. Percent in poverty is negative and significant (10 percentage-points → \~10% lower, IRR ≈ exp(−0.1056) = 0.90), likely reflecting overlap with renter share and income. Percent 65+ is negative and significant (10 percentage-points → \~13% lower, IRR ≈ exp(−0.1473) = 0.86).
+
+## 4.2: Check for Overdispersion
+
+Poisson regression assumes mean = variance. Real count data often violates this (overdispersion).
+
+```{r check-overdispersion}
+# Calculate dispersion parameter
+dispersion <- sum(residuals(model_poisson, type = "pearson")^2) / 
+              model_poisson$df.residual
+
+cat("Dispersion parameter:", round(dispersion, 2), "\n")
+cat("Rule of thumb: >1.5 suggests overdispersion\n")
+
+if (dispersion > 1.5) {
+  cat("⚠ Overdispersion detected! Consider Negative Binomial model.\n")
+} else {
+  cat("✓ Dispersion looks okay for Poisson model.\n")
+}
+```
+
+## 4.3: Negative Binomial Regression
+
+(改)Overdispersion was substantial (dispersion ≈ 2.79), so moving to a Negative Binomial was appropriate
+
+If overdispersed, we use **Negative Binomial regression** (more flexible).
+
+```{r fit-negbin}
+# Fit Negative Binomial model
+model_nb <- glm.nb(
+  countBurglaries ~ lights_out + lights_out.nn + 
+    dist_to_hotspot + med_income + pct_65_over + count_vacant,
+  data = fishnet_model
+)
+
+# Summary
+summary(model_nb)
+
+# Compare AIC (lower is better)
+cat("\nModel Comparison:\n")
+cat("Poisson AIC:", round(AIC(model_poisson), 1), "\n")
+cat("Negative Binomial AIC:", round(AIC(model_nb), 1), "\n")
+```
+
+（改）it fits much better (AIC 19,659; residual deviance 4,837 on 4,193 df) and estimates an overdispersion parameter θ ≈ 2.21. Vacancy intensity and proximity both raise burglary risk; tenure structure (more renters) is a strong correlate; older population share is associated with lower risk. The Negative Binomial specification handles variance better than Poisson and is the recommended model for inference and prediction.
+
+## 4.4: Model fit(AIC) Comparison
+
+**Question 6.2:** Which model fits better (lower AIC)? What does this tell you about the data?
+
+*Your answer here:*
+
+# Part 6: Spatial Cross-Validation
+
+（改）This section evaluates out-of-sample performance with Leave-One-Group-Out cross-validation where each police district is held out in turn. For every fold, the Negative Binomial model is trained on all other districts and then used to predict burglary counts in the held-out district. We then summarize prediction errors to assess how well the model generalizes across space.
+
+## 6.1: Create a Kernel Density Baseline
 
 ```{r kde-baseline}
 #| message: false
@@ -347,6 +676,10 @@ ggplot() +
   theme_crime()
 ```
 
+Before building complex models, let's create a simple baseline using **Kernel Density Estimation (KDE)**.
+
+**The KDE baseline asks:** "What if crime just happens where it happened before?" (simple spatial smoothing, no predictors)
+
 **Question 3.1:** How does the KDE map compare to the count map? What does KDE capture well? What does it miss?
 
 *Your answer here:* - Comparison to the count map: - KDE pros and cons:
@@ -361,371 +694,7 @@ The KDE represents our **null hypothesis**: burglaries happen where they happene
 We'll compare back to this at the end!
 :::
 
-# Part 4: Create Spatial Predictor Variables
-
-Now we'll create features that might help predict burglaries. We'll use "broken windows theory" logic: signs of disorder predict crime.
-
-## 4.1: Load 311 Street Lights Out Calls
-
-```{r load-lights-out}
-#| message: false
-
-lights_out <- read_csv("D:/MUSA5080PPA/portfolio-setup-ChristineCui12/labs/lab_4/data/Alley_Lights_Out_2025.csv")%>%
-  filter(!is.na(Latitude), !is.na(Longitude)) %>%
-  st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>%
-  st_transform('ESRI:102271')
-
-cat("✓ Loaded lights out calls\n")
-cat("  - Number of calls:", nrow(lights_out), "\n")
-```
-
-::: callout-note
-## Data Loading Note
-
-The data was downloaded from Chicago's Open Data Portal. You can now request an api from the Chicago portal and tap into the data there.
-
-**Consider:** How might the 311 reporting system itself be biased? Who calls 311? What neighborhoods have better 311 awareness?
-:::
-
-## 4.2: Visualize the spatial distribution
-
-```{r visualize-points-2}
-#| fig-width: 10
-#| fig-height: 5
-
-# Simple point map
-p1 <- ggplot() + 
-  geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
-  geom_sf(data = lights_out, color = "#d62828", size = 0.1, alpha = 0.4) +
-  labs(
-    title = "Lights out Locations",
-    subtitle = paste0("Chicago 2018, n = ", nrow(lights_out))
-  )
-
-# Density surface using modern syntax
-p2 <- ggplot() + 
-  geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
-  geom_density_2d_filled(
-    data = data.frame(st_coordinates(lights_out)),
-    aes(X, Y),
-    alpha = 0.7,
-    bins = 8
-  ) +
-  scale_fill_viridis_d(
-    option = "plasma",
-    direction = -1,
-    guide = "none"  # Modern ggplot2 syntax (not guide = FALSE)
-  ) +
-  labs(
-    title = "Density Surface",
-    subtitle = "Kernel density estimation"
-  )
-
-# Combine plots using patchwork (modern approach)
-p1 + p2 + 
-  plot_annotation(
-    title = "Spatial Distribution of Lights out in Chicago",
-    tag_levels = 'A'
-  )
-```
-
-## 4.3: Count of Streets Lights out per Cell
-
-```{r count-lights-out}
-# Aggregate lights out calls to fishnet
-lightsout_fishnet <- st_join(lights_out, fishnet, join = st_within) %>%
-  st_drop_geometry() %>%
-  group_by(uniqueID) %>%
-  summarize(lights_out = n())
-
-# Join to fishnet
-fishnet <- fishnet %>%
-  left_join(lightsout_fishnet, by = "uniqueID") %>%
-  mutate(lights_out = replace_na(lights_out, 0))
-
-cat("Abandoned car distribution:\n")
-summary(fishnet$lights_out)
-```
-
-```{r visualize-lights-out}
-#| fig-width: 10
-#| fig-height: 4
-
-p1 <- ggplot() +
-  geom_sf(data = fishnet, aes(fill = lights_out), color = NA) +
-  scale_fill_viridis_c(name = "Count", option = "plasma") +
-  labs(title = "Lights out 311 Calls") +
-  theme_crime()
-
-p2 <- ggplot() +
-  geom_sf(data = fishnet, aes(fill = countBurglaries), color = NA) +
-  scale_fill_viridis_c(name = "Count", option = "plasma") +
-  labs(title = "Burglaries") +
-  theme_crime()
-
-p1 + p2 +
-  plot_annotation(title = "Are lights out and burglaries correlated?")
-```
-
-**Question 4.1:** Do you see a visual relationship between abandoned cars and burglaries? What does this suggest?
-
-## *Your answer here:*
-
-# Part 5: **Spatial Features**
-
-## 5.1: Nearest Neighbor Features
-
-Count in a cell is one measure. Distance to the nearest 3 abandoned cars captures local context.
-
-```{r nn-feature}
-#| message: false
-
-# Calculate mean distance to 3 nearest abandoned cars
-# (Do this OUTSIDE of mutate to avoid sf conflicts)
-
-# Get coordinates
-fishnet_coords <- st_coordinates(st_centroid(fishnet))
-lightsout_coords <- st_coordinates(lights_out)
-
-# Calculate k nearest neighbors and distances
-nn_result <- get.knnx(lightsout_coords, fishnet_coords, k = 3)
-
-# Add to fishnet
-fishnet <- fishnet %>%
-  mutate(
-    lights_out.nn = rowMeans(nn_result$nn.dist)
-  )
-
-cat("✓ Calculated nearest neighbor distances\n")
-summary(fishnet$lights_out.nn)
-```
-
-**Question 4.2:** What does a low value of `abandoned_cars.nn` mean? A high value? Why might this be informative?
-
-*Your answer here:*
-
-## 5.2: Local Moran's I analysis
-
-```{r local-morans-abandoned}
-# Function to calculate Local Moran's I
-calculate_local_morans <- function(data, variable, k = 5) {
-  
-  # Create spatial weights
-  coords <- st_coordinates(st_centroid(data))
-  neighbors <- knn2nb(knearneigh(coords, k = k))
-  weights <- nb2listw(neighbors, style = "W", zero.policy = TRUE)
-  
-  # Calculate Local Moran's I
-  local_moran <- localmoran(data[[variable]], weights)
-  
-  # Classify clusters
-  mean_val <- mean(data[[variable]], na.rm = TRUE)
-  
-  data %>%
-    mutate(
-      local_i = local_moran[, 1],
-      p_value = local_moran[, 5],
-      is_significant = p_value < 0.05,
-      
-      moran_class = case_when(
-        !is_significant ~ "Not Significant",
-        local_i > 0 & .data[[variable]] > mean_val ~ "High-High",
-        local_i > 0 & .data[[variable]] <= mean_val ~ "Low-Low",
-        local_i < 0 & .data[[variable]] > mean_val ~ "High-Low",
-        local_i < 0 & .data[[variable]] <= mean_val ~ "Low-High",
-        TRUE ~ "Not Significant"
-      )
-    )
-}
-
-# Apply to abandoned cars
-fishnet <- calculate_local_morans(fishnet, "lights_out", k = 5)
-```
-
-```{r visualize-morans}
-#| fig-width: 8
-#| fig-height: 6
-
-# Visualize hot spots
-ggplot() +
-  geom_sf(
-    data = fishnet, 
-    aes(fill = moran_class), 
-    color = NA
-  ) +
-  scale_fill_manual(
-    values = c(
-      "High-High" = "#d7191c",
-      "High-Low" = "#fdae61",
-      "Low-High" = "#abd9e9",
-      "Low-Low" = "#2c7bb6",
-      "Not Significant" = "gray90"
-    ),
-    name = "Cluster Type"
-  ) +
-  labs(
-    title = "Local Moran's I: Lights out Clusters",
-    subtitle = "High-High = Hot spots of disorder"
-  ) +
-  theme_crime()
-```
-
-## 5.3: Distance to Hot Spots
-
-```{r distance-to-hotspots}
-# Get centroids of "High-High" cells (hot spots)
-hotspots <- fishnet %>%
-  filter(moran_class == "High-High") %>%
-  st_centroid()
-
-# Calculate distance from each cell to nearest hot spot
-if (nrow(hotspots) > 0) {
-  fishnet <- fishnet %>%
-    mutate(
-      dist_to_hotspot = as.numeric(
-        st_distance(st_centroid(fishnet), hotspots %>% st_union())
-      )
-    )
-  
-  cat("✓ Calculated distance to lights out hot spots\n")
-  cat("  - Number of hot spot cells:", nrow(hotspots), "\n")
-} else {
-  fishnet <- fishnet %>%
-    mutate(dist_to_hotspot = 0)
-  cat("⚠ No significant hot spots found\n")
-}
-```
-
-**Question 4.3:** Why might distance to a cluster of abandoned cars be more informative than distance to a single abandoned car? What does Local Moran's I tell us?
-
-*Your answer here:*
-
-::: callout-note
-**Local Moran's I** identifies:
-
--   **High-High**: Hot spots (high values surrounded by high values)
--   **Low-Low**: Cold spots (low values surrounded by low values)
--   **High-Low / Low-High**: Spatial outliers
-
-This helps us understand spatial clustering patterns.
-:::
-
-------------------------------------------------------------------------
-
-# Part 5: Join Police Districts for Cross-Validation
-
-We'll use police districts for our spatial cross-validation.
-
-```{r join-districts}
-# Join district information to fishnet
-fishnet <- st_join(
-  fishnet,
-  policeDistricts,
-  join = st_within,
-  left = TRUE
-) %>%
-  filter(!is.na(District))  # Remove cells outside districts
-
-cat("✓ Joined police districts\n")
-cat("  - Districts:", length(unique(fishnet$District)), "\n")
-cat("  - Cells:", nrow(fishnet), "\n")
-```
-
-# Part 6: Model Fitting
-
-## 6.1: Poisson Regression
-
-Burglary counts are count data (0, 1, 2, 3...). We'll use **Poisson regression**.
-
-```{r prepare-data}
-# Create clean modeling dataset
-fishnet_model <- fishnet %>%
-  st_drop_geometry() %>%
-  dplyr::select(
-    uniqueID,
-    District,
-    countBurglaries,
-    lights_out,
-    lights_out.nn,
-    dist_to_hotspot
-  ) %>%
-  na.omit()  # Remove any remaining NAs
-
-cat("✓ Prepared modeling data\n")
-cat("  - Observations:", nrow(fishnet_model), "\n")
-cat("  - Variables:", ncol(fishnet_model), "\n")
-```
-
-```{r fit-poisson}
-# Fit Poisson regression
-model_poisson <- glm(
-  countBurglaries ~ lights_out + lights_out.nn + 
-    dist_to_hotspot,
-  data = fishnet_model,
-  family = "poisson"
-)
-
-# Summary
-summary(model_poisson)
-```
-
-**Question 6.1:** Interpret the coefficients. Which variables are significant? What do the signs (positive/negative) tell you?
-
-*Your answer here:*
-
-## 6.2: Check for Overdispersion
-
-Poisson regression assumes mean = variance. Real count data often violates this (overdispersion).
-
-```{r check-overdispersion}
-# Calculate dispersion parameter
-dispersion <- sum(residuals(model_poisson, type = "pearson")^2) / 
-              model_poisson$df.residual
-
-cat("Dispersion parameter:", round(dispersion, 2), "\n")
-cat("Rule of thumb: >1.5 suggests overdispersion\n")
-
-if (dispersion > 1.5) {
-  cat("⚠ Overdispersion detected! Consider Negative Binomial model.\n")
-} else {
-  cat("✓ Dispersion looks okay for Poisson model.\n")
-}
-```
-
-## 6.3: Negative Binomial Regression
-
-If overdispersed, use **Negative Binomial regression** (more flexible).
-
-```{r fit-negbin}
-# Fit Negative Binomial model
-model_nb <- glm.nb(
-  countBurglaries ~ lights_out + lights_out.nn + 
-    dist_to_hotspot,
-  data = fishnet_model
-)
-
-# Summary
-summary(model_nb)
-
-# Compare AIC (lower is better)
-cat("\nModel Comparison:\n")
-cat("Poisson AIC:", round(AIC(model_poisson), 1), "\n")
-cat("Negative Binomial AIC:", round(AIC(model_nb), 1), "\n")
-```
-
-**Question 6.2:** Which model fits better (lower AIC)? What does this tell you about the data?
-
-*Your answer here:*
-
-## 6.4: Model fit(AIC) Comparison
-
-**Question 6.2:** Which model fits better (lower AIC)? What does this tell you about the data?
-
-*Your answer here:*
-
-# Part 7: Spatial Cross-Validation
-
-## 7.1: **Leave-One-Group-Out (LOGO) Cross-Validation**
+## 6.2: **Leave-One-Group-Out (LOGO) Cross-Validation**
 
 ```{r spatial-cv}
 # Get unique districts
@@ -745,7 +714,7 @@ for (i in seq_along(districts)) {
   # Fit model on training data
   model_cv <- glm.nb(
     countBurglaries ~ lights_out + lights_out.nn + 
-      dist_to_hotspot,
+      dist_to_hotspot + med_income + pct_65_over + count_vacant,
     data = train_data
   )
   
@@ -781,7 +750,7 @@ cat("Mean MAE:", round(mean(cv_results$mae), 2), "\n")
 cat("Mean RMSE:", round(mean(cv_results$rmse), 2), "\n")
 ```
 
-## 7.2: **Error metrics calculation and report**
+## 6.3: **Error metrics calculation and report**
 
 ```{r cv-results-table}
 # Show results
@@ -798,23 +767,15 @@ cv_results %>%
 
 *Your answer here:*
 
-::: callout-note
-## Connection to Week 5
+# Part 7: Model **Evaluation**
 
-Remember learning about train/test splits and cross-validation? This is a spatial version of that concept!
-
-**Why it matters:** If we can only predict well in areas we've already heavily policed, what does that tell us about the model's utility?
-:::
-
-# Part 8: Model **Evaluation**
-
-## 8.1: Generate Final Predictions
+## 7.1: Generate Final Predictions
 
 ```{r final-predictions}
 # Fit final model on all data
 final_model <- glm.nb(
   countBurglaries ~ lights_out + lights_out.nn + 
-    dist_to_hotspot,
+    dist_to_hotspot + med_income + pct_65_over + count_vacant,
   data = fishnet_model
 )
 
@@ -833,11 +794,11 @@ fishnet <- fishnet %>%
   )
 ```
 
-## 8.2: Compare Model vs. KDE Baseline
+## 7.2: Compare Model vs. KDE Baseline
 
 ```{r compare-models}
-#| fig-width: 12
-#| fig-height: 4
+#| fig-width: 15
+#| fig-height: 6
 
 # Create three maps
 p1 <- ggplot() +
@@ -892,7 +853,7 @@ comparison %>%
 
 *Your answer here:*
 
-## 8.3: Where Does the Model Work Well?
+## 7.3: Where Does the Model Work Well?
 
 ```{r prediction-errors}
 #| fig-width: 10
@@ -932,9 +893,9 @@ p1 + p2
 
 *Your answer here:*
 
-# Part 9: Summary Statistics and Tables
+# Part 8: Summary Statistics and Tables
 
-## 9.1: Model Summary Table
+## 8.1: Model Summary Table
 
 ```{r model-summary-table}
 # Create nice summary table
@@ -954,7 +915,7 @@ model_summary %>%
   )
 ```
 
-## 9.2: Key Findings Summary
+## 8.2: Key Findings Summary
 
 Based on your analysis, complete this summary:
 
@@ -975,20 +936,3 @@ Based on your analysis, complete this summary:
 -   Overdispersion: \[Yes/No\]
 -   Spatial autocorrelation in residuals: \[Test this!\]
 -   Cells with zero counts: \[What % of data?\]
-
-# Conclusion and Next Steps
-
-::: callout-important
-## What You've Accomplished
-
-You've successfully built a spatial predictive model for burglaries using:
-
-✓ Fishnet aggregation\
-✓ Spatial features (counts, distances, nearest neighbors)\
-✓ Spatial autocorrelation diagnostics (Local Moran's I)\
-✓ Count regression (Poisson and Negative Binomial)\
-✓ Spatial cross-validation (LOGO)\
-✓ Comparison to baseline (KDE)
-:::
-
-::::::::::

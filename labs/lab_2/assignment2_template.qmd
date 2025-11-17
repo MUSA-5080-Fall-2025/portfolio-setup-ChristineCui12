@@ -5,7 +5,7 @@ author: "Christine"
 date: October 10, 2025
 format: 
   html:
-    code-fold: false
+    code-fold: true
     toc: true
     toc-location: left
     theme: cosmo
@@ -46,7 +46,7 @@ Load the required spatial data:
 - Pennsylvania census tracts  
 
 **Your Task:**
-```{r setup, include=FALSE}
+```{r setup}
 # Load required packages
 library(sf)
 library(tidyverse)
