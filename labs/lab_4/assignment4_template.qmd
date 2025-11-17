@@ -398,7 +398,6 @@ if (nrow(hotspots) > 0) {
       )
     )
   
-  cat("✓ Calculated distance to lights out hot spots\n")
   cat("  - Number of hot spot cells:", nrow(hotspots), "\n")
 } else {
   fishnet <- fishnet %>%
@@ -413,6 +412,8 @@ The implementation successfully identified 193 hotspot cells and calculated dist
 
 The code below integrates police district information, which allows for analyzing jurisdictional variations in service delivery and law enforcement practices. Then, we obtain demographic and socioeconomic data from the American Community Survey (ACS), including total population, median income, and the population aged 65 and over, and use this to calculate the proportion of elderly population. Next, we load vacant building data and aggregate it into the grid. These steps aim to enrich each grid cell with comprehensive background variables, allowing for better control of additional influencing factors in subsequent modeling.
 
+### Join district information to fishnet
+
 ```{r join-districts}
 # Join district information to fishnet
 fishnet <- st_join(
@@ -426,6 +427,8 @@ fishnet <- st_join(
 cat("  - Districts:", length(unique(fishnet$District)), "\n")
 cat("  - Cells:", nrow(fishnet), "\n")
 ```
+
+### Join demographic information to fishnet
 
 ```{r}
 acs_vars <- c(
@@ -447,6 +450,9 @@ acs_vars <- c(
   female_85_up = "B01001_049"
 )
 
+```
+
+```{r load-acs-data, message=FALSE}
 tracts_all <- get_acs(
   geography = "tract",
   state = "IL",
@@ -454,7 +460,8 @@ tracts_all <- get_acs(
   variables = acs_vars,
   output = "wide",
   year = 2017, 
-  geometry = TRUE
+  geometry = TRUE,
+  progress_bar = FALSE
 ) 
 ```
 
@@ -475,6 +482,8 @@ tracts_chi <- tracts_all %>%
 fishnet <- fishnet %>%
   st_join(tracts_chi, join = st_intersects, left = TRUE)
 ```
+
+### Join vacant buildings information to fishnet
 
 ```{r}
 # Load vacant buildings data
@@ -869,22 +878,14 @@ model_summary %>%
 
 ## 7.2: Key Findings Summary
 
-Based on your analysis, complete this summary:
+**Overall Performance Assessment:**\
+The spatial predictive analysis reveals a nuanced picture of model performance. While the Negative Binomial regression demonstrated strong explanatory power with all predictors showing statistical significance (p \< 0.001), it was ultimately outperformed by the simpler Kernel Density Estimation baseline in predictive accuracy. The KDE achieved lower error metrics (MAE: 2.17 vs 2.60; RMSE: 3.06 vs 3.63), indicating that for within-year prediction of burglary patterns, historical crime locations alone provide marginally better forecasts than our complex model incorporating lighting infrastructure, socioeconomic factors, and vacancy measures.
 
-**Technical Performance:**
+**Key Predictive Relationships:**\
+The regression analysis yielded several theoretically meaningful findings. Vacant building counts showed a positive association with burglary risk, consistent with broken windows theory. Higher median income and larger elderly population proportions exhibited protective effects against burglaries. However, the relationships between lighting infrastructure and crime patterns proved more complex than anticipated, with both proximity to individual light outages and distance to lighting hotspots showing significant but counterintuitive associations that may reflect spatial interdependencies in the urban environment.
 
--   Cross-validation MAE: `r round(mean(cv_results$mae), 2)`
--   Model vs. KDE: \[Which performed better?\]
--   Most predictive variable: \[Which had largest effect?\]
+**Spatial Generalizability:**\
+Leave-one-group-out cross-validation revealed substantial geographic variation in model performance across police districts (MAE range: 1.69-6.21). This spatial heterogeneity suggests that the model's predictive power is context-dependent, performing well in some areas while struggling in others, particularly District 3 which showed the highest prediction errors. This indicates the potential need for localized modeling approaches or additional place-specific variables.
 
-**Spatial Patterns:**
-
--   Burglaries are \[evenly distributed / clustered\]
--   Hot spots are located in \[describe\]
--   Model errors show \[random / systematic\] patterns
-
-**Model Limitations:**
-
--   Overdispersion: \[Yes/No\]
--   Spatial autocorrelation in residuals: \[Test this!\]
--   Cells with zero counts: \[What % of data?\]
+**Practical Implications:**\
+The superior performance of the simple KDE model carries important policy implications: basic hotspot mapping of historical crime data remains the most cost-effective approach for short-term resource allocation. Despite its slightly inferior predictive accuracy compared to KDE, the regression model offers valuable policy insights by quantifying how specific environmental factors influence burglary risk. It provides valuable guidance for long-term preventive strategies. The identification of lighting infrastructure hotspots, combined with socioeconomic and vacancy measures, provides actionable intelligence for targeted interventions that go beyond simple crime prediction to inform infrastructure investment and community safety strategies.
