@@ -690,7 +690,6 @@ for (i in seq_along(districts)) {
 }
 
 # Overall results
-cat("\n✓ Cross-Validation Complete\n")
 cat("Mean MAE:", round(mean(cv_results$mae), 2), "\n")
 cat("Mean RMSE:", round(mean(cv_results$rmse), 2), "\n")
 ```
@@ -715,6 +714,8 @@ cv_results %>%
 The results reveal substantial spatial variation in prediction quality. District 3 shows the highest error (MAE: 6.21), suggesting unique local dynamics not captured by our predictors, while District 17 demonstrates the best performance (MAE: 1.69).
 
 # Part 6: Model **Evaluation**
+
+This section evaluates model performance by comparing our Negative Binomial regression predictions against the KDE baseline across two key aspects: quantitative error metrics calculation (MAE and RMSE) and spatial error distribution analysis. The evaluation aims to determine whether the complex model's added predictive power justifies its computational complexity and to identify geographic patterns in prediction accuracy.
 
 ## 6.1: Generate Final Predictions
 
@@ -742,6 +743,8 @@ fishnet <- fishnet %>%
 ```
 
 ## 6.2: Compare Model vs. KDE Baseline
+
+This step visually compares the actual burglary distribution against predictions from both the complex model and the simple KDE baseline.
 
 ```{r compare-models}
 #| fig-width: 15
@@ -773,6 +776,8 @@ p1 + p2 + p3 +
   )
 ```
 
+The result differs from expectations... The negative binomial regression does not appear to resemble the actual burglary patterns as closely as KDE. However, the negative binomial model produces clearer hotspot boundaries and better distinguishes between high-risk and medium-risk areas, while the KDE baseline creates smoother, more diffused risk surfaces. The identification of complex model in hotspot areas shows some deviation from the actual situation.
+
 ```{r model-comparison-metrics}
 # Calculate performance metrics
 comparison <- fishnet %>%
@@ -796,11 +801,13 @@ comparison %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-**Question 8.1:** Does the complex model outperform the simple KDE baseline? By how much? Is the added complexity worth it?
+The performance metrics reveal a nuanced comparison between the two modeling approaches. Our lighting-focused Negative Binomial regression (MAE: 2.60, RMSE: 3.63) is outperformed by the KDE baseline (MAE: 2.17, RMSE: 3.06) in terms of pure prediction accuracy for 2017 burglary patterns. This slightly higher MAE and RMSE for our model suggests that the complex relationships we modeled - incorporating alley lighting conditions, nearest-neighbor distances, hotspot proximity, and socioeconomic factors - do not provide additional predictive power beyond simple spatial smoothing of historical crime patterns for within-year prediction.
 
-*Your answer here:*
+However, this numerical comparison tells only part of the story. While KDE excels at capturing the strong spatial autocorrelation inherent in burglary patterns, it offers limited explanatory value and cannot identify the underlying environmental factors driving crime risk. Our model, despite its slightly higher errors, provides crucial insights into how specific urban infrastructure conditions - particularly alley lighting deficiencies and their spatial distribution - contribute to burglary risk. The model's structured approach, which quantifies the effects of lighting problems, income levels, elderly population concentrations, and vacant properties, offers valuable guidance for targeted interventions and policy decisions that go beyond mere crime prediction.
 
-## 6.3: Where Does the Model Work Well?
+## 6.3: **Prediction Errors**
+
+This step analyzes the spatial distribution of prediction errors by calculating both directional errors (actual minus predicted) and absolute errors for the Negative Binomial model.
 
 ```{r prediction-errors}
 #| fig-width: 10
@@ -836,9 +843,7 @@ p2 <- ggplot() +
 p1 + p2
 ```
 
-**Question 9.2:** Where does the model make the biggest errors? Are there spatial patterns in the errors? What might this reveal?
-
-*Your answer here:*
+The error maps reveal distinct spatial patterns in model performance. The directional error map shows systematic overprediction (red areas) primarily in higher-risk neighborhoods, where the model likely overestimates burglary risk due to unaccounted protective factors. Meanwhile, underprediction (blue areas) concentrates in lower-crime western sectors, suggesting the model misses certain risk amplifiers in these regions. The absolute error map confirms that prediction inaccuracies are most pronounced in areas with extreme crime counts - both very high and very low - indicating the model struggles with accurately predicting both crime hotspots and exceptionally safe areas.
 
 # Part 7: Summary Statistics and Tables
 
