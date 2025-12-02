@@ -46,7 +46,7 @@ website:
           text: "Lab 2: Spatial Analysis and Visualization"
         - href: labs/lab_4/assignment4_template.qmd
           text: "Lab 4: Spatial Predictive Analysis"
-        - href: labs/lab_5/Indego_SpaceTime_Prediction.qmd
+        - href: labs/lab_5/Assignment5_SpaceTimePrediction.qmd
           text: "Lab 5: Space-Time Prediction of Bike Share Demand"
       - text: "Midterm Project"
         menu:

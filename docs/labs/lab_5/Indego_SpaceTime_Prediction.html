@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Xinyuan(Christine), Yuqing(Demi)">
-<meta name="dcterms.date" content="2025-12-01">
+<meta name="dcterms.date" content="2025-12-02">
 
 <title>Space-Time Prediction of Bike Share Demand: Philadelphia Indego – Christine Cui - MUSA 5080 Portfolio</title>
 <style>
@@ -211,6 +211,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../labs/lab_4/assignment4_template.html">
  <span class="dropdown-text">Lab 4: Spatial Predictive Analysis</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../labs/lab_5/Assignment5_SpaceTimePrediction.html">
+ <span class="dropdown-text">Lab 5: Space-Time Prediction of Bike Share Demand</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -294,7 +298,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#q3-models" id="toc-q3-models" class="nav-link" data-scroll-target="#q3-models">9.1 2024 Q3 Models</a></li>
   <li><a href="#q1-models" id="toc-q1-models" class="nav-link" data-scroll-target="#q1-models">9.2 2025 Q1 Models</a></li>
   <li><a href="#model-performance-comparison" id="toc-model-performance-comparison" class="nav-link" data-scroll-target="#model-performance-comparison">9.3 Model Performance Comparison</a></li>
-  <li><a href="#visualize-model-comparison" id="toc-visualize-model-comparison" class="nav-link" data-scroll-target="#visualize-model-comparison">9.4 Visualize Model Comparison</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#part-2-error-analysis" id="toc-part-2-error-analysis" class="nav-link" data-scroll-target="#part-2-error-analysis">PART 2: Error Analysis</a>
@@ -359,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 1, 2025</p>
+      <p class="date">December 2, 2025</p>
     </div>
   </div>
   
@@ -861,17 +864,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   |                                                                            
   |=                                                                     |   1%
   |                                                                            
-  |=                                                                     |   2%
-  |                                                                            
   |==                                                                    |   2%
   |                                                                            
   |==                                                                    |   3%
   |                                                                            
   |===                                                                   |   4%
   |                                                                            
+  |===                                                                   |   5%
+  |                                                                            
   |====                                                                  |   5%
   |                                                                            
-  |====                                                                  |   6%
+  |=====                                                                 |   6%
   |                                                                            
   |=====                                                                 |   7%
   |                                                                            
@@ -879,17 +882,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   |                                                                            
   |======                                                                |   8%
   |                                                                            
-  |======                                                                |   9%
-  |                                                                            
   |=======                                                               |   9%
   |                                                                            
-  |=======                                                               |  11%
+  |=======                                                               |  10%
   |                                                                            
   |========                                                              |  11%
   |                                                                            
   |========                                                              |  12%
-  |                                                                            
-  |=========                                                             |  12%
   |                                                                            
   |=========                                                             |  13%
   |                                                                            
@@ -1106,6 +1105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>The map reveals that Indego stations are heavily clustered within Philadelphia’s core, specifically in Center City and University City, which correspond to the highest median household income tracts. Conversely, the network density drops precipitously in the lower-income neighborhoods of North and West Philadelphia, highlighting a spatial disparity where bike share infrastructure is significantly more accessible to wealthier residents compared to those in economically disadvantaged areas.</p>
 </section>
 <section id="join-census-data-to-stations" class="level3">
 <h3 class="anchored" data-anchor-id="join-census-data-to-stations">4.3 Join Census Data to Stations</h3>
@@ -1204,6 +1204,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>The code performs a&nbsp;<strong>spatial data validation</strong>&nbsp;check. Its main logic is to geometrically link every Indego bike station to its underlying US Census tract to inherit demographic variables (like Median Household Income).</p>
+<p>The map acts as a diagnostic tool where the&nbsp;<strong>Red X marks</strong>&nbsp;reveal a “missing data” problem. These specific stations failed to match with a census tract, mostly because they are located on&nbsp;<strong>waterfront piers</strong>&nbsp;or inside&nbsp;<strong>parks/industrial zones</strong>—areas that are non-residential and therefore have no recorded “Median Household Income”. These stations must be excluded from the predictive model because they lack the necessary demographic input data.</p>
 </section>
 <section id="dealing-with-missing-data" class="level3">
 <h3 class="anchored" data-anchor-id="dealing-with-missing-data">4.4Dealing with missing data</h3>
@@ -1372,11 +1374,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>Based on the temperature plots, the two quarters exhibit distinct thermal profiles:</p>
+<ul>
+<li><p>Summer (Q3 2024) temperatures are consistently high and stable, fluctuating regularly between&nbsp;<strong>70°F and 90°F</strong>&nbsp;with a slight cooling trend as autumn approaches. Winter (Q1 2025) shows a clear&nbsp;<strong>upward warming trend</strong>, starting with freezing lows (dipping near 20°F) in January and rising to milder spring temperatures (peaks near 70°F) by late March.</p></li>
+<li><p>The winter plot reveals sharper volatility, including a notable&nbsp;<strong>cold snap in late January</strong>&nbsp;where temperatures plummeted significantly, whereas summer follows a more predictable daily cycle.</p></li>
+</ul>
 <hr>
 </section>
 </section>
 <section id="create-complete-space-time-panel" class="level2">
 <h2 class="anchored" data-anchor-id="create-complete-space-time-panel">6. Create Complete Space-Time Panel</h2>
+<p>This code constructs the complete&nbsp;<strong>space-time panel dataset</strong>&nbsp;required for modeling. It first aggregates raw trip data into hourly counts and joins this to a full grid of all possible station-hour combinations, ensuring that periods with no ridership are explicitly recorded as&nbsp;<strong>zeros</strong>&nbsp;rather than missing values. The dataset is then enriched with&nbsp;<strong>temporal features</strong>&nbsp;(e.g., rush hour flags),&nbsp;<strong>weather data</strong>, and&nbsp;<strong>census demographics</strong>, before calculating&nbsp;<strong>lag variables</strong>&nbsp;(demand from 1, 3, and 24 hours ago) to allow the model to use recent history as a predictor.</p>
 <section id="q3-complete-panel" class="level3">
 <h3 class="anchored" data-anchor-id="q3-complete-panel">6.1 <strong>2024 Q3 Complete Panel</strong></h3>
 <div class="cell">
@@ -1694,6 +1702,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>This visualization confirms the strong&nbsp;<strong>temporal autocorrelation</strong>&nbsp;inherent in bike share data. By overlaying current trip counts (dark blue) with demand from the previous hour and the previous day, we observe a distinct, repetitive daily rhythm. The close alignment between the “Current” trend and the “24 Hours Ago” line demonstrates that demand is highly cyclical, with peaks recurring at similar times each day. This visual evidence validates the decision to engineer&nbsp;<strong>lag features</strong>&nbsp;for the predictive model, proving that historical usage (particularly the previous day’s pattern) is a powerful predictor of future demand.</p>
 <hr>
 </section>
 </section>
@@ -2689,15 +2698,12 @@ MAE (Testing Error)
 </table>
 </div>
 </div>
-</section>
-<section id="visualize-model-comparison" class="level3">
-<h3 class="anchored" data-anchor-id="visualize-model-comparison">9.4 Visualize Model Comparison</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mae_results_q3, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Model, <span class="sc">-</span>MAE_q3), <span class="at">y =</span> MAE_q3)) <span class="sc">+</span></span>
 <span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#3182bd"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(MAE_q3, <span class="dv">2</span>)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(MAE_q3, <span class="dv">4</span>)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
 <span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model Performance Comparison"</span>,</span>
 <span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Lower MAE = Better Predictions"</span>,</span>
@@ -2715,7 +2721,14 @@ MAE (Testing Error)
 </div>
 </div>
 </div>
-<p><strong>Question:</strong> Which features gave us the biggest improvement?</p>
+<ul>
+<li><p>MAE Value Comparison</p>
+<p>The Winter model achieved a lower Mean Absolute Error compared to the Summer model, but this numerical superiority is largely an artifact of significantly lower ridership volumes rather than better predictive ability. Since winter data is heavily “zero-inflated”—meaning many station-hours have zero trips—the absolute errors are naturally smaller, whereas the high-volume, dynamic nature of summer ridership creates larger numerical fluctuations that result in higher absolute error values despite the summer model actually explaining more of the variance (R2&nbsp;of 0.343 vs.&nbsp;0.265).</p></li>
+<li><p>Temporal Patterns Difference</p>
+<p>Temporal patterns differ markedly between the seasons, with Summer displaying a more robust and predictable structure driven by a consistent blend of commuting and leisure activity, which allowed the model to explain 34.3% of the variance. Conversely, Winter patterns are more stochastic and difficult to model (lower&nbsp;R2&nbsp;of 26.5%), likely because cold-weather riding is strictly utilitarian and highly sensitive to immediate, random weather events rather than the reliable behavioral routines seen in warmer months.</p></li>
+<li><p>The most important features</p>
+<p>In the Summer quarter,&nbsp;<strong>Temporal Lags</strong>&nbsp;were unequivocally the most important feature, as their addition caused the model’s&nbsp;R2&nbsp;to surge from a baseline of 0.112 to 0.308, proving that recent demand history is the single strongest predictor of near-future activity. While demographic variables added negligible value,&nbsp;<strong>Station Fixed Effects</strong>&nbsp;served as the second most critical component, raising the&nbsp;R2&nbsp;to 0.343 by successfully capturing the intrinsic, static popularity differences between high-traffic hubs and quiet residential stations.&nbsp;</p></li>
+</ul>
 <hr>
 </section>
 </section>

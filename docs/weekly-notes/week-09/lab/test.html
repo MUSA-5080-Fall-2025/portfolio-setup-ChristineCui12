@@ -6,8 +6,8 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.23">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.32">
 
   <meta name="author" content="Dr.&nbsp;Elizabeth Delmelle">
   <meta name="dcterms.date" content="2025-11-03">
@@ -96,7 +96,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-2c1b5f745a11cfad616ebade4a4a7d24.css">
   <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -1048,7 +1048,7 @@ COLDSPOTS           |    Outliers</code></pre>
 </section>
 <section id="local-morans-i-in-r-step-by-step" class="slide level2">
 <h2>Local Moran’s I in R: Step by Step</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">library</span>(spdep)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">library</span>(spdep)</span>
 <span id="cb3-2"><a></a></span>
 <span id="cb3-3"><a></a><span class="co"># Step 1: Create spatial object</span></span>
 <span id="cb3-4"><a></a>fishnet_sp <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(fishnet)</span>
@@ -1069,11 +1069,11 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb3-19"><a></a><span class="co"># Step 5: Extract components</span></span>
 <span id="cb3-20"><a></a>fishnet<span class="sc">$</span>local_I <span class="ot">&lt;-</span> local_moran[, <span class="st">"Ii"</span>]      <span class="co"># Local I statistic</span></span>
 <span id="cb3-21"><a></a>fishnet<span class="sc">$</span>p_value <span class="ot">&lt;-</span> local_moran[, <span class="st">"Pr(z != E(Ii))"</span>]  <span class="co"># P-value</span></span>
-<span id="cb3-22"><a></a>fishnet<span class="sc">$</span>z_score <span class="ot">&lt;-</span> local_moran[, <span class="st">"Z.Ii"</span>]    <span class="co"># Z-score</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-22"><a></a>fishnet<span class="sc">$</span>z_score <span class="ot">&lt;-</span> local_moran[, <span class="st">"Z.Ii"</span>]    <span class="co"># Z-score</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="identifying-high-high-clusters-hotspots" class="slide level2">
 <h2>Identifying High-High Clusters (Hotspots)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="co"># Standardize the variable for quadrant classification</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="co"># Standardize the variable for quadrant classification</span></span>
 <span id="cb4-2"><a></a>fishnet<span class="sc">$</span>standardized_value <span class="ot">&lt;-</span> <span class="fu">scale</span>(fishnet<span class="sc">$</span>abandoned_cars)</span>
 <span id="cb4-3"><a></a></span>
 <span id="cb4-4"><a></a><span class="co"># Calculate spatial lag (weighted mean of neighbors)</span></span>
@@ -1095,7 +1095,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb4-20"><a></a>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb4-21"><a></a></span>
 <span id="cb4-22"><a></a><span class="co"># Count hotspots</span></span>
-<span id="cb4-23"><a></a><span class="fu">sum</span>(fishnet<span class="sc">$</span>hotspot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-23"><a></a><span class="fu">sum</span>(fishnet<span class="sc">$</span>hotspot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section class="slide level2">
 
@@ -1147,7 +1147,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <section id="distribution-of-crime-counts" class="slide level2">
 <h2>Distribution of Crime Counts</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="co"># Typical pattern for crime data</span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="co"># Typical pattern for crime data</span></span>
 <span id="cb5-2"><a></a><span class="fu">ggplot</span>(fishnet, <span class="fu">aes</span>(<span class="at">x =</span> countBurglaries)) <span class="sc">+</span></span>
 <span id="cb5-3"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">"#440154FF"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
 <span id="cb5-4"><a></a>  <span class="fu">labs</span>(</span>
@@ -1156,7 +1156,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb5-7"><a></a>    <span class="at">x =</span> <span class="st">"Burglaries per Cell"</span>,</span>
 <span id="cb5-8"><a></a>    <span class="at">y =</span> <span class="st">"Number of Cells"</span></span>
 <span id="cb5-9"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb5-10"><a></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-10"><a></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Characteristics:</strong></p>
 <ul>
@@ -1238,7 +1238,7 @@ COLDSPOTS           |    Outliers</code></pre>
 </section>
 <section id="poisson-regression-in-r" class="slide level2">
 <h2>Poisson Regression in R</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="co"># Fit Poisson model</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="co"># Fit Poisson model</span></span>
 <span id="cb6-2"><a></a>model_poisson <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
 <span id="cb6-3"><a></a>  countBurglaries <span class="sc">~</span> Abandoned_Cars <span class="sc">+</span> Abandoned_Cars.nn <span class="sc">+</span> abandoned.isSig.dist,</span>
 <span id="cb6-4"><a></a>  <span class="at">data =</span> fishnet,</span>
@@ -1260,7 +1260,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb6-20"><a></a></span>
 <span id="cb6-21"><a></a><span class="co"># Interpretation:</span></span>
 <span id="cb6-22"><a></a><span class="co"># - Each additional abandoned car → 15.1% increase in expected burglaries</span></span>
-<span id="cb6-23"><a></a><span class="co"># - Each meter from nearest abandoned car → 0.2% decrease in expected burglaries</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-23"><a></a><span class="co"># - Each meter from nearest abandoned car → 0.2% decrease in expected burglaries</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-overdispersion-problem" class="slide level2 scrollable">
 <h2>The Overdispersion Problem</h2>
@@ -1283,7 +1283,7 @@ COLDSPOTS           |    Outliers</code></pre>
 </section>
 <section id="checking-overdispersion-in-r" class="slide level2">
 <h2>Checking Overdispersion in R</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co"># Fit Poisson model</span></span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co"># Fit Poisson model</span></span>
 <span id="cb7-2"><a></a>model_pois <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
 <span id="cb7-3"><a></a>  countBurglaries <span class="sc">~</span> Abandoned_Cars <span class="sc">+</span> Abandoned_Cars.nn <span class="sc">+</span> abandoned.isSig.dist,</span>
 <span id="cb7-4"><a></a>  <span class="at">data =</span> fishnet,</span>
@@ -1303,7 +1303,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb7-18"><a></a></span>
 <span id="cb7-19"><a></a><span class="co"># Example output:</span></span>
 <span id="cb7-20"><a></a><span class="co"># Dispersion parameter: 4.523</span></span>
-<span id="cb7-21"><a></a><span class="co"># Warning: Serious overdispersion detected!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-21"><a></a><span class="co"># Warning: Serious overdispersion detected!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="negative-binomial-regression" class="slide level2">
 <h2>Negative Binomial Regression</h2>
@@ -1321,7 +1321,7 @@ COLDSPOTS           |    Outliers</code></pre>
 </section>
 <section id="negative-binomial-in-r" class="slide level2">
 <h2>Negative Binomial in R</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="fu">library</span>(MASS)</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="fu">library</span>(MASS)</span>
 <span id="cb8-2"><a></a></span>
 <span id="cb8-3"><a></a><span class="co"># Fit Negative Binomial model</span></span>
 <span id="cb8-4"><a></a>model_nb <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(</span>
@@ -1342,7 +1342,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb8-19"><a></a><span class="co"># Extract dispersion parameter (theta)</span></span>
 <span id="cb8-20"><a></a>model_nb<span class="sc">$</span>theta  <span class="co"># e.g., 2.47</span></span>
 <span id="cb8-21"><a></a></span>
-<span id="cb8-22"><a></a><span class="co"># Interpretation: Significant overdispersion confirmed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-22"><a></a><span class="co"># Interpretation: Significant overdispersion confirmed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="comparing-poisson-vs.-negative-binomial" class="slide level2">
 <h2>Comparing Poisson vs.&nbsp;Negative Binomial</h2>
@@ -1400,7 +1400,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <li><strong>Cook’s distance:</strong> Influential observations</li>
 <li><strong>Predicted vs.&nbsp;observed:</strong> Visual check</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="co"># Deviance residuals</span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="co"># Deviance residuals</span></span>
 <span id="cb9-2"><a></a><span class="fu">plot</span>(model_nb, <span class="at">which =</span> <span class="dv">1</span>)  <span class="co"># Residuals vs. Fitted</span></span>
 <span id="cb9-3"><a></a></span>
 <span id="cb9-4"><a></a><span class="co"># Identify outliers</span></span>
@@ -1408,7 +1408,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb9-6"><a></a></span>
 <span id="cb9-7"><a></a><span class="co"># Influence</span></span>
 <span id="cb9-8"><a></a>influence <span class="ot">&lt;-</span> <span class="fu">cooks.distance</span>(model_nb)</span>
-<span id="cb9-9"><a></a>influential <span class="ot">&lt;-</span> <span class="fu">which</span>(influence <span class="sc">&gt;</span> <span class="dv">4</span><span class="sc">/</span><span class="fu">length</span>(influence))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-9"><a></a>influential <span class="ot">&lt;-</span> <span class="fu">which</span>(influence <span class="sc">&gt;</span> <span class="dv">4</span><span class="sc">/</span><span class="fu">length</span>(influence))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section class="slide level2">
 
@@ -1444,7 +1444,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <li>Keep minimum distance</li>
 </ol>
 <p><strong>In R:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="fu">library</span>(FNN)</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="fu">library</span>(FNN)</span>
 <span id="cb10-2"><a></a></span>
 <span id="cb10-3"><a></a><span class="co"># Calculate distance to nearest abandoned car</span></span>
 <span id="cb10-4"><a></a>nn_dist <span class="ot">&lt;-</span> <span class="fu">get.knnx</span>(</span>
@@ -1454,14 +1454,14 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb10-8"><a></a>)</span>
 <span id="cb10-9"><a></a></span>
 <span id="cb10-10"><a></a><span class="co"># Extract distances</span></span>
-<span id="cb10-11"><a></a>fishnet<span class="sc">$</span>abandoned_car_nn <span class="ot">&lt;-</span> nn_dist<span class="sc">$</span>nn.dist[, <span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-11"><a></a>fishnet<span class="sc">$</span>abandoned_car_nn <span class="ot">&lt;-</span> nn_dist<span class="sc">$</span>nn.dist[, <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="distance-to-hotspot" class="slide level2">
 <h2>Distance to Hotspot</h2>
 <p><strong>Two-step process:</strong></p>
 <p><strong>Step 1:</strong> Identify hotspots (Local Moran’s I High-High clusters)</p>
 <p><strong>Step 2:</strong> Calculate distance from each cell to nearest hotspot</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="co"># Step 1: Identify hotspots (we did this earlier)</span></span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="co"># Step 1: Identify hotspots (we did this earlier)</span></span>
 <span id="cb11-2"><a></a>hotspot_cells <span class="ot">&lt;-</span> <span class="fu">filter</span>(fishnet, hotspot <span class="sc">==</span> <span class="dv">1</span>)</span>
 <span id="cb11-3"><a></a></span>
 <span id="cb11-4"><a></a><span class="co"># Step 2: Calculate distances</span></span>
@@ -1471,7 +1471,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb11-8"><a></a>  <span class="at">k =</span> <span class="dv">1</span></span>
 <span id="cb11-9"><a></a>)</span>
 <span id="cb11-10"><a></a></span>
-<span id="cb11-11"><a></a>fishnet<span class="sc">$</span>hotspot_nn <span class="ot">&lt;-</span> hotspot_dist<span class="sc">$</span>nn.dist[, <span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-11"><a></a>fishnet<span class="sc">$</span>hotspot_nn <span class="ot">&lt;-</span> hotspot_dist<span class="sc">$</span>nn.dist[, <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Why useful?</strong> Captures multi-scale spatial dependence:</p>
 <ul>
 <li>Local (within cell)</li>
@@ -1481,7 +1481,7 @@ COLDSPOTS           |    Outliers</code></pre>
 </section>
 <section id="visualizing-distance-features" class="slide level2">
 <h2>Visualizing Distance Features</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="co"># Create comparison maps</span></span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="co"># Create comparison maps</span></span>
 <span id="cb12-2"><a></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(fishnet) <span class="sc">+</span></span>
 <span id="cb12-3"><a></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> abandoned_car_nn), <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
 <span id="cb12-4"><a></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">name =</span> <span class="st">"Distance (m)"</span>, <span class="at">option =</span> <span class="st">"plasma"</span>) <span class="sc">+</span></span>
@@ -1494,7 +1494,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb12-11"><a></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distance to Nearest Hotspot"</span>) <span class="sc">+</span></span>
 <span id="cb12-12"><a></a>  <span class="fu">theme_void</span>()</span>
 <span id="cb12-13"><a></a></span>
-<span id="cb12-14"><a></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-14"><a></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Look for:</strong> Concentric patterns around features/hotspots</p>
 </section>
 <section class="slide level2">
@@ -1530,7 +1530,7 @@ COLDSPOTS           |    Outliers</code></pre>
 </section>
 <section id="creating-a-fishnet-grid" class="slide level2">
 <h2>Creating a Fishnet Grid</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">library</span>(sf)</span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">library</span>(sf)</span>
 <span id="cb13-2"><a></a></span>
 <span id="cb13-3"><a></a><span class="co"># Step 1: Define cell size (in map units - meters for our projection)</span></span>
 <span id="cb13-4"><a></a>cell_size <span class="ot">&lt;-</span> <span class="dv">500</span>  <span class="co"># 500m x 500m cells</span></span>
@@ -1550,7 +1550,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb13-18"><a></a></span>
 <span id="cb13-19"><a></a><span class="co"># Check results</span></span>
 <span id="cb13-20"><a></a><span class="fu">nrow</span>(fishnet)  <span class="co"># Number of cells</span></span>
-<span id="cb13-21"><a></a><span class="fu">st_area</span>(fishnet[<span class="dv">1</span>, ])  <span class="co"># Area of one cell (should be 250,000 m²)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-21"><a></a><span class="fu">st_area</span>(fishnet[<span class="dv">1</span>, ])  <span class="co"># Area of one cell (should be 250,000 m²)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <img data-src="images/fishnet.png" class="r-stretch"></section>
 <section id="grid-cell-size-a-critical-choice" class="slide level2">
@@ -1585,7 +1585,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <li>Count crimes per cell</li>
 <li>Handle cells with zero crimes</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="co"># Count burglaries per cell</span></span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="co"># Count burglaries per cell</span></span>
 <span id="cb14-2"><a></a>burglary_counts <span class="ot">&lt;-</span> <span class="fu">st_join</span>(burglaries, fishnet) <span class="sc">%&gt;%</span></span>
 <span id="cb14-3"><a></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb14-4"><a></a>  <span class="fu">group_by</span>(uniqueID) <span class="sc">%&gt;%</span></span>
@@ -1599,7 +1599,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb14-12"><a></a><span class="co"># Summary</span></span>
 <span id="cb14-13"><a></a><span class="fu">summary</span>(fishnet<span class="sc">$</span>countBurglaries)</span>
 <span id="cb14-14"><a></a><span class="co">#   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb14-15"><a></a><span class="co">#      0       0       1    2.3       3      47</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb14-15"><a></a><span class="co">#      0       0       1    2.3       3      47</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="handling-zeros-in-count-data" class="slide level2 scrollable">
 <h2>Handling Zeros in Count Data</h2>
@@ -1659,7 +1659,7 @@ COLDSPOTS           |    Outliers</code></pre>
 </section>
 <section id="logo-cv-implementation" class="slide level2">
 <h2>LOGO-CV Implementation</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a><span class="co"># Get unique districts</span></span>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a><span class="co"># Get unique districts</span></span>
 <span id="cb15-2"><a></a>districts <span class="ot">&lt;-</span> <span class="fu">unique</span>(fishnet<span class="sc">$</span>District)</span>
 <span id="cb15-3"><a></a></span>
 <span id="cb15-4"><a></a><span class="co"># Initialize results</span></span>
@@ -1685,7 +1685,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb15-24"><a></a>}</span>
 <span id="cb15-25"><a></a></span>
 <span id="cb15-26"><a></a><span class="co"># Combine all predictions</span></span>
-<span id="cb15-27"><a></a>all_predictions <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(cv_results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-27"><a></a>all_predictions <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(cv_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="evaluating-cv-performance" class="slide level2">
 <h2>Evaluating CV Performance</h2>
@@ -1693,14 +1693,14 @@ COLDSPOTS           |    Outliers</code></pre>
 <p><strong>Mean Absolute Error (MAE):</strong> <span class="math display">\[MAE = \frac{1}{n}\sum_i |y_i - \hat{y}_i|\]</span></p>
 <p><strong>Root Mean Squared Error (RMSE):</strong> <span class="math display">\[RMSE = \sqrt{\frac{1}{n}\sum_i (y_i - \hat{y}_i)^2}\]</span></p>
 <p><strong>Mean Error (Bias):</strong> <span class="math display">\[ME = \frac{1}{n}\sum_i (y_i - \hat{y}_i)\]</span></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="co"># Calculate metrics by district</span></span>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="co"># Calculate metrics by district</span></span>
 <span id="cb16-2"><a></a>cv_metrics <span class="ot">&lt;-</span> all_predictions <span class="sc">%&gt;%</span></span>
 <span id="cb16-3"><a></a>  <span class="fu">group_by</span>(District) <span class="sc">%&gt;%</span></span>
 <span id="cb16-4"><a></a>  <span class="fu">summarize</span>(</span>
 <span id="cb16-5"><a></a>    <span class="at">MAE =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(countBurglaries <span class="sc">-</span> prediction)),</span>
 <span id="cb16-6"><a></a>    <span class="at">RMSE =</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((countBurglaries <span class="sc">-</span> prediction)<span class="sc">^</span><span class="dv">2</span>)),</span>
 <span id="cb16-7"><a></a>    <span class="at">ME =</span> <span class="fu">mean</span>(countBurglaries <span class="sc">-</span> prediction)</span>
-<span id="cb16-8"><a></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-8"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="interpreting-prediction-errors" class="slide level2">
 <h2>Interpreting Prediction Errors</h2>
@@ -1725,7 +1725,7 @@ COLDSPOTS           |    Outliers</code></pre>
 </section>
 <section id="spatial-patterns-in-prediction-errors" class="slide level2">
 <h2>Spatial Patterns in Prediction Errors</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="co"># Map prediction errors</span></span>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="co"># Map prediction errors</span></span>
 <span id="cb17-2"><a></a>all_predictions <span class="ot">&lt;-</span> all_predictions <span class="sc">%&gt;%</span></span>
 <span id="cb17-3"><a></a>  <span class="fu">mutate</span>(</span>
 <span id="cb17-4"><a></a>    <span class="at">error =</span> countBurglaries <span class="sc">-</span> prediction,</span>
@@ -1743,7 +1743,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb17-16"><a></a>  ) <span class="sc">+</span></span>
 <span id="cb17-17"><a></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Prediction Errors"</span>,</span>
 <span id="cb17-18"><a></a>       <span class="at">subtitle =</span> <span class="st">"Red = Over-prediction, Blue = Under-prediction"</span>) <span class="sc">+</span></span>
-<span id="cb17-19"><a></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-19"><a></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Look for:</strong> Systematic patterns by neighborhood</p>
 </section>
 <section class="slide level2">
@@ -1817,7 +1817,7 @@ COLDSPOTS           |    Outliers</code></pre>
 </section>
 <section id="calculating-kde-in-r" class="slide level2">
 <h2>Calculating KDE in R</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="fu">library</span>(spatstat)</span>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="fu">library</span>(spatstat)</span>
 <span id="cb18-2"><a></a></span>
 <span id="cb18-3"><a></a><span class="co"># Step 1: Convert to point pattern (ppp) object</span></span>
 <span id="cb18-4"><a></a>burglary_ppp <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(</span>
@@ -1840,13 +1840,13 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb18-21"><a></a></span>
 <span id="cb18-22"><a></a><span class="co"># Standardize to 0-1 scale for comparison</span></span>
 <span id="cb18-23"><a></a>fishnet<span class="sc">$</span>kde_risk <span class="ot">&lt;-</span> (fishnet<span class="sc">$</span>kde_risk <span class="sc">-</span> <span class="fu">min</span>(fishnet<span class="sc">$</span>kde_risk, <span class="at">na.rm=</span>T)) <span class="sc">/</span> </span>
-<span id="cb18-24"><a></a>                     (<span class="fu">max</span>(fishnet<span class="sc">$</span>kde_risk, <span class="at">na.rm=</span>T) <span class="sc">-</span> <span class="fu">min</span>(fishnet<span class="sc">$</span>kde_risk, <span class="at">na.rm=</span>T))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-24"><a></a>                     (<span class="fu">max</span>(fishnet<span class="sc">$</span>kde_risk, <span class="at">na.rm=</span>T) <span class="sc">-</span> <span class="fu">min</span>(fishnet<span class="sc">$</span>kde_risk, <span class="at">na.rm=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="creating-risk-categories" class="slide level2">
 <h2>Creating Risk Categories</h2>
 <p><strong>Both KDE and our model produce continuous risk scores</strong></p>
 <p><strong>For evaluation, convert to categories:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="co"># Create quintiles (5 equal groups)</span></span>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="co"># Create quintiles (5 equal groups)</span></span>
 <span id="cb19-2"><a></a>fishnet<span class="sc">$</span>model_risk_category <span class="ot">&lt;-</span> <span class="fu">cut</span>(</span>
 <span id="cb19-3"><a></a>  fishnet<span class="sc">$</span>prediction,</span>
 <span id="cb19-4"><a></a>  <span class="at">breaks =</span> <span class="fu">quantile</span>(fishnet<span class="sc">$</span>prediction, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.2</span>)),</span>
@@ -1859,7 +1859,7 @@ COLDSPOTS           |    Outliers</code></pre>
 <span id="cb19-11"><a></a>  <span class="at">breaks =</span> <span class="fu">quantile</span>(fishnet<span class="sc">$</span>kde_risk, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.2</span>)),</span>
 <span id="cb19-12"><a></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"1st (Lowest)"</span>, <span class="st">"2nd"</span>, <span class="st">"3rd"</span>, <span class="st">"4th"</span>, <span class="st">"5th (Highest)"</span>),</span>
 <span id="cb19-13"><a></a>  <span class="at">include.lowest =</span> <span class="cn">TRUE</span></span>
-<span id="cb19-14"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-14"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Each category contains 20% of cells</strong></p>
 </section>
 <section id="testing-on-hold-out-data-2018-burglaries" class="slide level2 scrollable">
@@ -1874,11 +1874,11 @@ COLDSPOTS           |    Outliers</code></pre>
 <li>Compare model vs.&nbsp;KDE</li>
 </ol>
 <p><strong>Question:</strong> Which method captures more crimes in high-risk areas?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="co"># Spatial join: 2018 burglaries to fishnet with risk categories</span></span>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="co"># Spatial join: 2018 burglaries to fishnet with risk categories</span></span>
 <span id="cb20-2"><a></a>results_2018 <span class="ot">&lt;-</span> <span class="fu">st_join</span>(fishnet, burglaries_2018) <span class="sc">%&gt;%</span></span>
 <span id="cb20-3"><a></a>  <span class="fu">group_by</span>(model_risk_category) <span class="sc">%&gt;%</span></span>
 <span id="cb20-4"><a></a>  <span class="fu">summarize</span>(<span class="at">burglaries_2018 =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb20-5"><a></a>  <span class="fu">mutate</span>(<span class="at">pct_of_total =</span> <span class="dv">100</span> <span class="sc">*</span> burglaries_2018 <span class="sc">/</span> <span class="fu">sum</span>(burglaries_2018))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-5"><a></a>  <span class="fu">mutate</span>(<span class="at">pct_of_total =</span> <span class="dv">100</span> <span class="sc">*</span> burglaries_2018 <span class="sc">/</span> <span class="fu">sum</span>(burglaries_2018))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-hit-rate-evaluation" class="slide level2">
 <h2>The Hit Rate Evaluation</h2>
@@ -2216,7 +2216,7 @@ COLDSPOTS           |    Outliers</code></pre>
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -2243,80 +2243,42 @@ COLDSPOTS           |    Outliers</code></pre>
       });
     </script>
     
-
     <script>
-
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
-    
 
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
 
-    
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
-    
 
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
 
-    
-
       })();
-
     </script>
-
-    
 
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -2366,14 +2328,13 @@ COLDSPOTS           |    Outliers</code></pre>
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-          const outerScaffold = trigger.parentElement.cloneNode(true);
-          const codeEl = outerScaffold.querySelector('code');
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
             }
-          }
-          return codeEl.innerText;
+            return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
