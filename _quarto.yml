@@ -54,6 +54,12 @@ website:
           text: "Midterm Slides"
         - href: midterm/Appendix/CuiXinyuan_Appendix.qmd
           text: "Midterm Appendix"
+      - text: "Final Project"
+        menu:
+        - href: final/Slides/Final_Slides.qmd
+          text: "Final Slides"
+        - href: final/Appendix/Final_appendix.qmd
+          text: "Final Appendix"
 format:
   html:
     theme: cosmo

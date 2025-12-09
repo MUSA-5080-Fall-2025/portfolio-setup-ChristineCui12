@@ -1,0 +1,513 @@
+---
+title: "Safe Passage: Optimizing SEPTA Police Deployment"
+subtitle: "MUSA 5080 Final Project"
+author: "Xinyuan Cui, Yuqing Yang, Jinyang Xu"
+date: "December 8, 2025"
+format: 
+  revealjs:
+    theme: night
+    slide-number: true
+    smaller: true
+    scrollable: true
+    navigation-mode: linear
+    controls: true
+    logo: "https://upload.wikimedia.org/wikipedia/commons/c/ca/SEPTA.svg"
+    include-in-header: 
+      text: |
+        <style>
+        /* --- 1. 全局字体设置 (30px) --- */
+        .reveal { 
+          font-family: 'Lato', sans-serif; 
+          color: #e0e0e0; 
+          font-size: 30px !important; 
+        }
+        
+        .reveal h1, .reveal h2, .reveal h3 { 
+          font-family: 'Montserrat', sans-serif; 
+          text-transform: uppercase; 
+          letter-spacing: 2px; 
+          color: #6baed6; 
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+        }
+        
+        /* --- 2. 自定义颜色类 --- */
+        .text-pop {
+          color: #ffc107 !important; 
+          font-weight: 800;
+          text-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
+        }
+        
+        .text-blue {
+          color: #4fc3f7 !important;
+          font-weight: bold;
+        }
+        
+        /* --- 3. 大数字样式 --- */
+        .big-number {
+          font-size: 2.5em; 
+          color: #ffc107;
+          font-weight: bold;
+          display: block;
+          margin-top: 10px;
+        }
+        </style>
+---
+
+##  {background-color="#0f2027"}
+
+<div style="position: absolute; top: 50%; transform: translateY(-50%); width: 100%; text-align: left;">
+  
+  <h2 style="border-bottom: 3px solid #6baed6; display: inline-block; margin-bottom: 20px;">Chapter 1. The Challenge</h2>
+  
+  <h3 style="color: white; font-weight: 300;">EYES ON THE STREET OR TARGETS FOR CRIME?</h3>
+
+</div>
+
+---
+
+## THE PROBLEM: REACTIVE POLICING
+
+<div class="glass-box" style="margin-bottom: 20px;">
+SEPTA carries thousands of passengers daily. But for Transit Police, a critical question remains unanswered:
+
+<div style="font-size: 1.2em; margin-top: 15px; padding-left: 20px; border-left: 4px solid #e0e0e0;">
+**Does high ridership bring safety (<span class="text-blue">"Eyes on the Street"</span>) or does it attract crime (<span class="text-pop">"Potential Targets"</span>)?**
+</div>
+</div>
+
+::: {.columns}
+
+::: {.column width="50%"}
+<div class="glass-box" style="height: 90%;">
+<h3 style="color: #6baed6; border-bottom: none;">🚫 CURRENT ISSUES</h3>
+
+1. **Inefficiency:** Patrols wasted on safe, high-traffic stops.
+2. **Safety Gaps:** Missed anomalies where risk is high despite low visibility.
+3. **Resource Strain:** The "Shotgun approach" fails with limited personnel.
+</div>
+:::
+
+::: {.column width="50%"}
+<div class="glass-box" style="height: 90%">
+<h3 style="color: #de2d26; border-bottom: none;">🚨 Our Policy Goal</h3>
+
+- Help SEPTA Transit Police transition from **reactive** to **predictive** deployment. 
+
+- We identify <span class="text-pop">"High-Risk Anomalies"</span>—stops where environmental context and timing converge to create danger.
+</div>
+:::
+
+:::
+---
+
+## Data Sources: The "Secret Ingredient"
+
+::: {.columns}
+
+::: {.column width="50%"}
+### 🚌 Operational Data
+**SEPTA Ridership (Summer 2025)** (OpenDataPhilly)
+
+- Aggregated by Stop
+
+- **Key Feature:** <span class="text-blue">Weekday</span> vs. <span class="text-pop">Weekend</span> split
+
+- *Role:* Measures "Exposure"
+
+### 🚨 Outcome Variable
+**Crime Incidents** (OpenDataPhilly)
+
+- Robbery, Assault, Theft
+
+- **Metric:** Total Count (Corrected for days)
+:::
+
+::: {.column width="50%"}
+### 🏙️ Environment
+(OpenDataPhilly)
+
+- **Alcohol Outlets:** <span class="text-pop">Crime Generators</span>
+- **Street Lights:** <span class="text-blue">Guardianship (CPTED)</span>
+- **Vacant Land:** Broken Windows
+- **Police Stations:** Response Distance
+
+### 👥 Demographics
+(ACS Data)
+
+- Poverty Rate, Unemployment, Income
+:::
+
+:::
+
+---
+
+##  {background-color="#0f2027"}
+
+<div style="position: absolute; top: 50%; transform: translateY(-50%); width: 100%; text-align: left;">
+  
+  <h2 style="border-bottom: 3px solid #6baed6; display: inline-block; margin-bottom: 20px;">Chapter 2. The Technique</h2>
+  
+  <h3 style="color: white; font-weight: 300;">Why Negative Binomial?</h3>
+
+</div>
+
+---
+
+## Why Not Linear Regression?
+
+::: {.columns}
+
+::: {.column width="60%"}
+<div class="img-card" style="margin-top: 20px;">
+![](Distribution.png)
+</div>
+:::
+
+::: {.column width="40%"}
+
+<div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; border-left: 6px solid #4fc3f7; margin-top: 20px;">
+  
+  <h3 style="color: #ffffff; margin-top: 0; font-size: 1.1em; border-bottom: none; font-weight: 800; text-transform: uppercase;">
+    The Statistical Reality
+  </h3>
+
+  <ul style="font-size: 0.9em; margin-bottom: 0; margin-left: 20px; color: #e0e0e0; line-height: 1.5;">
+    <li style="margin-bottom: 15px;">
+      <span style="color: white; font-weight: bold;">The Nature:</span> 
+      Crime data is a discrete <strong>Count Variable</strong> (0, 1, 2...).
+    </li>
+    <li style="margin-bottom: 15px;">
+      <span style="color: white; font-weight: bold;">The Problem:</span> 
+      It is heavily <span class="text-pop">Right-Skewed</span>. Most stops have zero crime, creating "Overdispersion" (Variance >> Mean).
+    </li>
+    <li>
+      <span style="color: white; font-weight: bold;">The Solution:</span> 
+      We used <strong>Negative Binomial Regression</strong> instead of OLS to mathematically account for this distribution.
+    </li>
+  </ul>
+
+</div>
+
+:::
+
+:::
+
+---
+
+## The Core Hypothesis: Guardian or Target?
+
+### Unmasking the Dual Nature of Ridership
+
+We suspect ridership plays **competing roles** in public safety. A simple regression averages these effects, potentially hiding the truth.
+
+<div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px; margin: 25px 0; border-left: 5px solid #ffc107;">
+**Method:** Split the data into Weekdays and Weekends, and use the interaction term to <span class="text-pop">isolate</span> the impact of Ridership.
+</div>
+
+* <span class="text-blue">**Scenario A (Eyes on the Street):**</span> 
+  Commuters create natural surveillance.
+  * *Expectation:* Higher ridership $\rightarrow$ **Less** Crime.
+  
+* <span class="text-pop">**Scenario B (Potential Targets):**</span> 
+  Leisure crowds create opportunities for theft.
+  * *Expectation:* Higher ridership $\rightarrow$ **More** Crime.
+
+**The Model Specification:**
+
+$$Crime = \beta_0 + \underbrace{\beta_1(Ridership)}_{\text{Guardian Effect}} + \beta_2(Weekend) + \underbrace{\mathbf{\beta_3(Ridership \times Weekend)}}_{\text{Target Effect (The Shift)}}$$
+
+---
+
+##  {background-color="#0f2027"}
+
+<div style="position: absolute; top: 50%; transform: translateY(-50%); width: 100%; text-align: left;">
+  
+  <h2 style="border-bottom: 3px solid #6baed6; display: inline-block; margin-bottom: 20px;">Chapter 3. The EVIDENCE</h2>
+  
+  <h3 style="color: white; font-weight: 300;">MODEL PERFORMANCE</h3>
+
+</div>
+
+
+---
+
+## WHAT DRIVES CRIME RISK?
+
+::: {.columns}
+
+::: {.column width="60%"}
+
+<div class="img-card" style="margin-top: 2px; margin-bottom: 2px;">
+![](Coefficient.png)
+</div>
+
+<div class="img-card">
+![](Week.png)
+</div>
+
+:::
+
+::: {.column width="40%"}
+
+<div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 6px solid #de2d26;">
+  <h3 style="color: #ffc107; margin-top: 0; font-size: 1.3em; border-bottom: none; font-weight: 800;">
+    🔥 RISK AMPLIFIERS
+  </h3>
+  <ul style="font-size: 1.1em; margin-bottom: 0; line-height: 1.3;">
+    <li style="margin-bottom: 10px;">
+      <span style="color: white; font-weight: bold;">Ridership:</span> More people = More targets.
+    </li>
+    <li style="margin-bottom: 10px;">
+      <span style="color: white; font-weight: bold;">Alcohol Outlets:</span> Strongest environmental predictor.
+    </li>
+    <li style="margin-bottom: 10px;">
+      <span style="color: white; font-weight: bold;">Vacancy:</span> "Broken Windows" effect attracts crime.
+    </li>
+    <li>
+      <span class="text-pop">Weekend Shift:</span> The interaction term confirms risk dynamics intensify on weekdays.
+    </li>
+  </ul>
+</div>
+
+<div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; border-left: 6px solid #3182bd;">
+  <h3 style="color: #4fc3f7; margin-top: 0; font-size: 1.3em; border-bottom: none; font-weight: 800;">
+    🛡️ RISK MITIGATORS
+  </h3>
+  <ul style="font-size: 1.1em; margin-bottom: 0; line-height: 1.3;">
+    <li>
+      <span style="color: white; font-weight: bold;">Street Lights:</span> 
+      Validates CPTED theory—better lighting significantly reduces incidents.
+    </li>
+  </ul>
+</div>
+
+:::
+
+:::
+
+---
+
+## Model Validation (CV Results)
+
+**Model Performance Improves with Each Layer**
+
+| Model | MAE (Error Count) | RMSE | Improvement |
+|-------|:-----------------:|:----:|:-----------:|
+| 1. Ridership Only | 17.268 | 28.877 | - |
+| 2. + Interaction | 17.209 | 28.868 | + 0.3% |
+| 3. + Env & Demo | 12.777 | 21.039 | + 26% |
+| 4. + Fixed | 11.409 | 18.343 | + 33.9% |
+| 5. + Temporal Lag | 7.453 | 11.629 | + 56.8% |
+| 6. Refined | 7.475 | 11.662 | + 56.7% |
+
+::: {.callout-tip}
+## Conclusion
+**Context Matters.** Adding environmental variables and temporal lags reduced prediction error by **56.7%**.
+:::
+
+---
+
+## WHERE DOES THE MODEL FAIL? (RESIDUALS)
+
+::: {.columns}
+
+::: {.column width="60%"}
+<div class="img-card" style="margin-top: 20px;">
+![](Residuals.png)
+</div>
+:::
+
+::: {.column width="40%"}
+
+<div style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 6px solid #de2d26;">
+  <h3 style="color: #de2d26; margin-top: 0; font-size: 1.2em; border-bottom: none; font-weight: 800; line-height: 1;">
+    RED ZONES<br>(UNDER-PREDICTED)
+  </h3>
+  <ul style="font-size: 1em; margin-bottom: 0; margin-left: 20px; color: #e0e0e0;">
+    <li style="margin-bottom: 8px;">Model says "Safe," Reality is <strong>"Dangerous."</strong></li>
+    <li style="margin-bottom: 8px;"><em>Risk:</em> Public safety gaps due to <strong>Insufficient Patrols</strong>.</li>
+    <li><em>Action:</em> Needs <strong>Human Intelligence</strong>.</li>
+  </ul>
+</div>
+
+<div style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 15px; border-left: 6px solid #3182bd;">
+  <h3 style="color: #3182bd; margin-top: 0; font-size: 1.2em; border-bottom: none; font-weight: 800; line-height: 1;">
+    BLUE ZONES<br>(OVER-PREDICTED)
+  </h3>
+  <ul style="font-size: 1em; margin-bottom: 0; margin-left: 20px; color: #e0e0e0;">
+    <li style="margin-bottom: 8px;">Model says "Dangerous," Reality is <strong>"Safe."</strong></li>
+    <li style="margin-bottom: 8px;"><em>Risk:</em> Potential for <strong>Over-policing</strong> in minority neighborhoods.</li>
+    <li><em>Action:</em> Do not deploy without verification.</li>
+  </ul>
+</div>
+
+:::
+
+:::
+
+---
+
+##  {background-color="#0f2027"}
+
+<div style="position: absolute; top: 50%; transform: translateY(-50%); width: 100%; text-align: left;">
+  
+  <h2 style="border-bottom: 3px solid #6baed6; display: inline-block; margin-bottom: 20px;">Chapter 4. The solution</h2>
+  
+  <h3 style="color: white; font-weight: 300;">actionable intelligence</h3>
+
+</div>
+
+---
+
+## Top 50 Over/Under-Policed Map
+
+<div style="display: flex; gap: 5px; margin-bottom: 5px; align-items: stretch; height: 450px;">
+
+  <div class="img-card" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+  ![](Top50Over.png) 
+  </div>
+
+  <div class="img-card" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+  ![](Top50Under.png)
+  </div>
+
+</div>
+
+<div class="glass-box">
+  <h3 style="color: #de2d26; margin-top: 0; font-size: 1.3em; font-weight: 800;">
+    🚫 The "Shotgun" Approach Fails
+  </h3>
+  
+  <p style="font-size: 1.1em; line-height: 1.4; color: #e0e0e0;">
+    Spreading officers evenly across all high-ridership stops wastes resources on safe stations, while leaving true <span class="text-pop">"High-risk Anomalies"</span> unguarded. 
+    <br>
+    <strong>We must distinguish between these scenarios to redeploy effectively.</strong>
+  </p>
+</div>
+
+---
+
+## Implementation
+
+::: {.columns}
+
+::: {.column width="50%"}
+<div class="glass-box" style="height: 95%;">
+  <h3 style="color: #6baed6; margin-top: 0; font-size: 1.2em; border-bottom: 2px solid #6baed6;">
+    🚀 IMPLEMENTATION
+  </h3>
+  
+  <ul style="font-size: 0.9em; line-height: 1.6; margin-top: 20px;">
+    <li>
+      <strong>Dashboard Integration:</strong><br>
+      Embed "Top 50 Risk Map" into HQ command centers. Weekly refresh.
+    </li>
+    <li style="margin-top: 15px;">
+      <strong>Friday Rostering Guide:</strong><br>
+      Commanders use the model to shift weekend resources from <span class="text-blue">Commuter Lines</span> to <span class="text-pop">Nightlife Districts</span>.
+    </li>
+    <li style="margin-top: 15px;">
+      <strong>Low Cost Feasibility:</strong><br>
+      Uses 100% existing data (SEPTA, Crime, Census). No new sensors required.
+    </li>
+  </ul>
+</div>
+:::
+
+::: {.column width="50%"}
+<div class="glass-box" style="height: 95%;">
+  <h3 style="color: #ffc107; margin-top: 0; font-size: 1.2em; border-bottom: 2px solid #ffc107;">
+    🛡️ SAFEGUARDS
+  </h3>
+  
+  <ul style="font-size: 0.9em; line-height: 1.6; margin-top: 20px;">
+    <li>
+      <strong>1. Graded Response:</strong><br>
+      Don't just send SWAT. Deploy Safety Ambassadors or fix street lights (CPTED) in high-risk zones.
+    </li>
+    <li style="margin-top: 15px;">
+      <strong>2. Human-in-the-Loop:</strong><br>
+      The model is a guide, not a commander. District Captains must validate Red Zones with field intel.
+    </li>
+    <li style="margin-top: 15px;">
+      <strong>3. Bias Auditing:</strong><br>
+      Quarterly checks on <span class="text-blue">Blue Zones</span> to prevent stereotyping low-income areas.
+    </li>
+  </ul>
+</div>
+:::
+
+:::
+
+---
+
+##  {background-color="#0f2027"}
+
+<div style="position: absolute; top: 50%; transform: translateY(-50%); width: 100%; text-align: left;">
+  
+  <h2 style="border-bottom: 3px solid #6baed6; display: inline-block; margin-bottom: 20px;">Chapter 5. Critical Analysis</h2>
+  
+  <h3 style="color: white; font-weight: 300;">Equity & Bias</h3>
+
+</div>
+
+---
+
+## LIMITATIONS & EQUITY
+
+::: {.columns}
+
+::: {.column width="50%"}
+<div class="glass-box" style="height: 95%;">
+  <h3 style="color: #ffc107; margin-top: 0; font-size: 1.2em; border-bottom: none;">
+    ⚠️ MODEL LIMITATIONS
+  </h3>
+  
+  <ul style="font-size: 0.9em; line-height: 1.6; margin-top: 20px;">
+    <li style="margin-bottom: 20px;">
+      <strong>Unobserved Variables:</strong><br>
+      The model cannot capture real-time shocks like temporary <span class="text-pop">gang activity</span> or large events (e.g., concerts).
+    </li>
+    <li>
+      <strong>Spatial Lag:</strong><br>
+      Crime is fluid. Our 400m buffer is static, potentially missing cross-boundary crime displacement or spillover effects.
+    </li>
+  </ul>
+</div>
+:::
+
+::: {.column width="50%"}
+<div class="glass-box" style="height: 95%;">
+  <h3 style="color: #de2d26; margin-top: 0; font-size: 1.2em; border-bottom: none;">
+    ⚖️ ALGORITHMIC BIAS
+  </h3>
+  
+  <ul style="font-size: 0.9em; line-height: 1.6; margin-top: 20px;">
+    <li style="margin-bottom: 20px;">
+      <strong>The Risk (Over-Policing):</strong><br>
+      Reliance on <em>Poverty Rate</em> or <em>Vacancy</em> creates a feedback loop, targeting low-income neighborhoods even when no crime occurs.
+    </li>
+    <li>
+      <strong>The Evidence (Blue Zones):</strong><br>
+      Our Residual Analysis confirmed this: The model <span class="text-blue">Over-Predicted</span> risk in specific low-income areas, flagging them as dangerous when they were actually safe.
+    </li>
+  </ul>
+</div>
+:::
+
+:::
+
+---
+
+##  {background-color="#0f2027"}
+
+<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 100%;">
+  
+  <h1 style="border-bottom: none; font-size: 3.5em; margin-bottom: 0.5em;">Thank You</h1>
+  
+  <h2 class="text-pop" style="border-bottom: none; margin-bottom: 1.5em;">Questions?</h2>
+  
+  <p class="text-blue" style="font-weight: bold; font-size: 1.3em; margin-bottom: 10px;">Team: </p>
+  <p style="font-size: 1em; opacity: 0.8;">Xinyuan Cui | Yuqing Yang | Jinyang Xu</p>
+
+</div>
