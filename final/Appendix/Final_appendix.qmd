@@ -15,7 +15,7 @@ editor:
     wrap: 72
 ---
 
-# Project Oblective
+## Project Objective
 
 This project investigates the complex relationship between transit ridership and public safety around SEPTA bus stops in Philadelphia. By employing Negative Binomial Regression, we explore the tension between two competing theories: whether high passenger volumes act as protective "Eyes on the Street" or attract crime as "Potential Targets." The analysis integrates multi-source data—including ridership, crime incidents, census demographics, and built environment features—and utilizes interaction terms to reveal how risk dynamics shift between weekdays and weekends. Our ultimate goal is to transition SEPTA Transit Police from reactive to predictive deployment, providing a data-driven framework to identify high-risk anomalies and optimize patrol resources for maximum safety impact.
 
@@ -1348,7 +1348,7 @@ p_comparison
 
 # Phase 5: Model Validation
 
-## 5.1 Compare all 5 models:
+## 5.1 Compare all 6 models:
 
 ### 5.1.1 Create predicted vs. actual plot
 
@@ -1943,7 +1943,7 @@ kbl(top_10_table, digits = 1, caption = "The 'Hit List': Top 10 Stops with Highe
     sustainable, non-punitive strategy to reduce crime risk without
     increasing arrest rates.
 
-## 7.4 Equity Concern
+## 7.4 Equity Concern and Limitations
 
 -   A major concern in crime modeling is the potential to stigmatize
     disadvantaged communities. We addressed this by incorporating Census
@@ -1952,8 +1952,9 @@ kbl(top_10_table, digits = 1, caption = "The 'Hit List': Top 10 Stops with Highe
     neighborhood context, rather than unfairly comparing a stop in North
     Philadelphia to one in Center City. However, we acknowledge that our
     final model still exhibits some spatial autocorrelation (Moran's I
-    $\approx$ 0.29), indicating that unobserved spatial clusters remain.
-    While the Negative Binomial model effectively handles the
+    $\approx$ 0.29), indicating that unobserved spatial clusters remain.  
+    
+-   While the Negative Binomial model effectively handles the
     over-dispersed count data, future iterations should explore Bayesian
     Spatial Models to fully resolve the complex spatial dependencies
     inherent in urban crime data.

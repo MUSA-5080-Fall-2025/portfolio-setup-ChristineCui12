@@ -290,7 +290,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#project-oblective" id="toc-project-oblective" class="nav-link active" data-scroll-target="#project-oblective">Project Oblective</a></li>
+  <li><a href="#project-objective" id="toc-project-objective" class="nav-link active" data-scroll-target="#project-objective">Project Objective</a></li>
   <li><a href="#phase-1-data-preparation" id="toc-phase-1-data-preparation" class="nav-link" data-scroll-target="#phase-1-data-preparation">Phase 1: Data Preparation</a>
   <ul class="collapse">
   <li><a href="#complete-data-cleaning-code" id="toc-complete-data-cleaning-code" class="nav-link" data-scroll-target="#complete-data-cleaning-code">1.0 Complete data cleaning code</a></li>
@@ -347,7 +347,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#phase-5-model-validation" id="toc-phase-5-model-validation" class="nav-link" data-scroll-target="#phase-5-model-validation">Phase 5: Model Validation</a>
   <ul class="collapse">
-  <li><a href="#compare-all-5-models" id="toc-compare-all-5-models" class="nav-link" data-scroll-target="#compare-all-5-models">5.1 Compare all 5 models:</a>
+  <li><a href="#compare-all-6-models" id="toc-compare-all-6-models" class="nav-link" data-scroll-target="#compare-all-6-models">5.1 Compare all 6 models:</a>
   <ul class="collapse">
   <li><a href="#create-predicted-vs.-actual-plot" id="toc-create-predicted-vs.-actual-plot" class="nav-link" data-scroll-target="#create-predicted-vs.-actual-plot">5.1.1 Create predicted vs.&nbsp;actual plot</a></li>
   <li><a href="#report-and-compare-rmse-mae-r²" id="toc-report-and-compare-rmse-mae-r²" class="nav-link" data-scroll-target="#report-and-compare-rmse-mae-r²">5.1.2 Report and Compare RMSE, MAE, R²</a></li>
@@ -366,7 +366,7 @@ window.Quarto = {
   <li><a href="#the-verdict-targets-outweigh-eyes-on-the-street" id="toc-the-verdict-targets-outweigh-eyes-on-the-street" class="nav-link" data-scroll-target="#the-verdict-targets-outweigh-eyes-on-the-street">7.1 The Verdict: “Targets” Outweigh “Eyes on the Street”</a></li>
   <li><a href="#operational-strategy-precision-policing-based-on-risk-anomalies" id="toc-operational-strategy-precision-policing-based-on-risk-anomalies" class="nav-link" data-scroll-target="#operational-strategy-precision-policing-based-on-risk-anomalies">7.2 Operational Strategy: Precision Policing based on “Risk Anomalies”</a></li>
   <li><a href="#beyond-policing-cpted-interventions-for-long-term-safety" id="toc-beyond-policing-cpted-interventions-for-long-term-safety" class="nav-link" data-scroll-target="#beyond-policing-cpted-interventions-for-long-term-safety">7.3 Beyond Policing: CPTED Interventions for Long-term Safety</a></li>
-  <li><a href="#equity-concern" id="toc-equity-concern" class="nav-link" data-scroll-target="#equity-concern">7.4 Equity Concern</a></li>
+  <li><a href="#equity-concern-and-limitations" id="toc-equity-concern-and-limitations" class="nav-link" data-scroll-target="#equity-concern-and-limitations">7.4 Equity Concern and Limitations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -403,8 +403,8 @@ window.Quarto = {
 </header>
 
 
-<section id="project-oblective" class="level1">
-<h1>Project Oblective</h1>
+<section id="project-objective" class="level2">
+<h2 class="anchored" data-anchor-id="project-objective">Project Objective</h2>
 <p>This project investigates the complex relationship between transit ridership and public safety around SEPTA bus stops in Philadelphia. By employing Negative Binomial Regression, we explore the tension between two competing theories: whether high passenger volumes act as protective “Eyes on the Street” or attract crime as “Potential Targets.” The analysis integrates multi-source data—including ridership, crime incidents, census demographics, and built environment features—and utilizes interaction terms to reveal how risk dynamics shift between weekdays and weekends. Our ultimate goal is to transition SEPTA Transit Police from reactive to predictive deployment, providing a data-driven framework to identify high-risk anomalies and optimize patrol resources for maximum safety impact.</p>
 </section>
 <section id="phase-1-data-preparation" class="level1">
@@ -2443,8 +2443,8 @@ Log_Ridership:is_weekend_factor     8.139565  1        2.852992</code></pre>
 </section>
 <section id="phase-5-model-validation" class="level1">
 <h1>Phase 5: Model Validation</h1>
-<section id="compare-all-5-models" class="level2">
-<h2 class="anchored" data-anchor-id="compare-all-5-models">5.1 Compare all 5 models:</h2>
+<section id="compare-all-6-models" class="level2">
+<h2 class="anchored" data-anchor-id="compare-all-6-models">5.1 Compare all 6 models:</h2>
 <section id="create-predicted-vs.-actual-plot" class="level3">
 <h3 class="anchored" data-anchor-id="create-predicted-vs.-actual-plot">5.1.1 Create predicted vs.&nbsp;actual plot</h3>
 <div class="cell">
@@ -3194,10 +3194,11 @@ In other words, the remaining spatial signal is <strong>weakly structured and he
 <li>Our model highlights that policing is not the only solution. Built environment features, specifically Street Light Density and Housing Vacancy, were significant predictors of crime risk. The significance of vacancy rates supports the “Broken Windows Theory”—physical disorder invites criminal activity. Therefore, we propose a cross-departmental collaboration between SEPTA and the Philadelphia Department of Streets to prioritize lighting upgrades and blight remediation around high-risk bus stops. These “Crime Prevention Through Environmental Design” (CPTED) interventions offer a sustainable, non-punitive strategy to reduce crime risk without increasing arrest rates.</li>
 </ul>
 </section>
-<section id="equity-concern" class="level2">
-<h2 class="anchored" data-anchor-id="equity-concern">7.4 Equity Concern</h2>
+<section id="equity-concern-and-limitations" class="level2">
+<h2 class="anchored" data-anchor-id="equity-concern-and-limitations">7.4 Equity Concern and Limitations</h2>
 <ul>
-<li>A major concern in crime modeling is the potential to stigmatize disadvantaged communities. We addressed this by incorporating Census Tract Fixed Effects (Phase 4) and controlling for poverty rates. This ensures our model compares bus stops within the same neighborhood context, rather than unfairly comparing a stop in North Philadelphia to one in Center City. However, we acknowledge that our final model still exhibits some spatial autocorrelation (Moran’s I <span class="math inline">\(\approx\)</span> 0.29), indicating that unobserved spatial clusters remain. While the Negative Binomial model effectively handles the over-dispersed count data, future iterations should explore Bayesian Spatial Models to fully resolve the complex spatial dependencies inherent in urban crime data.</li>
+<li><p>A major concern in crime modeling is the potential to stigmatize disadvantaged communities. We addressed this by incorporating Census Tract Fixed Effects (Phase 4) and controlling for poverty rates. This ensures our model compares bus stops within the same neighborhood context, rather than unfairly comparing a stop in North Philadelphia to one in Center City. However, we acknowledge that our final model still exhibits some spatial autocorrelation (Moran’s I <span class="math inline">\(\approx\)</span> 0.29), indicating that unobserved spatial clusters remain.</p></li>
+<li><p>While the Negative Binomial model effectively handles the over-dispersed count data, future iterations should explore Bayesian Spatial Models to fully resolve the complex spatial dependencies inherent in urban crime data.</p></li>
 </ul>
 
 
