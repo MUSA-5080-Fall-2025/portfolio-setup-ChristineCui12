@@ -1,12 +1,16 @@
 ---
 title: "Safe Passage: Modeling Crime Risk around SEPTA Bus Stops"
 author: "Xinyuan Cui, Yuqing Yang, Jinyang Xu"
+date: 2025.12.9
 format: 
   html:
     code-fold: show
+    code-tools: true
     toc: true
+    toc-depth: 3
     toc-location: left
     theme: cosmo
+    embed-resources: true
 execute:
   warning: false
   message: false
@@ -14,6 +18,16 @@ editor:
   markdown: 
     wrap: 72
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  cache = TRUE
+)
+```
+
 
 ## Project Objective
 
